@@ -1,0 +1,57 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwDevice</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.2.0</required_installer_version>
+  <subComponent>yes</subComponent>
+  <postInstall>./scripts/fwDevice/fwDevice.postInstall</postInstall>
+  <file>./data/LICENSES/fwDevice/LICENSE-LGPL3</file>
+  <file>./dplist/fwDeviceAsciiManagerConfig.dpl</file>
+  <dplist>./dplist/fwDeviceDPTs.dpl</dplist>
+  <dplist>./dplist/_FwTreeNodeInfo.dpl</dplist>
+  <file>./fwDevice.xml</file>
+  <file>./panels/fwDevice/fwDeviceAddressCommonSettings.pnl</file>
+  <file>./panels/fwDevice/fwDeviceAddress.pnl</file>
+  <file>./panels/fwDevice/fwDeviceAlertConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceAlertSummaryConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceArchiveConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceConversionConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceCopy.pnl</file>
+  <file>./panels/fwDevice/fwDeviceCreateMultipleSelectList.pnl</file>
+  <file>./panels/fwDevice/fwDeviceCreate.pnl</file>
+  <file>./panels/fwDevice/fwDeviceDpFunctionConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceEditDefinition.pnl</file>
+  <file>./panels/fwDevice/fwDeviceEditDpFunction.pnl</file>
+  <file>./panels/fwDevice/fwDeviceEditPropertyDefinition.pnl</file>
+  <file>./panels/fwDevice/fwDeviceEditS7Address.pnl</file>
+  <file>./panels/fwDevice/fwDeviceEditSNMPAddress.pnl</file>
+  <file>./panels/fwDevice/fwDeviceExpertConfiguration.pnl</file>
+  <file>./panels/fwDevice/fwDeviceFeedbackList.pnl</file>
+  <file>./panels/fwDevice/fwDeviceFormatConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceLogicalSelectAliases.pnl</file>
+  <file>./panels/fwDevice/fwDeviceManage.pnl</file>
+  <file>./panels/fwDevice/fwDeviceMassConfiguration.pnl</file>
+  <file>./panels/fwDevice/fwDeviceProperties.pnl</file>
+  <file>./panels/fwDevice/fwDevicePropertyButton.pnl</file>
+  <file>./panels/fwDevice/fwDevicePropertyChange.pnl</file>
+  <file>./panels/fwDevice/fwDevicePvRangeConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceRegisterType.pnl</file>
+  <file>./panels/fwDevice/fwDeviceSimpleConfiguration.pnl</file>
+  <file>./panels/fwDevice/fwDeviceSmoothingConfig.pnl</file>
+  <file>./panels/fwDevice/fwDeviceSystemInactiveAlarms.pnl</file>
+  <file>./panels/fwDevice/fwDeviceUnitConfig.pnl</file>
+  <file>./scripts/libs/classes/fwDevice/FwDeviceCache.ctl</file>
+  <file>./scripts/libs/fwDevice/fwDevice.ctl</file>
+  <file>./scripts/libs/fwDevice/fwDeviceDeprecated.ctl</file>
+  <file>./scripts/libs/fwDevice/fwDeviceFrontEndConfigFile.ctl</file>
+  <file>./scripts/libs/fwDevice/fwDeviceMassConfiguration.ctl</file>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwDevice/commit/c6707509ea1411e747b7812ba609ae5ce6a36c88</commit>
+</component>

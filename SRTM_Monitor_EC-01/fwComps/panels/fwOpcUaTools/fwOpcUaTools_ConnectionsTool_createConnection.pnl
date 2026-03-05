@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">518 354</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">40 40</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="KeepInMemory">False</prop>
+  <prop name="DPI">95.9161</prop>
+  <prop name="PDPI">95.9161</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+void enableShapes(bool bEnable)
+{
+  COMBO_BOX_OLD_SERVER.enabled(bEnable);
+  COMBO_BOX_OLD_SUBSCRIPTION.enabled(bEnable);
+  TEXT_FIELD_NEW_SERVER_NAME.enabled(bEnable);
+  TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(bEnable);
+  PUSH_BUTTON_CREATE.enabled(bEnable);
+  SPIN_BUTTON_DRIVER.enabled(bEnable);
+}
+
+
+
+
+void animateCreate()
+{
+  bool bExistsServer, bExistsSubscription;
+  int iOptionServer, iOptionSubscription;
+  string sServerName, sSubscriptionName;
+
+  getMultiValue(&quot;TEXT_FIELD_NEW_SERVER_NAME&quot;,       &quot;text&quot;,   sServerName,
+                &quot;RADIO_BOX_SERVER&quot;,                 &quot;number&quot;, iOptionServer,
+                &quot;TEXT_FIELD_NEW_SUBSCRIPTION_NAME&quot;, &quot;text&quot;,   sSubscriptionName,
+                &quot;RADIO_BOX_SUBSCRIPTION&quot;,           &quot;number&quot;, iOptionSubscription);
+
+  bExistsServer       = dpExists(sServerName);
+  bExistsSubscription = dpExists(sSubscriptionName);
+
+  if( bExistsServer                                                                 ||
+      bExistsSubscription                                                           ||
+      (sServerName == &quot;&quot;)                                                           ||
+      ((iOptionSubscription != 1) &amp;&amp; (sSubscriptionName == &quot;&quot;))                     ||
+      ((iOptionServer == 1)       &amp;&amp; (COMBO_BOX_OLD_SERVER.itemCount() == 0))       ||
+      ((iOptionSubscription ==2)  &amp;&amp; (COMBO_BOX_OLD_SUBSCRIPTION.itemCount() == 0))   )
+  {
+    PUSH_BUTTON_CREATE.enabled(FALSE);
+    return;
+  }
+  else
+  {
+    PUSH_BUTTON_CREATE.enabled(TRUE);
+  }
+
+}
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  initialize_OpcUaConnections();
+  initialize_OpcUaSubscriptions();
+  animateCreate();
+}
+
+
+
+
+
+void initialize_OpcUaConnections()
+{
+  int iLen, iLoop;
+  dyn_string dsAllServers, dsServers;
+
+  dsAllServers = dpNames(getSystemName() + &quot;*&quot;, &quot;_OPCUAServer&quot;);
+  iLen         = dynlen(dsAllServers);
+
+  if( iLen &gt; 0 )
+  {
+    // Remove redundant connections
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      // Redundant connection = CONNECTION + _2
+      if( strpos(dsAllServers[iLoop], &quot;_2&quot;) != (strlen(dsAllServers[iLoop])-2) )
+      {
+        dynAppend(dsServers, dpSubStr(dsAllServers[iLoop], DPSUB_DP));
+      }
+    }
+  }
+  dynSort(dsServers);
+
+  COMBO_BOX_OLD_SERVER.deleteAllItems();
+  COMBO_BOX_OLD_SERVER.items(dsServers);
+  COMBO_BOX_OLD_SERVER.selectedPos(1);
+}
+
+
+
+
+
+
+void initialize_OpcUaSubscriptions()
+{
+  int iLen, iLoop;
+  dyn_string dsAllSubscriptions, dsSubscriptions;
+
+
+  dsAllSubscriptions = dpNames(getSystemName() + &quot;*&quot;, &quot;_OPCUASubscription&quot;);
+  iLen               = dynlen(dsAllSubscriptions);
+
+
+  if( iLen &gt; 0 )
+  {
+    // Remove redundant subscriptions
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      // Redundant subscription = SUBSCRIPTION + _2
+      if( strpos(dsAllSubscriptions[iLoop], &quot;_2&quot;) != (strlen(dsAllSubscriptions[iLoop])-2) )
+      {
+        dynAppend(dsSubscriptions, dpSubStr(dsAllSubscriptions[iLoop], DPSUB_DP));
+      }
+    }
+  }
+  dynSort(dsSubscriptions);
+
+  COMBO_BOX_OLD_SUBSCRIPTION.deleteAllItems();
+  COMBO_BOX_OLD_SUBSCRIPTION.items(dsSubscriptions);
+  COMBO_BOX_OLD_SUBSCRIPTION.selectedPos(1);
+}
+
+
+
+
+
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="SPIN_BUTTON_DRIVER" shapeType="SPIN_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">131 60</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">131 57</prop>
+    <prop name="Size">56 18</prop>
+    <prop name="MinimumID">1</prop>
+    <prop name="MaximumID">99</prop>
+    <prop name="IncrAccelerator">1</prop>
+    <prop name="Position">1</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_DRIVER_NUMBER" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">14 59</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">14 59</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">New driver number:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_NEW_SERVER_NAME" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">24 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">24 110</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">New OPC UA server connection name:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_NEW_SUBSCRIPTION_NAME" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">24 229</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">24 229</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">New OPC UA subscription name:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="RADIO_BOX_SERVER" shapeType="RADIO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">26 136</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">26 136</prop>
+    <prop name="Size">455 41</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Default settings: _OPCUA_TOOLS</prop>
+      </prop>
+      <prop name="Select">True</prop>
+     </prop>
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Copy from</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(int iButton)
+{
+  dyn_string exceptionInfo;
+
+
+  switch (iButton)
+  {
+    case 0: // Default parameters
+      COMBO_BOX_OLD_SERVER.enabled(FALSE);
+      break;
+
+    case 1: // OPC UA Server combo box
+      COMBO_BOX_OLD_SERVER.enabled(TRUE);
+      break;
+
+    default:
+      COMBO_BOX_OLD_SERVER.enabled(FALSE);
+      COMBO_BOX_OLD_SUBSCRIPTION.enabled(FALSE);
+      PUSH_BUTTON_CREATE.enabled(FALSE);
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error selected option in RADIO_BOX_SERVER unknown, please report this issue to icecontrols.support@cern.ch&quot;, &quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+  }
+
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="COMBO_BOX_OLD_SERVER" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">5</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">146 161</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">146 156</prop>
+    <prop name="Size">335 21</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+  </shape>
+  <shape Name="TEXT_FIELD_NEW_SERVER_NAME" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">6</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">246 106</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">6</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">246 106</prop>
+    <prop name="Size">235 21</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+   <events>
+    <script name="TextChanged" isEscaped="1"><![CDATA[main(string sNewText)
+{
+  string sOpcUaServerDp;
+  dyn_string exceptionInfo;
+
+
+  if( sNewText != &quot;&quot; )
+  {
+    strreplace(sNewText, &quot; &quot;, &quot;&quot;);
+    TEXT_FIELD_NEW_SERVER_NAME.text(sNewText);
+    TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text(sNewText + &quot;_&quot;);
+    TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(TRUE);
+
+    if( strpos(sNewText, &quot;_&quot;) != 0 )
+    {
+      TEXT_FIELD_NEW_SERVER_NAME.text(&quot;_&quot; + sNewText);
+      TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text(sNewText + &quot;_&quot;);
+      TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(TRUE);
+    }
+
+
+    sOpcUaServerDp = TEXT_FIELD_NEW_SERVER_NAME.text();
+    sOpcUaServerDp = dpSubStr(sOpcUaServerDp, DPSUB_DP);
+    if( sOpcUaServerDp != &quot;&quot; )
+    {
+      if( dpExists(sOpcUaServerDp)       ||
+          dpExists(sOpcUaServerDp + &quot;_2&quot;)  )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, OPC UA server connection already exists: &quot; + sOpcUaServerDp + &quot; / &quot; + sOpcUaServerDp + &quot;_2. Please select a new name&quot;, &quot;&quot;);
+        fwExceptionHandling_display(exceptionInfo);
+      }
+    }
+  }
+  else
+  {
+    TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text(&quot;&quot;);
+    TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(FALSE);
+    return;
+  }
+
+  animateCreate();
+
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="FRAME_SERVER" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">7</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">22 92</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">7</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.047008547008547 0 0 0.925925925925926 -13.03418803418805 4.814814814814804</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">New Server Connection</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">22 92</prop>
+    <prop name="Size">469 109</prop>
+   </properties>
+  </shape>
+  <shape Name="FRAME_SUBSCRIPTION" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">8</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">22 92</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">8</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.047008547008547 0 0 1.018518518518519 -13.03418803418803 116.2962962962963</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">New Subscription</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">22 92</prop>
+    <prop name="Size">469 109</prop>
+   </properties>
+  </shape>
+  <shape Name="RADIO_BOX_SUBSCRIPTION" shapeType="RADIO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">9</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">26 254</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">9</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">26 254</prop>
+    <prop name="Size">455 64</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Default settings: _OPCUA_TOOLS_DEFAULT</prop>
+      </prop>
+      <prop name="Select">True</prop>
+     </prop>
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">None subscription</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Copy from</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(int iButton)
+{
+  dyn_string exceptionInfo;
+
+
+  switch (iButton)
+  {
+    case 0: // Default parameters
+      COMBO_BOX_OLD_SUBSCRIPTION.enabled(FALSE);
+      TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(TRUE);
+      // Enable PUSH_BUTTON_CREATE
+      if( (TEXT_FIELD_NEW_SERVER_NAME.text()       != &quot;&quot;) &amp;&amp;
+          (TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text() != &quot;&quot;)  )
+      {
+        PUSH_BUTTON_CREATE.enabled(TRUE);
+      }
+      else
+      {
+        PUSH_BUTTON_CREATE.enabled(FALSE);
+      }
+      break;
+
+
+    case 1: // None subscription
+      COMBO_BOX_OLD_SUBSCRIPTION.enabled(FALSE);
+      TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(FALSE);
+      if( TEXT_FIELD_NEW_SERVER_NAME.text() != &quot;&quot; )
+      {
+        PUSH_BUTTON_CREATE.enabled(TRUE);
+      }
+      else
+      {
+        PUSH_BUTTON_CREATE.enabled(FALSE);
+      }
+      break;
+
+
+    case 2: // OPC UA Server combo box
+      if( COMBO_BOX_OLD_SUBSCRIPTION.itemCount() != 0 )
+      {
+        COMBO_BOX_OLD_SUBSCRIPTION.enabled(TRUE);
+        TEXT_FIELD_NEW_SUBSCRIPTION_NAME.enabled(TRUE);
+        if( (TEXT_FIELD_NEW_SERVER_NAME.text() != &quot;&quot;)       &amp;&amp;
+            (TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text() != &quot;&quot;)   )
+        {
+          PUSH_BUTTON_CREATE.enabled(TRUE);
+        }
+        else
+        {
+          PUSH_BUTTON_CREATE.enabled(FALSE);
+        }
+      }
+      else
+      {
+        COMBO_BOX_OLD_SUBSCRIPTION.enabled(FALSE);
+      }
+      break;
+
+
+    default:
+      enableShapes(FALSE);
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error selected option in RADIO_BOX_SUBSCRIPTION unknown, please report this issue to icecontrols.support@cern.ch&quot;, &quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+  }
+
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="COMBO_BOX_OLD_SUBSCRIPTION" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">10</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">146 297</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">10</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">146 292</prop>
+    <prop name="Size">335 21</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+  </shape>
+  <shape Name="TEXT_FIELD_NEW_SUBSCRIPTION_NAME" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">11</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">211 227</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">11</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">211 227</prop>
+    <prop name="Size">270 21</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+   <events>
+    <script name="TextChanged" isEscaped="1"><![CDATA[main(string sNewText)
+{
+  string sUaServer;
+  dyn_string exceptionInfo;
+
+
+  // In case manual edit of the subscription, keep always the OPC UA server name + &quot;_&quot;
+  sUaServer = TEXT_FIELD_NEW_SERVER_NAME.text();
+  if( strpos(sNewText, sUaServer + &quot;_&quot;) != 0 )
+  {
+    TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text(sUaServer + &quot;_&quot;);
+  }
+
+  // Check subscription name does not exist
+  if( dpExists(sNewText) )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, subscription name already in use, please use another name&quot;, &quot;&quot;);
+    fwExceptionHandling_display(exceptionInfo);
+  }
+
+  animateCreate();
+
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="PUSH_BUTTON_CANCEL" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">12</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">440 330</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">12</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">440 325</prop>
+    <prop name="Size">71 23</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Cancel</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  PanelOffReturn(makeDynFloat(), makeDynString());
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PUSH_BUTTON_CREATE" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">13</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">346 330</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">13</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">346 325</prop>
+    <prop name="Size">77 23</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Create</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  string sCopyServer, sCopySubscription, sNewServer, sNewSubscription;
+
+
+  if( RADIO_BOX_SERVER.number() == 0 )
+  {
+    sCopyServer = &quot;_OPCUA_TOOLS&quot;;
+  }
+  else
+  {
+    sCopyServer = COMBO_BOX_OLD_SERVER.selectedText();
+  }
+  sNewServer = TEXT_FIELD_NEW_SERVER_NAME.text();
+
+
+  switch( RADIO_BOX_SUBSCRIPTION.number() )
+  {
+    case 0:
+      sCopySubscription = &quot;_OPCUA_TOOLS_DEFAULT&quot;;
+      sNewSubscription  = TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text();
+      break;
+
+    case 1:
+      sCopySubscription = &quot;&quot;;
+      sNewSubscription  = &quot;&quot;;
+      break;
+
+    case 2:
+      sCopySubscription = COMBO_BOX_OLD_SUBSCRIPTION.selectedText();
+      sNewSubscription  = TEXT_FIELD_NEW_SUBSCRIPTION_NAME.text();
+      break;
+
+    default:
+      break;
+  }
+
+
+  PanelOffReturn(makeDynFloat(1),
+                 makeDynString(SPIN_BUTTON_DRIVER.value(),
+                               sNewServer,
+                               sCopyServer,
+                               sNewSubscription,
+                               sCopySubscription));
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_TITLE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">14</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">147.5 12</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">14</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">147.5 12</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,19,5,75,0,0,0,0,0,Bold</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Copy OPC UA settings</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+ </shapes>
+</panel>

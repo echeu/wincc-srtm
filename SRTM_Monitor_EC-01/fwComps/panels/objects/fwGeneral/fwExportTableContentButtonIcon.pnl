@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">81 62</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">20 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/]]></script>
+ </events>
+ <shapes>
+  <reference parentSerial="-1" Name="PANEL_REF0" referenceId="0">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwExportTableContentButton.pnl</prop>
+    <prop name="Location">20 0</prop>
+    <prop name="Geometry">0.325 0 0 0.8666666666666667 13.5 1.333333333333333</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="dollarParameters">
+     <prop name="dollarParameter">
+      <prop name="Dollar">$tableToExport</prop>
+      <prop name="Value">$tableToExport</prop>
+     </prop>
+    </prop>
+    <prop name="layoutAlignment">AlignCenter</prop>
+   </properties>
+   <shape GroupPath="" RefShapeSerial="0" shapeType="RefShape" layerId="0">
+    <properties>
+     <prop type="PB_TYPE" name="pushButtonLabel">
+      <prop name="Type">Pixmap</prop>
+      <prop name="Pixmap" SharedPixmap="1">fwStdUi/actions/exportCSV.svg</prop>
+     </prop>
+    </properties>
+   </shape>
+  </reference>
+ </shapes>
+</panel>

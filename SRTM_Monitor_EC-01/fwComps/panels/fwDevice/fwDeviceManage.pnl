@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">680 505</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">10 10</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="KeepInMemory">False</prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+const int DEVICE_POSITION_INDEX = 1;
+const int DEVICE_DP_NAME_COLUMN = 4;
+string advancedOptionsPanel, hierarchyType;
+dyn_string childrenDpTypes;
+
+updateDeviceListTable()
+{
+	bool withSlots = FALSE;
+	int i, pos, numberOfSlots, startingNumber;
+	string deviceType, deviceName, deviceModel, s, posString, systemName, backColor, foreColor;
+	dyn_string children, exceptionInfo;
+	dyn_dyn_anytype deviceNames, deviceTypes, deviceModels, devicePositions, deviceDpNames;
+
+	deviceListTable.deleteAllLines();
+	// initialize with default
+	hierarchyType = fwDevice_HARDWARE;
+
+	if(isDollarDefined(&quot;$sHierarchyType&quot;))
+		hierarchyType = $sHierarchyType;
+
+
+	switch(hierarchyType)
+	{
+		case fwDevice_LOGICAL:
+			systemName = substr($sDpName, 0, strpos($sDpName, &quot;:&quot;) + 1);
+			deviceName = systemName + dpGetAlias($sDpName + &quot;.&quot;);
+			//DebugN(&quot;fwDeviceManage: deviceName &quot; + deviceName + &quot; systemName &quot; + systemName +  &quot; $sDpName &quot; + $sDpName);
+			break;
+		case fwDevice_HARDWARE:
+			deviceName = $sDpName;
+			fwDevice_getModelSlots(makeDynString($sDpName), numberOfSlots, exceptionInfo);
+			if(numberOfSlots != 0)
+			{
+				fwDevice_getChildrenInSlots(makeDynString($sDpName), hierarchyType, children, exceptionInfo);
+				fwDevice_getModelStartingNumber(makeDynString($sDpName), startingNumber, exceptionInfo);
+				//DebugN(&quot;startingNumber &quot; + startingNumber);
+				withSlots = TRUE;
+			}
+			break;
+		default:
+			deviceListTable.deleteAllLines();
+			return;
+			break;
+	}
+
+	if(!withSlots)
+	{
+		fwDevice_getChildren(deviceName, hierarchyType, children, exceptionInfo);
+	}
+	//DebugN(deviceName, $sDpName);
+	//DebugN(&quot;Children &quot; + children + &quot; &quot; + withSlots + &quot; &quot; + hierarchyType);
+	// add the children to the table
+	for(i = 1; i &lt;= dynlen(children); i++)
+	{
+		//DebugN(&quot;Adding children &quot; + children[1] + &quot; in position &quot; + i);
+
+		backColor = &quot;_3DFace&quot;;
+		foreColor = &quot;_3DText&quot;;
+		if(children[i] != &quot;&quot;)
+		{
+			fwDevice_getName(children[i], deviceName, exceptionInfo);
+
+			if(hierarchyType == fwDevice_LOGICAL)
+				children[i] = strrtrim(dpAliasToName(children[i]), &quot;.&quot;);
+
+			//DebugN(&quot;Children i &quot; + children[i] + &quot; &quot; + i);
+
+			fwDevice_getType(dpTypeName(children[i]), deviceType, exceptionInfo);
+			fwDevice_getModel(makeDynString(children[i]), deviceModel, exceptionInfo);
+		}
+		else
+		{
+			deviceName = &quot;&quot;;
+			deviceType = &quot;&quot;;
+			deviceModel = &quot;&quot;;
+			if(isEditingMode())
+			{
+				backColor = &quot;_Window&quot;;
+				foreColor = &quot;_WindowText&quot;;
+			}
+		}
+
+		if(withSlots)
+		{
+			posString = startingNumber + i - 1;
+		}
+		else
+		{
+			fwDevice_getPosition(deviceName, s, pos, exceptionInfo);
+			if(pos == -1)
+				posString = &quot;&quot;;
+			else
+				posString = pos;
+		}
+
+		deviceNames[i] = makeDynString(deviceName, backColor, foreColor);
+		deviceTypes[i] = makeDynString(deviceType, backColor, foreColor);
+		deviceDpNames[i] = makeDynString(children[i], backColor, foreColor);
+		devicePositions[i] = makeDynString(posString, backColor, foreColor);
+		deviceModels[i] = makeDynString(deviceModel, backColor, foreColor);
+	}
+
+	deviceListTable.appendLines(dynlen(deviceNames),
+								&quot;deviceName&quot;, deviceNames,
+								&quot;deviceType&quot;, deviceTypes,
+								&quot;datapointName&quot;, children,
+								&quot;position&quot;, devicePositions,
+								&quot;deviceModel&quot;, deviceModels);
+
+	deviceListTable.lineVisible(0);
+
+	if(dynlen(exceptionInfo) &gt; 0)
+		fwExceptionHandling_display(exceptionInfo);
+}
+
+bool isEditingMode()
+{
+	string mode, hierarchyType;
+
+	if(globalExists(&quot;g_fwDEN_mode&quot;))
+		mode = g_fwDEN_mode;
+	if(isDollarDefined(&quot;$sHierarchyType&quot;))
+		hierarchyType = $sHierarchyType;
+	//DebugN(hierarchyType, mode);
+	if(mode == fwDEN_MODE_NAVIGATOR || hierarchyType == fwDevice_LOGICAL)
+	{
+		//DebugN(&quot;FALSE&quot;);
+		return FALSE;
+	}
+	else
+	{
+		//DebugN(&quot;TRUE&quot;);
+		return TRUE;
+	}
+}
+
+
+]]></script>
+  <script name="Terminate" isEscaped="1"><![CDATA[main()
+{
+	int i;
+}]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+	string type;
+	dyn_string exceptionInfo, device = makeDynString($sDpName, &quot;&quot;, &quot;&quot;, &quot;&quot;);
+  bool bEditMode = isEditingMode();
+
+  createButton.visible = bEditMode;
+  deleteButton.visible = bEditMode;
+  modifyButton.visible = bEditMode;
+  SPACER1.visible = bEditMode;
+
+  adjustPanelElements(bEditMode);
+
+	if(bEditMode)
+	{
+		if(dpTypeName($sDpName) == &quot;FwNode&quot;)
+		{
+			dpGet($sDpName + &quot;.type&quot;, type);
+			if(type == fwNode_TYPE_VENDOR)
+			{
+				dpGet($sDpName + &quot;.dpTypes&quot;, childrenDpTypes);
+			}
+			// try dpts for device model
+			if(dynlen(childrenDpTypes) == 0)
+				fwDevice_getModelChildrenDpTypes(device, childrenDpTypes, exceptionInfo);
+		}
+		else
+		{
+			fwDevice_getChildrenDpTypes(device, childrenDpTypes, exceptionInfo);
+		}
+	}
+}
+
+void adjustPanelElements(bool bEditMode)
+{
+  if(!bEditMode)
+  {
+    deviceListTable.columnWidth(1, deviceListTable.columnWidth(1)+29);
+  }
+}
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <shape Name="deviceListTable" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">19 66</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">19 66</prop>
+    <prop name="Size">569 386</prop>
+    <prop name="ShowColumnHeader">True</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">20</prop>
+    <prop name="RowHeaderWidth">30</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">AlwaysOn</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">position</prop>
+     <prop name="Width">35</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Pos</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">deviceName</prop>
+     <prop name="Width">210</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Name</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">deviceType</prop>
+     <prop name="Width">153</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Type</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">datapointName</prop>
+     <prop name="Width">0</prop>
+     <prop name="Visible">False</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Dp name</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">deviceModel</prop>
+     <prop name="Width">153</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Model</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Row">
+     <prop name="Name"></prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">#1</prop>
+     </prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="SelectionChanged" isEscaped="1"><![CDATA[synchronized main()
+{
+  deleteButton.enabled(TRUE);
+  modifyButton.enabled(TRUE);
+}]]></script>
+    <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+	if(isEditingMode())
+	{
+		// Put table in multiple selection mode
+		deviceListTable.tableMode(TABLE_SELECT_MULTIPLE); 
+		deviceListTable.selectByClick(TABLE_SELECT_LINE);
+	}
+	
+	updateDeviceListTable();
+}]]></script>
+    <script name="DoubleClicked" isEscaped="1"><![CDATA[main()
+{
+	dyn_int selectedLines;
+	dyn_float df;
+	dyn_string ds;
+	dyn_anytype line;
+	
+	if(!isEditingMode())
+		return;
+	selectedLines = this.getSelectedLines();
+	if (dynlen(selectedLines) &lt;= 0)
+		return;
+	line = this.getLineN(selectedLines[1]);
+	
+	// if no device is available in the selected slot, then create one
+	if(line[DEVICE_DP_NAME_COLUMN] == &quot;&quot;)
+	{
+	   	ChildPanelOnCentralModalReturn(	&quot;fwDevice/fwDeviceCreate.pnl&quot;,
+   										&quot;Create Device&quot;,
+   										makeDynString(	&quot;$sDpName:&quot; + $sDpName,
+   														&quot;$iPosition:&quot; + line[DEVICE_POSITION_INDEX],
+					   									&quot;$sDeviceTypes:&quot; + childrenDpTypes),
+   										df, ds);
+   	}
+	updateDeviceListTable();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="createButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">609 66</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Add new device</prop>
+    </prop>
+    <prop name="minimumSize">-1 32</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">614 66</prop>
+    <prop name="Size">32 32</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/ListsAndArrows/itemAddNew.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	dyn_float df;
+	dyn_string ds;
+	
+   	ChildPanelOnCentralModalReturn(	&quot;fwDevice/fwDeviceCreate.pnl&quot;,
+   									&quot;Create Device&quot;,
+   									makeDynString(	&quot;$sDpName:&quot; + $sDpName),
+   									df, ds);
+   	updateDeviceListTable();
+	//fwDeviceEditorNavigator_executeCommand(fwDEN_COMMAND_REFRESH);
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="deleteButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">609 142</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Delete selected device</prop>
+    </prop>
+    <prop name="minimumSize">-1 32</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">614 142</prop>
+    <prop name="Size">32 32</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/ListsAndArrows/itemDelete.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	dyn_int selectedLines;
+	dyn_float df;
+	dyn_string tableLine, ds, exceptionInfo;
+	
+	// build list of selected devices
+	selectedLines = deviceListTable.getSelectedLines();
+	if(dynlen(selectedLines) &lt; 1)
+	{
+		fwException_raise(	exceptionInfo, 
+							&quot;WARNING&quot;,
+							&quot;You should select at least one device from the table to be removed.&quot;,
+		 					&quot;&quot;);
+		fwExceptionHandling_display(exceptionInfo);
+		return;
+	}		
+
+	ChildPanelOnCentralModalReturn(	&quot;vision/MessageInfo&quot;, 
+									&quot;Remove device&quot;,
+									makeDynString(	&quot;Are you sure you want to remove the selected devices and all its children from the system?&quot;,
+													&quot;Ok&quot;,
+													&quot;Cancel&quot;),
+													df, ds); 
+	if(ds[1] == &quot;true&quot;)
+	{
+		fwOpenProgressBar(&quot;MyProgress&quot;, &quot;Removing device...&quot;, 1);
+
+					
+		for (int i = 1; i &lt;= dynlen(selectedLines); i++)
+		{
+			tableLine = deviceListTable.getLineN(selectedLines[i]);
+			//DebugN(&quot;tableline &quot; + selectedLines[i] + &quot; &quot; + tableLine);
+			fwDevice_delete(tableLine[DEVICE_DP_NAME_COLUMN], exceptionInfo);
+		}
+	
+		updateDeviceListTable();
+	
+		if(dynlen(exceptionInfo) &gt; 0)
+		{
+			fwExceptionHandling_display(exceptionInfo);
+			fwCloseProgressBar(&quot;There were errors while removing.&quot;, 1);
+		}
+		else
+		{
+			fwCloseProgressBar(&quot;Device removed successfully.&quot;, 1);
+		}
+	}
+	//fwDeviceEditorNavigator_executeCommand(fwDEN_COMMAND_REFRESH);
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="modifyButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">609 104</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Adjust settings of selected device</prop>
+    </prop>
+    <prop name="minimumSize">-1 32</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">614 104</prop>
+    <prop name="Size">32 32</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/configureWrench.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	string panelName;
+	dyn_int selectedLines;
+	dyn_string tableLine, exceptionInfo, deviceList = makeDynString();
+	
+	// build list of selected devices
+	selectedLines = deviceListTable.getSelectedLines();		
+	if(dynlen(selectedLines) &lt; 1)
+	{
+		fwException_raise(	exceptionInfo, 
+							&quot;WARNING&quot;,
+							&quot;You should select at least one device from the table to be modified.&quot;,
+		 					&quot;&quot;);
+		fwExceptionHandling_display(exceptionInfo);
+		return;
+	}		
+	for (int i = 1; i &lt;= dynlen(selectedLines); i++)
+	{
+		tableLine = deviceListTable.getLineN(selectedLines[i]);
+		//DebugN(&quot;tableline &quot; + tableLine);
+		dynAppend(deviceList, tableLine[DEVICE_DP_NAME_COLUMN]);
+	}
+	
+	// call simple configuration for selected devices
+	if(dynlen(deviceList) &gt; 1)
+		panelName = &quot;Modify Device Configuration for multiple devices&quot;;
+	else
+		panelName = &quot;Modify Device Configuration for &quot; + deviceList[1];
+
+   	ChildPanelOnCentralModal(	&quot;fwDevice/fwDeviceSimpleConfiguration.pnl&quot;,
+   								panelName,
+   								makeDynString(&quot;$sDpName:&quot; + deviceList));
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="closeButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">6</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">560 470</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">7</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignTrailing|AlignVCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">560 470</prop>
+    <prop name="Size">80 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Close</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	PanelOff();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="Button1" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">7</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">38.01342281879195 469</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">8</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Open advanced settings panel</prop>
+    </prop>
+    <prop name="layoutAlignment">AlignLeading|AlignVCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">32 469</prop>
+    <prop name="Size">129 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Advanced settings ...</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+   	ChildPanelOnCentralModal(advancedOptionsPanel + &quot;.pnl&quot;,
+									&quot;Advanced Settings&quot;,
+									makeDynString(	&quot;$sDpName:&quot; + $sDpName));
+}]]></script>
+    <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+	string deviceModel;
+	dyn_string panels, exceptionInfo;
+	
+	advancedOptionsPanel = &quot;&quot;;
+	
+	if(isEditingMode())
+	{
+		if(dpTypeName($sDpName) == &quot;FwNode&quot;)
+		{
+			fwNode_getPanels($sDpName, fwDEN_MODE_EDITOR, panels, exceptionInfo);
+		}
+		else
+		{
+			fwDevice_getModel(makeDynString($sDpName), deviceModel, exceptionInfo);
+			fwDevice_getDefaultConfigurationPanels(dpTypeName($sDpName), panels, exceptionInfo, deviceModel, $sDpName);
+		}
+	}
+	else
+	{
+		if(dpTypeName($sDpName) == &quot;FwNode&quot;)
+		{
+			fwNode_getPanels($sDpName, fwDEN_MODE_NAVIGATOR, panels, exceptionInfo);
+		}
+		else
+		{
+			fwDevice_getModel(makeDynString($sDpName), deviceModel, exceptionInfo);
+			fwDevice_getDefaultOperationPanels(dpTypeName($sDpName), panels, exceptionInfo, deviceModel, $sDpName);
+		}
+	}
+	
+//	DebugN(&quot;panels &quot; + panels);
+	
+	if(dynlen(panels) &gt; 1)
+	{
+		if(panels[2] != &quot;&quot;)
+		{
+			advancedOptionsPanel = panels[2];
+		}
+   	}
+   	if(advancedOptionsPanel == &quot;&quot;)
+   	{
+   		this.enabled = FALSE;
+   	}
+}]]></script>
+   </events>
+  </shape>
+  <reference parentSerial="17" Name="PANEL_REF1" referenceId="8">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwResizableIcon.pnl</prop>
+    <prop name="Location">415 260.75</prop>
+    <prop name="Geometry">0.9876717233118273 0 0 1.024433776137718 190.1162348255917 202.87889287209</prop>
+    <prop name="TabOrder">15</prop>
+    <prop name="minimumSize">15 15</prop>
+    <prop name="maximumSize">15 15</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignTrailing|AlignBottom</prop>
+   </properties>
+  </reference>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">22</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">614 180</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">15</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Ignored"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">614 180</prop>
+    <prop name="Size">32 272</prop>
+    <prop name="Orientation">vertical</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER4" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">25</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">167 469.5</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">18</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">167 469.5</prop>
+    <prop name="Size">386 23</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <reference parentSerial="17" Name="PANEL_REF3" referenceId="15">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">230.9790940766612 649.3137616728141</prop>
+    <prop name="Geometry">2.981818181818181 0 0 1 -416.3740259740443 -515.8137616728141</prop>
+    <prop name="TabOrder">21</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="ENUM" name="headerType">1</prop>
+     <prop type="CHAR_STRING" name="header">Manage Devices</prop>
+    </extended>
+   </properties>
+  </reference>
+ </shapes>
+ <groups>
+  <layout parentSerial="11" Name="VERTICAL_TOOLBAR" serial="10">
+   <properties>
+    <prop idx="0" name="shapeSerial">2</prop>
+    <prop idx="1" name="shapeSerial">4</prop>
+    <prop idx="2" name="shapeSerial">3</prop>
+    <prop idx="3" name="shapeSerial">22</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="16" Name="LAYOUT_GROUP13" serial="11">
+   <properties>
+    <prop idx="0" name="shapeSerial">1</prop>
+    <prop idx="1" name="groupSerial">10</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="16" Name="LAYOUT_GROUP14" serial="12">
+   <properties>
+    <prop idx="0" name="shapeSerial">7</prop>
+    <prop idx="1" name="shapeSerial">25</prop>
+    <prop idx="2" name="shapeSerial">6</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="17" Name="LAYOUT_GROUP15" serial="16">
+   <properties>
+    <prop idx="0" name="groupSerial">11</prop>
+    <prop idx="1" name="groupSerial">12</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP16" serial="17">
+   <properties>
+    <prop idx="2" name="groupSerial">8</prop>
+    <prop idx="0" name="groupSerial">15</prop>
+    <prop idx="1" name="groupSerial">16</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

@@ -1,0 +1,14 @@
+The following files have been sourced from other projects for redistribution
+with fwAlertHandling component.
+
+data/sounds/AlertTone.wav
+-------------------------
+    Originates from the sound-theme-freedesktop project,
+        https://cgit.freedesktop.org/sound-theme-freedesktop/
+    Original file: 
+        https://cgit.freedesktop.org/sound-theme-freedesktop/tree/stereo/complete.oga
+      has been converted to the WAV audio format and renamed
+    CREDITS file in the repository indicates the copyright and license as follows:
+        Copyright: Dr. Richard Boulanger et al
+        URL: http://www.archive.org/details/Berklee44v11
+        License: CC-BY Attribution 3.0 Unported

@@ -1,0 +1,89 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwGeneral</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.1.0</required_installer_version>
+  <subComponent>yes</subComponent>
+  <file>./data/LICENSES/fwGeneral/LICENSE-LGPL3</file>
+  <file>./colorDB/colorDB_fw</file>
+  <file>./fwGeneral.xml</file>
+  <config>./config/fwGeneral.config</config>
+  <init>./scripts/fwGeneral/fwGeneral.init</init>
+  <postInstall>./scripts/fwGeneral/fwGeneral.postInstall</postInstall>
+  <dplist>./dplist/fwGeneral.dpl</dplist>
+  <dplist>./dplist/fwGeneral_ProgressBar.dpl</dplist>
+  <dplist>./dplist/fwGeneric_KnownEmails.dpl</dplist>
+  <file>./images/objects/fwGeneral/fwHelpButton.pnl/fwHelpButton.ico</file>
+  <file>./images/objects/fwGeneral/fwTrendingQuickPlotButton.pnl/fwTrendingQuickPlotButton.ico</file>
+  <file>./images/objects/fwGeneral/fwGeneral.cat</file>
+  <file>./panels/fwGeneral/fwExceptionDisplay.pnl</file>
+  <file>./panels/fwGeneral/fwDetailDpElement.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralEditDynString.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralSystemSettings.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralHelpConfiguration.pnl</file>
+  <file>./panels/fwGeneral/fwOkCancel.pnl</file>
+  <file>./panels/fwGeneral/fwStandardButtons.pnl</file>
+  <file>./panels/fwGeneral/fwChangeSetting.pnl</file>
+  <file>./panels/fwGeneral/fwCommandConfirmation.pnl</file>
+  <file>./panels/fwGeneral/fwDateTimeSelector.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralDateTimeWidget.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralDpTypeSelector.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralGenericDateChooser.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralReadStringValue.pnl</file>
+  <file>./panels/fwGeneral/fwGeneralSelectList.pnl</file>
+  <file>./panels/fwGeneral/fwGenericEmbeddedProgressBar.pnl</file>
+  <file>./panels/fwGeneral/fwGetTimes.pnl</file>
+  <file>./panels/fwGeneral/fwMessageInfo1.pnl</file>
+  <file>./panels/fwGeneral/fwProgressBar.pnl</file>
+  <file>./panels/fwGeneral/fwScreenShotButtons.pnl</file>
+  <file>./panels/fwGeneral/fwScreenShotButtonIcon.pnl</file>
+  <file>./panels/fwGeneral/fwTableEnableStatus.pnl</file>
+  <file>./panels/fwGeneral/fwTableStatus.pnl</file>
+  <file>./panels/fwGeneral/fwTableValueStatus.pnl</file>
+  <file>./panels/fwGeneral/fwDeprecatedList.pnl</file>
+  <file>./panels/objects/fwGeneral/fwDeprecatedIndicator.pnl</file>
+  <file>./panels/objects/fwGeneral/fwHelpButton.pnl</file>
+  <file>./panels/objects/fwGeneral/fwLedEnum.pnl</file>
+  <file>./panels/objects/fwGeneral/fwLedWithAlert.pnl</file>
+  <file>./panels/objects/fwGeneral/fwTrendingQuickPlotButton.pnl</file>
+  <file>./panels/objects/fwGeneral/fwProgressBarRef.pnl</file>
+  <file>./panels/objects/fwGeneral/fwAliasSelector.pnl</file>
+  <file>./panels/objects/fwGeneral/fwExportTableContentButton.pnl</file>
+  <file>./panels/objects/fwGeneral/fwSendEmail.pnl</file>
+  <file>./panels/objects/fwGeneral/fwExportTableContentButtonIcon.pnl</file>
+  <file>./panels/objects/fwGeneral/fwScreenShotButtonIcon.pnl</file>
+  <file>./panels/objects/fwGeneral/fwRdbRaimaSwitch.pnl</file>
+  <file>./panels/objects/fwGeneral/fwLabelText.pnl</file>
+  <file>./panels/objects/fwGeneral/fwResizableIcon.pnl</file>
+  <file>./panels/objects_parampanels/fwGeneral/fwLabelText_param.pnl</file>
+  <file>./pictures/fwGeneral/screenshot.svg</file>
+  <file>./scripts/libs/fwGeneral/fwBusyBarButton.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwColour.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwColourTable.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwDPELock.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwException.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwExceptionHandling.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwGeneral.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwGeneralDeprecated.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwGeneral_UI.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwListManipulation.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwListManipulationDeprecated.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwProgressBar.ctl</file>
+  <file>./scripts/gedi/fwGeneralGediToolbar_ext.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwScreenShot.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwManager.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwWebBrowser.ctl</file>
+  <file>./scripts/libs/fwGeneral/fwPanelUtils.ctl</file>
+  <file>./scripts/libs/classes/fwGeneral/FwException.ctl</file>
+  <!-- legacy wrapper - moved to fwStdLib -->
+  <file>./msg/en_US.utf8/fwGeneral.cat</file>
+  <file>./msg/en_US.utf8/fwException.cat</file>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwGeneral/commit/53ce9767254468370accd70d3c19a3ac2567c2f2</commit>
+</component>

@@ -1,0 +1,13 @@
+class: $FWPART_FwCaVLoopDU_FwDevMode_CLASS
+    state: READY
+        action: Disable(Device)
+            remove &VAL_OF_Device from $FWPART_FWCAVLOOPDU_FWSETSTATES
+            remove &VAL_OF_Device from $FWPART_FWCAVLOOPDU_FWSETACTIONS
+            move_to READY
+        action: Enable(Device)
+            insert &VAL_OF_Device in $FWPART_FWCAVLOOPDU_FWSETSTATES
+            insert &VAL_OF_Device in $FWPART_FWCAVLOOPDU_FWSETACTIONS
+            move_to READY
+
+object: $FWPART_FwCaVLoopDU_FWDM is_of_class $FWPART_FwCaVLoopDU_FwDevMode_CLASS
+

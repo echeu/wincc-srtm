@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">500 400</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">70 70</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96.15881809787626</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <shapes>
+  <shape Name="PRIMITIVE_TEXT1" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">70 233</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">70 233</prop>
+    <prop name="Size">141 51</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">False</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+   <events>
+    <script name="Initialize" isEscaped="1"><![CDATA[// SimpleCtrlScriptStart {valid}
+main()
+{
+  EP_textFieldIn();
+}
+
+void EP_textFieldIn()
+{
+  dyn_errClass err;
+
+  if( !dpExists( &quot;dist_1:SRTM.FF12_tempC:_online.._value&quot;))
+  {
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+    return;
+  }
+
+  dpConnect(&quot;EP_textFieldInCB&quot;,
+            &quot;dist_1:SRTM.FF12_tempC:_online.._value&quot;);
+  err = getLastError();
+  if (dynlen(err) &gt; 0)
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+
+}
+
+
+void EP_textFieldInCB(string dp, float fNewValue)
+{
+  setValue(&quot;&quot;, &quot;text&quot;, dpValToString(dp, fNewValue, TRUE) );
+}
+
+// SimpleCtrlScript {EP_textFieldIn}
+// DP {dist_1:SRTM.FF12_tempC}
+// DPConfig {:_online.._value}
+// DPType {float}
+// UseDPUnit {TRUE}
+// UseDPFormat {TRUE}
+// SimpleCtrlScriptEnd {EP_textFieldIn}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT2" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">240 90</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.170212765957447 0 0 1 -43.19148936170214 157</prop>
+    <prop name="Location">240 90</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">FF12_tempC</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT3" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">68 59</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">68 59</prop>
+    <prop name="Size">141 51</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">False</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+   <events>
+    <script name="Initialize" isEscaped="1"><![CDATA[// SimpleCtrlScriptStart {valid}
+main()
+{
+  EP_textFieldIn();
+}
+
+void EP_textFieldIn()
+{
+  dyn_errClass err;
+
+  if( !dpExists( &quot;dist_1:SRTM.Zynq_ps_temp:_online.._value&quot;))
+  {
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+    return;
+  }
+
+  dpConnect(&quot;EP_textFieldInCB&quot;,
+            &quot;dist_1:SRTM.Zynq_ps_temp:_online.._value&quot;);
+  err = getLastError();
+  if (dynlen(err) &gt; 0)
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+
+}
+
+
+void EP_textFieldInCB(string dp, float fNewValue)
+{
+  setValue(&quot;&quot;, &quot;text&quot;, dpValToString(dp, fNewValue, TRUE) );
+}
+
+// SimpleCtrlScript {EP_textFieldIn}
+// DP {dist_1:SRTM.Zynq_ps_temp}
+// DPConfig {:_online.._value}
+// DPType {float}
+// UseDPUnit {TRUE}
+// UseDPFormat {TRUE}
+// SimpleCtrlScriptEnd {EP_textFieldIn}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT4" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">240 170</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.1 0 0 1 -26.34042553191491 -101</prop>
+    <prop name="Location">240 170</prop>
+    <prop name="Size">101 31</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Zynq_ps_temp</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">False</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT5" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">5</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">70 148</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">70 148</prop>
+    <prop name="Size">141 51</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">False</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+   <events>
+    <script name="Initialize" isEscaped="1"><![CDATA[// SimpleCtrlScriptStart {valid}
+main()
+{
+  EP_textFieldIn();
+}
+
+void EP_textFieldIn()
+{
+  dyn_errClass err;
+
+  if( !dpExists( &quot;dist_1:SRTM.FF11_tempC:_online.._value&quot;))
+  {
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+    return;
+  }
+
+  dpConnect(&quot;EP_textFieldInCB&quot;,
+            &quot;dist_1:SRTM.FF11_tempC:_online.._value&quot;);
+  err = getLastError();
+  if (dynlen(err) &gt; 0)
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+
+}
+
+
+void EP_textFieldInCB(string dp, float fNewValue)
+{
+  setValue(&quot;&quot;, &quot;text&quot;, dpValToString(dp, fNewValue, TRUE) );
+}
+
+// SimpleCtrlScript {EP_textFieldIn}
+// DP {dist_1:SRTM.FF11_tempC}
+// DPConfig {:_online.._value}
+// DPType {float}
+// UseDPUnit {TRUE}
+// UseDPFormat {TRUE}
+// SimpleCtrlScriptEnd {EP_textFieldIn}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT6" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">6</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">240 90</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.170212765957447 0 0 1 -43.19148936170214 72</prop>
+    <prop name="Location">240 90</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">FF11_tempC</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT7" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">7</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">68 317</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">6</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">68 317</prop>
+    <prop name="Size">141 51</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">False</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+   <events>
+    <script name="Initialize" isEscaped="1"><![CDATA[// SimpleCtrlScriptStart {invalid}
+main()
+{
+  EP_textFieldIn();
+}
+
+void EP_textFieldIn()
+{
+  dyn_errClass err;
+
+  if( !dpExists( &quot;dist_1:SRTM.FF13_tempC:_online.._value&quot;))
+  {
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+    return;
+  }
+
+  dpConnect(&quot;EP_textFieldInCB&quot;,
+            &quot;dist_1:SRTM.FF13_tempC:_online.._value&quot;);
+  err = getLastError();
+  if (dynlen(err) &gt; 0)
+    setValue(&quot;&quot;, &quot;color&quot;, &quot;_dpdoesnotexist&quot;);
+
+}
+
+
+void EP_textFieldInCB(string dp, float fNewValue)
+{
+  setValue(&quot;&quot;, &quot;text&quot;, dpValToString(dp, fNewValue, TRUE) );
+}
+
+// SimpleCtrlScript {EP_textFieldIn}
+// DP {dist_1:SRTM.FF13_uptime}
+// DPConfig {:_online.._value}
+// DPType {float}
+// UseDPUnit {TRUE}
+// UseDPFormat {TRUE}
+// SimpleCtrlScriptEnd {EP_textFieldIn}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT8" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">8</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">240 90</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">7</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.170212765957447 0 0 1 -43.19148936170214 241</prop>
+    <prop name="Location">240 90</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">FF13_tempC</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">True</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+ </shapes>
+</panel>

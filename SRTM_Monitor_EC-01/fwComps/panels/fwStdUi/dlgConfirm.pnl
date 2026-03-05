@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">382 130</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">16 10</prop>
+  <prop name="InitAndTermRef">False</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#property string yesButtonLabel
+#property string noButtonLabel
+#property string header
+#property string text
+
+// FWQA-418/ENS-35474, when the panel is used as a fwGeneral/fwOkCancel reference,
+// we want the labels of the buttons to be &quot;OK&quot;/&quot;Cancel&quot;,
+// but the return values should be &quot;ok&quot;/&quot;cancel&quot; for comaptibility...
+// We preserve the original values of yesButtonLabel/noButtonLabel properties,
+// and we &quot;beautify&quot; them for actual visible button labels;
+string _yesButtonTxt;
+string _noButtonTxt;
+
+public string getYesButtonLabel() {return _yesButtonTxt;}
+public string getNoButtonLabel()  {return _noButtonTxt;}
+public string getHeader() {return PanelHeader.getHeader();}
+public string getText() {return Text1.text;}
+public void setYesButtonLabel(string s)
+{
+    _yesButtonTxt=s;
+    YesButton.text=(s==&quot;ok&quot; ? &quot;OK&quot; : s);
+}
+public void setNoButtonLabel(string s)
+{
+    _noButtonTxt=s;
+    NoButton.text=(s==&quot;cancel&quot; ? &quot;Cancel&quot; : s);
+}
+public void setHeader(string s) {PanelHeader.setHeader(s);PanelHeader.visible(s!=&quot;&quot;);}
+public void setText(string s) {Text1.text=s;}
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    if (isDollarDefined(&quot;$yesButton&quot;)) YesButton.text=getDollarValue(&quot;$yesButton&quot;);
+    if (isDollarDefined(&quot;$noButton&quot;)) NoButton.text=getDollarValue(&quot;$noButton&quot;);
+    string headerText;
+    if (isDollarDefined(&quot;$header&quot;)) {
+        headerText=getDollarValue(&quot;$header&quot;);
+    }
+    PanelHeader.setHeader(headerText);
+    PanelHeader.visible=(headerText!=&quot;&quot;);
+    Text1.text=$text;
+}
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <shape Name="YesButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">220 120</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">220 120</prop>
+    <prop name="Size">70 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Yes</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+    PanelOffReturn(makeDynFloat(1), makeDynString(_yesButtonTxt));
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="NoButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">415 152</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">299 120</prop>
+    <prop name="Size">70 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">No</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+    PanelOffReturn(makeDynFloat(0), makeDynString(_noButtonTxt));
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">9 110</prop>
+    <prop name="Size">182 31</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="RECTANGLE1" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">6</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">0 30</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">6</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="minimumSize">30 30</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[none,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType" SharedPixmap="1">[pattern,[fit,any,pictures/fwStdUi/UI/questionIconFilled.svg]]</prop>
+    <prop name="Geometry">0.775 0 0 0.62 10 1.399999999999999</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">0 30</prop>
+    <prop name="Size">41 51</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+  </shape>
+  <shape Name="Text1" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">12</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">60 60</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">10</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">60 60</prop>
+    <prop name="Size">311 31</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="text">$text</prop>
+     <prop type="BOOL" name="wordWrap">True</prop>
+     <prop type="ENUM" name="frameShape">0</prop>
+    </extended>
+   </properties>
+  </shape>
+  <reference parentSerial="9" Name="PanelHeader" referenceId="8">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">181.0000000000029 306</prop>
+    <prop name="Geometry">1.422727272727273 0 0 1 -72.46818181818594 -166</prop>
+    <prop name="TabOrder">11</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header">Please confirm:</prop>
+     <prop type="ENUM" name="headerType">2</prop>
+     <prop type="BOOL" name="helpButtonVisible">False</prop>
+    </extended>
+   </properties>
+  </reference>
+  <reference parentSerial="12" Name="PANEL_REF1" referenceId="11">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwResizableIcon.pnl</prop>
+    <prop name="Location">298.8835078534032 162</prop>
+    <prop name="Geometry">1 0 0 1 34.61649214659678 -42</prop>
+    <prop name="TabOrder">12</prop>
+    <prop name="maximumSize">15 15</prop>
+    <prop name="layoutAlignment">AlignTrailing|AlignBottom</prop>
+   </properties>
+  </reference>
+ </shapes>
+ <groups>
+  <layout parentSerial="10" Name="LAYOUT_GROUP2" serial="1">
+   <properties>
+    <prop idx="1" name="shapeSerial">1</prop>
+    <prop idx="2" name="shapeSerial">2</prop>
+    <prop idx="0" name="shapeSerial">4</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="10" Name="LAYOUT_GROUP3" serial="9">
+   <properties>
+    <prop name="shapeSerial" rowSpan="1" column="0" row="0" colSpan="1">6</prop>
+    <prop name="shapeSerial" rowSpan="1" column="1" row="1" colSpan="1">12</prop>
+    <prop name="groupSerial" rowSpan="1" column="1" row="0" colSpan="1">8</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">Grid</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="12" Name="LAYOUT_GROUP4" serial="10">
+   <properties>
+    <prop idx="1" name="groupSerial">1</prop>
+    <prop idx="0" name="groupSerial">9</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">9</prop>
+    <prop name="layoutBottomMargin">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP5" serial="12">
+   <properties>
+    <prop idx="0" name="groupSerial">10</prop>
+    <prop idx="1" name="groupSerial">11</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">0</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

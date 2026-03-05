@@ -1,0 +1,26 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwStdLib</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <subComponent>yes</subComponent>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.2.0</required_installer_version>
+  <config>./config/fwStdLib.config</config>
+  <file>./fwStdLib.xml</file>
+  <init>./scripts/fwStdLib/fwStdLib.init</init>
+  <file>./data/LICENSES/fwStdLib/LICENSE-LGPL3</file>
+  <bin>./bin/fwStdLib/3.19/CtrlOOUtils.so</bin>
+  <bin>./bin/fwStdLib/3.19/CtrlOOUtils.dll</bin>
+  <bin>./bin/fwStdLib/3.19/CtrlJsonSerialization.so</bin>
+  <bin>./bin/fwStdLib/3.19/CtrlJsonSerialization.dll</bin>
+  <file>./scripts/libs/classes/fwStdLib/FwException.ctl</file>
+  <file>./scripts/libs/classes/fwStdLib/FwUtils.ctl</file>
+  <file>./panels/fwStdLib/fwExceptionHandle.pnl</file>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwStdLib/commit/e1b9b83143a2a30480bdf8a874929f79fe770a00</commit>
+</component>

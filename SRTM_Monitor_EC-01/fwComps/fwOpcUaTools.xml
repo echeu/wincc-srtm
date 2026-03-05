@@ -1,0 +1,26 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwOpcUaTools</name>
+  <version>9.3.0</version>
+  <date>21/11/2024</date>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.3.0</required_installer_version>
+  <required>fwCore=9.3.0</required>
+  <dplist>./dplist/fwOpcUaTools/fwOpcUaTool.dpl</dplist>
+  <file>./data/LICENSES/fwOpcUaTools/LICENSE-LGPL3</file>
+  <file>./help/en_US.utf8/fwOpcUaTools/fwOpcUaToolsReleaseNotes.txt</file>
+  <file>./panels/fwOpcUaTools/fwOpcUaTools_ConnectionsTool.pnl</file>
+  <file>./panels/fwOpcUaTools/fwOpcUaTools_ConnectionsTool_createConnection.pnl</file>
+  <file>./panels/fwOpcUaTools/fwOpcUaTools_ConfigurationDiagnosticTool.pnl</file>
+  <file>./panels/fwOpcUaTools/fwOpcUaTools_configurationConsistencyIssues.pnl</file>
+  <file>./panels/fwOpcUaTools/fwOpcUaTools_periphAddressesConsistencyIssues.pnl</file>
+  <file>./scripts/libs/fwOpcUaTools/fwOpcUaTools.ctl</file>
+  <file>./fwOpcUaTools.xml</file>
+  <commit>https://gitlab.cern.ch/jcopfw/tools/fwOpcUaTools/commit/4f77ffbd7dcf2f0d76156abab2fa2d0126843f98</commit>
+  <qtHelp>./help/en_US.utf8/fwOpcUaTools/fwOpcUaTools.qch</qtHelp>
+</component>

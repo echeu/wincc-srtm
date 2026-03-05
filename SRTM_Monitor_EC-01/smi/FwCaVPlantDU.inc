@@ -1,0 +1,12 @@
+class: ASS_FwCaVPlantDU_CLASS/associated
+!panel: FwCaVPlant|FwCaVPlantDU.pnl
+    state: OFF
+    !color: FwStateOKNotPhysics
+    state: STAND-BY
+    !color: FwStateOKNotPhysics
+    state: RUN
+    !color: FwStateOKPhysics
+    state: WARNING
+    !color: FwStateAttention1
+    state: ERROR
+    !color: FwStateAttention3

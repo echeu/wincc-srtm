@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">721 466</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">40 70</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;fwOpcUaTools/fwOpcUaTools.ctl&quot;
+
+int checkConsistencyIssues(){
+  dyn_string exInfo;
+  dyn_string clientDps = fwOpcUaTools_getClientDps(exInfo);
+  dyn_string serverDps = fwOpcUaTools_getServerDps(exInfo);
+
+  mapping clientDpsServersMap = fwOpcUaTools_getClientDpsServersMap(clientDps, exInfo);
+  mapping serverDpsSubscriptionDpsMap = fwOpcUaTools_getServerDpsSubscriptionDpsMap(serverDps, exInfo);
+
+  if(dynlen(exInfo) &gt; 0){
+    fwExceptionHandling_display(exInfo);
+    return -1;
+  }
+
+  dyn_string dpesToCheck;
+  if(isDollarDefined(&quot;$bAllDpes&quot;) &amp;&amp; getDollarValue(&quot;$bAllDpes&quot;)){
+    dpesToCheck = getAllDpesToCheck(exInfo);
+  }else{
+    dpesToCheck = getFwDevicesDpesToCheck(exInfo);
+  }
+
+  if(dynlen(exInfo) &gt; 0){
+    fwExceptionHandling_display(exInfo);
+    return -1;
+  }
+
+  dyn_dyn_anytype config = getConfig(dpesToCheck, exInfo);
+  if(dynlen(exInfo) &gt; 0){
+    fwExceptionHandling_display(exInfo);
+    return -1;
+  }
+
+  dyn_string dpesWithIssue;
+  dyn_string dpesAddressIssues;
+
+  for(int i=0;i&lt;config.count();i++){
+    dyn_string addressConfig = config.at(i);
+    string addressConfigIssue = fwOpcUaTools_getAddressConfigIssue(
+        addressConfig, clientDpsServersMap, serverDpsSubscriptionDpsMap);
+    string addressIssueText = &quot;Unknown&quot;;
+    switch(addressConfigIssue){
+      case FW_OPC_UA_TOOLS_ADDR_CFG_ISSUE_TYPE_DRV_NOT_CONFIGURED:
+        addressIssueText = &quot;Driver number:&quot; + addressConfig[fwPeriphAddress_DRIVER_NUMBER] +
+                           &quot; is not an OPC UA driver or is not yet configured&quot; +
+                           &quot; to communicate with any OPC UA server&quot;;
+        break;
+      case FW_OPC_UA_TOOLS_ADDR_CFG_ISSUE_TYPE_WRONG_SERVER:
+        addressIssueText = &quot;Server connection: &quot; + addressConfig[fwPeriphAddress_OPCUA_SERVER_NAME] +
+                           &quot; is not valid for a driver number: &quot; + addressConfig[fwPeriphAddress_DRIVER_NUMBER];
+        break;
+      case FW_OPC_UA_TOOLS_ADDR_CFG_ISSUE_TYPE_WRONG_SUBSCRIPTION:
+        addressIssueText = &quot;Subscription: &quot; + addressConfig[fwPeriphAddress_OPCUA_SUBSCRIPTION] +
+                           &quot; is not valid for a server connection: &quot; + addressConfig[fwPeriphAddress_OPCUA_SERVER_NAME];
+        break;
+    }
+    if(addressConfigIssue != FW_OPC_UA_TOOLS_ADDR_CFG_NO_ISSUE){
+      //DebugTN(addressConfig);
+      dpesWithIssue.append(dpesToCheck.at(i));
+      dpesAddressIssues.append(addressIssueText);
+    }
+  }
+  TABLE1.deleteAllLines();
+  TABLE1.appendLines(dpesWithIssue.count(), &quot;dpe&quot;, dpesWithIssue, &quot;issue&quot;, dpesAddressIssues);
+  TABLE1.adjustColumn(0);
+  TABLE1.adjustColumn(1);
+
+  return dpesWithIssue.count();
+}
+
+dyn_string getFwDevicesDpesToCheck(dyn_string &amp;exInfo){
+  dyn_string dpesToCheck;
+
+  dyn_string nodes;
+  fwNode_getNodes(&quot;&quot;, fwNode_TYPE_VENDOR, nodes, exInfo);
+  if(dynlen(exInfo) &gt; 0){
+    return dpesToCheck;
+  }
+
+  for(int i=0;i&lt;nodes.count();i++){
+    dyn_string addressedDpesOfNode = dpNames(nodes.at(i) + fwDevice_HIERARCHY_SEPARATOR + &quot;*.**:_address&quot;);
+    dyn_errClass err = getLastError();
+    if(err.count() &gt; 0){
+      fwException_raise(exInfo, &quot;ERROR&quot;, &quot;Could not retrieve list of DPEs of devices of vendor: &quot; +
+                        dpSubStr(nodes.at(i), DPSUB_DP) + &quot;. Reason: &quot; + getErrorText(err), &quot;&quot;);
+      continue;
+    }
+    for(int j=0;j&lt;addressedDpesOfNode.count();j++){
+      dpesToCheck.append(dpSubStr(addressedDpesOfNode.at(j), DPSUB_SYS_DP_EL));
+    }
+  }
+  return dpesToCheck;
+}
+
+dyn_string getAllDpesToCheck(dyn_string &amp;exInfo){
+  dyn_string dpesToCheck;
+
+  dyn_string addressedDpes = dpNames(&quot;*.**:_address&quot;);
+  dyn_errClass err = getLastError();
+  if(err.count() &gt; 0){
+    fwException_raise(exInfo, &quot;ERROR&quot;, &quot;Could not retrieve list all of DPEs. Reason: &quot; +
+                      getErrorText(err), &quot;&quot;);
+    return makeDynString();
+  }
+  for(int i=0;i&lt;addressedDpes.count();i++){
+    dpesToCheck.append(dpSubStr(addressedDpes.at(i), DPSUB_SYS_DP_EL));
+  }
+
+  return dpesToCheck;
+}
+
+const int MAX_GROUP_SIZE = 5000;
+
+dyn_dyn_anytype getConfig(dyn_string &amp;dpesToCheck, dyn_string &amp;exInfo){
+  dyn_dyn_anytype config;
+  dyn_string tmpDpesToCheck;
+
+  dyn_string batchOfDpesToCheck;
+  int countDpesInBatch = 0;
+
+  int dpesToCheckLen = dpesToCheck.count();
+  for(int i=0;i&lt;dpesToCheckLen;i++){
+    batchOfDpesToCheck.append(dpesToCheck.at(i));
+    countDpesInBatch++;
+
+    if(countDpesInBatch &gt;= MAX_GROUP_SIZE || i == dpesToCheckLen - 1){
+      dyn_bool tmpConfigExists, tmpIsActive;
+      dyn_dyn_anytype tmpConfig;
+      dyn_string tmpExInfo;
+      fwPeriphAddress_getMany(batchOfDpesToCheck, tmpConfigExists, tmpConfig, tmpIsActive, tmpExInfo);
+
+      countDpesInBatch = 0;
+
+      if(tmpExInfo.count() &gt; 0){
+        dynAppend(exInfo, tmpExInfo);
+        batchOfDpesToCheck.clear();
+        continue;
+      }
+      for(int j=0;j&lt;tmpConfigExists.count();j++){
+        if(tmpConfigExists.at(j) &amp;&amp;
+           tmpConfig.at(j)[fwPeriphAddress_TYPE] == fwPeriphAddress_TYPE_OPCUA){
+          config.append(tmpConfig.at(j));
+          tmpDpesToCheck.append(batchOfDpesToCheck.at(j));
+        }
+      }
+      batchOfDpesToCheck.clear();
+    }
+  }
+  dpesToCheck = tmpDpesToCheck;
+  return config;
+}
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  Label1.visible = false;
+  TABLE1.visible = false;
+  AttentionEffect_ewo1.visible = true;
+  AttentionEffect_ewo1.start();
+  
+  int status = checkConsistencyIssues();
+  
+  AttentionEffect_ewo1.stop();
+  AttentionEffect_ewo1.visible = false;
+  if(status &gt; 0){
+    TABLE1.visible = true;
+  }else{
+    Label1.visible = true;
+    if(status == 0){
+      Label1.text = &quot;No addressing inconsistencies found&quot;;
+    }else{
+      Label1.text = &quot;Error when checking for address inconsistencies&quot;;
+    }
+  }
+}
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="TABLE1" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 42</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 42</prop>
+    <prop name="Size">703 192</prop>
+    <prop name="ShowColumnHeader">True</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">18</prop>
+    <prop name="RowHeaderWidth">0</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">dpe</prop>
+     <prop name="Width">60</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">DPE</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">issue</prop>
+     <prop name="Width">60</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Issue</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_TITLE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">24.87860479791077 8.996989207393923</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Preferred"/>
+    </prop>
+    <prop name="layoutAlignment">AlignLeading|AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9996880274290265 0 0 0.9998631645171183 -13.87084335560973 2.004241899968752</prop>
+    <prop name="Location">24.87860479791077 8.996989207393923</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,19,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Peripherial addresses consistency issues</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="AttentionEffect_ewo1" shapeType="GENERIC" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 240</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 240</prop>
+    <prop name="Size">703 163</prop>
+    <prop name="ObjectType">AttentionEffect.ewo</prop>
+    <extended>
+     <prop type="ENUM" name="effectType">2</prop>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="Label1" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">5</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 409</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 409</prop>
+    <prop name="Size">703 17</prop>
+    <extended>
+     <prop type="ENUM" name="layoutDirection">0</prop>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON1" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">6</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">632 439.2</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">632 432</prop>
+    <prop name="Size">80 25</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Close</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  PanelOff();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">7</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 432</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">9 432</prop>
+    <prop name="Size">617 25</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="0" Name="LAYOUT_GROUP2" serial="1">
+   <properties>
+    <prop idx="0" name="shapeSerial">7</prop>
+    <prop idx="1" name="shapeSerial">6</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP1" serial="0">
+   <properties>
+    <prop idx="1" name="shapeSerial">0</prop>
+    <prop idx="0" name="shapeSerial">1</prop>
+    <prop idx="2" name="shapeSerial">3</prop>
+    <prop idx="3" name="shapeSerial">5</prop>
+    <prop idx="4" name="groupSerial">1</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

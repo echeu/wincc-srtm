@@ -1,0 +1,15 @@
+0 13 1
+"ScriptEditor_Keyword" N {181,7,16}
+"ScriptEditor_Datatype" N {0,0,128}
+"ScriptEditor_Numeric" N {255,0,255}
+"ScriptEditor_String" N {255,0,255}
+"ScriptEditor_Dollar" N {200,130,0}
+"ScriptEditor_Comment" N {0,128,0}
+"ScriptEditor_Function" N {0,0,255}
+"ScriptEditor_ClassFunction" N {51,108,97}
+"ScriptEditor_CursorLine" N {237,241,255}
+"ScriptEditor_BlockBackground" N {255,254,203}
+"ScriptEditor_BracketMismatch" N {255,0,0}
+"ScriptEditor_WordMatch" N {0,255,255}
+"ScriptEditor_SyntaxError" N {255,219,233}
+"ScriptEditor_Text" "_WindowText"

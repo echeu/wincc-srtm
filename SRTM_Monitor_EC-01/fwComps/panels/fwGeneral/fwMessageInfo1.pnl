@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8">Information</prop>
+  </prop>
+  <prop name="Size">380 129</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">251 55</prop>
+  <prop name="InitAndTermRef">False</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    DlgInfoRef.setText($1);
+}
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <reference parentSerial="-1" Name="DlgInfoRef" referenceId="0">
+   <properties>
+    <prop name="FileName">fwStdUi/dlgInfo.pnl</prop>
+    <prop name="Location">20 22.98437500000002</prop>
+    <prop name="TabOrder">13</prop>
+    <prop name="dollarParameters">
+     <prop name="dollarParameter">
+      <prop name="Dollar">$text</prop>
+      <prop name="Value">$1</prop>
+     </prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header"></prop>
+    </extended>
+   </properties>
+  </reference>
+ </shapes>
+</panel>

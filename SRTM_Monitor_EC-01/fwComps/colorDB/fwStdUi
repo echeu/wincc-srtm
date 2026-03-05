@@ -1,0 +1,41 @@
+0 16 24
+"FwStdUi01" N {255,255,255}
+"FwStdUi02" N {245,245,245}
+"FwStdUi03" N {234,234,234}
+"FwStdUi04" N {223,223,223}
+"FwStdUi05" N {220,220,220}
+"FwStdUi06" N {179,179,179}
+"FwStdUi07" N {80,80,80}
+"FwStdUi10" N {0,255,0}
+"FwStdUi11" N {253,0,0}
+"FwStdUi12" N {0,120,215}
+"FwStdUi13" N {255,255,75}
+"FwStdUi14" N {255,191,127}
+"FwStdUiButtonHover" N {128,128,128,64}
+"FwStdUiInvalid" N {255,230,230}
+"FwStdUiShadow" N {63,63,63,131}
+"FwStdUiDisabledFg" N {125,125,125}
+"FwStdUiWindow" "_Window"
+"FwStdUiBg" "_3DFace"
+"FwStdUiText" "_WindowText"
+"FwStdUiBorder01" "FwStdUi04"
+"FwStdUiIcon" "_Transparent"
+"FwStdUiButton" "_Button"
+"FwStdUiButtonText" "_ButtonText"
+"FwStdUiButtonActive" "_Button"
+"FwStdUiCBoxBg" "_3DFace"
+"FwStdUiCBoxDisabledBg" "_3DFace"
+"FwStdUiPanelHead" "_PanelDescriptionBackground"
+"FwStdUiPanelHeadTxt" "_PanelDescriptionText"
+"FwStdUiSectionHead" "FwStdUi03"
+"FwStdUiSubSectionHead" "_Transparent"
+"FwStdUiScrollbar" "FwStdUi05"
+"FwStdUiInputBg" "_Window"
+"FwStdUiInputNoEdit" "FwStdUi03"
+"FwStdUiInputNoEditBorder" "FwStdUi02"
+"FwStdUiInputDisabled" "FwStdUi02"
+"FwStdUiInputDisabledText" "_WindowText"
+"FwStdUiInputBgFocused" "_Window"
+"FwStdUiInputFgFocused" "_WindowText"
+"FwStdUiAttention1" "FwStdUi13"
+"FwStdUiAttention2" "FwStdUi14"

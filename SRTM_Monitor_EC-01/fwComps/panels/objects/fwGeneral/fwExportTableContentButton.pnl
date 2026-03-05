@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">33 33</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+  <prop name="sizePolicy">
+   <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+  </prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/]]></script>
+ </events>
+ <shapes>
+  <shape Name="csvBtn" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type">FW_ICON</prop>
+    <prop name="RefPoint">0 0</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Export table content</prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,11,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">0 3.000000000000001</prop>
+    <prop name="Size">31 30</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/csvFile.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[#uses &quot;fwGeneral/fwScreenShot.ctl&quot;
+
+main()
+{
+  dyn_string exceptionInfo;
+  fwScreenShot_exportTableContentUserMenu( $tableToExport, exceptionInfo);
+  if (dynlen(exceptionInfo)) {
+	fwExceptionHandling_display(exceptionInfo);
+  }
+}
+]]></script>
+   </events>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP1" serial="0">
+   <properties>
+    <prop idx="0" name="shapeSerial">0</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

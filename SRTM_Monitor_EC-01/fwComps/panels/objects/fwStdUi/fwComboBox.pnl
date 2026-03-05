@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">163 25</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">50 30</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96.05251093860267</prop>
+  <prop name="PDPI">96.05251093860268</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;CtrlOOUtils&quot;
+
+#event selectionChanged(mixed selectedItem)
+#property string text
+#property bool itemsSorted
+bool _itemsSorted;
+
+// data handling with enums
+bool hasEnumValue = false;
+mixed _enumValue; // we will use it to have properly typed return value for our event
+bool hasObj       = false;
+
+// data habdling with objects
+shared_ptr&lt;void&gt; _objValue;
+mapping          _objMap;    // values: shared_ptrs to original objects
+dyn_string       _objKeys; // &quot;keys&quot; for the objects in preserved original order (mapping above would not store them...)
+
+
+/** Helper to establish a UI connect
+  */
+public void connect(function_ptr cbFunction)
+{
+    uiConnectUserData(cbFunction,self.name,this, &quot;selectionChanged&quot;);
+}
+
+
+public void setItemsSorted(bool b)
+{
+    _itemsSorted=b;
+    if (hasEnumValue) {
+        setDataFromEnum(_enumValue);
+    } else if (hasObj) {
+        dyn_string keys = _objKeys;
+        if (_itemsSorted) keys.sort();
+        ComboBox.items=keys;
+    } else {
+        setDataFromDynString(ComboBox.items);
+    }
+}
+
+public bool getItemsSorted()       { return _itemsSorted; }
+public string getText()            { return ComboBox.text;}
+public void   setText(string text) { ComboBox.text=text;  }
+
+
+public mixed getSelectedItem()
+{
+    if (hasEnumValue) {
+        return _enumValue;
+    } else if (hasEnumValue) {
+        return _objValue;
+    } else {
+        return ComboBox.selectedText;
+    }
+}
+
+/** Set up the widget from a list of strings
+
+  If selectedItem is not empty, do the selection too
+  */
+public void setDataFromDynString(dyn_string items, string selectedItem=&quot;&quot;) {
+    hasEnumValue=false;
+    hasObj=false;
+    if (_itemsSorted) items.sort();
+    ComboBox.items=items;
+    if (selectedItem!=&quot;&quot;) ComboBox.selectedText=selectedItem;
+}
+
+public void setDataFromString(string items, string selectedItem=&quot;&quot;) {
+    dyn_string ds=items.split(&quot;,&quot;);
+    setDataFromDynString(ds,selectedItem);
+}
+
+public void setDataFromEnum(mixed data) {
+    _enumValue=data;
+    hasEnumValue=true;
+    hasObj=false;
+    dyn_string keys=fwEnumKeys(_enumValue);
+    if (_itemsSorted) keys.sort();
+
+    string value=fwEnumToString(_enumValue);
+    if (ComboBox.items != keys) ComboBox.items=keys;
+    if (ComboBox.selectedText!=value) ComboBox.selectedText=value;
+}
+
+
+public void setDataFromObjVec(vector&lt;shared_ptr&lt;void&gt; &gt; objVec, string memberOrGetter, shared_ptr&lt;void&gt; selectedItem=nullptr)
+{
+    hasEnumValue=false;
+    hasObj=true;
+    _objMap.clear();
+    _objKeys.clear();
+    assignPtr(_objValue, nullptr);
+    for (int i=0;i&lt;objVec.count();i++) {
+        mixed val;
+        if (memberOrGetter.contains(&quot;(&quot;)) {
+            string method=memberOrGetter.left(memberOrGetter.indexOf(&quot;(&quot;));
+            val=fwInvokeMethod(objVec.at(i),method);
+        } else {
+            val=fwGetMember(objVec.at(i),memberOrGetter);
+        }
+        string key=val;
+        // we want a unique printout value so that we could use a map...
+        // treat the non-unique ones
+        int suffix=1;
+        while (_objMap.contains(key)) {
+            suffix++;
+            key=val+&quot; (&quot;+suffix+&quot;)&quot;;
+        }
+        _objKeys.append(key);
+        _objMap[key]=objVec.at(i);
+    }
+
+    dyn_string keys = _objKeys;
+    if (_itemsSorted) keys.sort();
+    ComboBox.items=keys;
+    if (!equalPtr(selectedItem,nullptr)) setSelectedFromObj(selectedItem);
+}
+
+public void setSelectedFromObj(shared_ptr&lt;void&gt; obj)
+{
+    // find the key for this value.
+    for (int i=0;i&lt;_objMap.count();i++) {
+        shared_ptr&lt;void&gt; obj2=_objMap.valueAt(i);
+        if (equalPtr(obj,obj2)) {
+            ComboBox.selectedText=_objMap.keyAt(i);
+            break;
+        }
+    }
+}
+
+
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="ComboBox" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 20</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">10 16</prop>
+    <prop name="Size">121 25</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+   <events>
+    <script name="Changed" isEscaped="1"><![CDATA[main()
+{
+    string sValue=this.selectedText;
+
+    if (hasEnumValue) {
+        anytype eValue=_enumValue ; // the way to het a proper type...Anytype not Mixed on purpose!
+
+        //mapping valueMap=enumValues(fwGetClass(eValue));
+        //eValue=valueMap.value(sValue);
+        fwSetEnumFromString(eValue,sValue);
+        _enumValue=eValue; // preserve the changed value
+        triggerEvent(&quot;selectionChanged&quot;,eValue);
+    } else if (hasObj) {
+        shared_ptr&lt;void&gt; value=_objMap.value(sValue,nullptr);
+        assignPtr(_objValue,value);
+        triggerEvent(&quot;selectionChanged&quot;,value);
+    } else {
+        triggerEvent(&quot;selectionChanged&quot;,sValue);
+    }
+}
+]]></script>
+   </events>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP1" serial="0">
+   <properties>
+    <prop idx="0" name="shapeSerial">0</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

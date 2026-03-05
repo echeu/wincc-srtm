@@ -1,0 +1,36 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwCore</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.2.0</required_installer_version>
+  <includeComponent>./fwStdLib.xml</includeComponent>
+  <includeComponent>./fwStdUi.xml</includeComponent>
+  <includeComponent>./fwGeneral.xml</includeComponent>
+  <includeComponent>./fwConfigs.xml</includeComponent>
+  <includeComponent>./fwDevice.xml</includeComponent>
+  <includeComponent>./fwNode.xml</includeComponent>
+  <includeComponent>./unDistributedControl.xml</includeComponent>
+  <includeComponent>./fwTree.xml</includeComponent>
+  <includeComponent>./fwAlarmHandling.xml</includeComponent>
+  <config>./config/fwCore.config</config>
+  <file>./data/LICENSES/fwCore/LICENSE-LGPL3</file>
+  <file>./fwCore.xml</file>
+  <file>./config/config.gedi</file>
+  <file>./config/astyle.config</file>
+  <init>./scripts/fwCore/fwCore.init</init>
+  <file>./scripts/libs/fwCore/fwCore.ctl</file>
+  <file>./scripts/libs/fwCore/fwCore_UI.ctl</file>
+  <file>./scripts/libs/AAA_FwLibStartup.ctl</file>
+  <file>./scripts/libs/AAA_FwLibStartup_UI.ctl</file>
+  <file>./help/en_US.utf8/fwCore/fwCoreReleaseNotes.txt</file>
+  <help>fwCore/fwCore.htm</help>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwCore/commit/9a0e6eeb5417827525b6b42722764417510a2809</commit>
+  <qtHelp>./help/en_US.utf8/fwCore/fwCore.qch</qtHelp>
+</component>

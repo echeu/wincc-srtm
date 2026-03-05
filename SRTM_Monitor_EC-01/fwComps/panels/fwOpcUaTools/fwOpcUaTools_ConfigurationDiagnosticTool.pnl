@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">463 746</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">130 147</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;fwOpcUaTools/fwOpcUaTools.ctl&quot;
+
+mapping clientDpsServersMap;
+mapping serverDpsSubscriptionDpsMap;
+dyn_string configurationIssuesList;
+
+dyn_string clientDps;
+dyn_string serverDps;
+dyn_string subscriptionDps;
+
+init(){
+  dyn_string exInfo;
+
+  clientDps = fwOpcUaTools_getClientDps(exInfo);
+  serverDps = fwOpcUaTools_getServerDps(exInfo);
+  subscriptionDps = fwOpcUaTools_getSubscriptionDps(exInfo);
+
+  clientDpsServersMap = fwOpcUaTools_getClientDpsServersMap(clientDps, exInfo);
+  serverDpsSubscriptionDpsMap = fwOpcUaTools_getServerDpsSubscriptionDpsMap(serverDps, exInfo);
+
+  if(exInfo.count() &gt; 0){
+    fwExceptionHandling_display(exInfo);
+    return;
+  }
+
+  displayAll();
+}
+
+displayAll(){
+  displayOpcUaClientsTree(clientDpsServersMap, serverDpsSubscriptionDpsMap);
+  displayUnusedServers(getUnusedServers(serverDps, clientDpsServersMap));
+  displayUnusedSubscriptions(
+      getUnusedSubscriptions(subscriptionDps, serverDpsSubscriptionDpsMap));
+
+  configurationIssuesList =
+      getConfigurationIssues(serverDps, subscriptionDps,
+                             clientDpsServersMap,
+                             serverDpsSubscriptionDpsMap,
+                             fwInstallationRedu_isRedundant());
+  lbCountConfigurationIssues.text = configurationIssuesList.count();
+}
+
+displayOpcUaClientsTree(const mapping &amp;clientDpsServersMap,
+                        const mapping &amp;serverDpsSubscriptionDpsMap){
+  treeClients.clear();
+  dyn_string clientDps = mappingKeys(clientDpsServersMap);
+  dyn_int driverNums;
+  for(int i=0;i&lt;clientDps.count();i++){
+    driverNums.append(fwOpcUaTools_clientDp2DriverNum(clientDps.at(i)));
+  }
+  for(int i=0;i&lt;driverNums.count();i++){
+    int driverNum = driverNums.at(i);
+    string clientDp = fwOpcUaTools_driverNum2ClientDp(driverNum);
+    dyn_string servers = clientDpsServersMap[clientDp];
+    if(servers.count() &gt; 0){
+      treeClients.appendItem(&quot;&quot;, clientDp, &quot;Driver &quot; + (string)driverNum);
+
+      displayOpcUaClientServersTree(clientDp, servers, serverDpsSubscriptionDpsMap);
+    }
+  }
+  treeClients.expandAll();
+}
+
+displayOpcUaClientServersTree(string parentNodeId, const dyn_string &amp;servers,
+                              const mapping &amp;serverDpsSubscriptionDpsMap){
+  for(int i=0;i&lt;servers.count();i++){
+    string server = servers.at(i);
+    string serverDp = fwOpcUaTools_serverName2dp(server);
+    string nodeId = parentNodeId + serverDp;
+    treeClients.appendItem(parentNodeId, nodeId, server);
+
+    displayOpcUaServerSubscriptions(
+        nodeId, serverDpsSubscriptionDpsMap.value(serverDp, makeDynString()));
+  }
+}
+
+displayOpcUaServerSubscriptions(string parentNodeId, const dyn_string &amp;subscriptionDps){
+  for(int i=0;i&lt;subscriptionDps.count();i++){
+    string subscriptionDp = subscriptionDps.at(i);
+    string subscription = fwOpcUaTools_subscriptionDp2name(subscriptionDp);
+    string nodeId = parentNodeId + subscriptionDp;
+    treeClients.appendItem(parentNodeId, nodeId, subscription);
+  }
+}
+
+displayUnusedServers(const dyn_string &amp;unusedServers){
+  tblUnusedSrvConn.deleteAllLines();
+  tblUnusedSrvConn.appendLines(unusedServers.count(), &quot;list&quot;, unusedServers);
+  tblUnusedSrvConn.adjustColumn(0);
+  lbCountUnusedSrvConns.text = unusedServers.count();
+}
+
+displayUnusedSubscriptions(const dyn_string &amp;unusedSubscriptions){
+  tblUnusedSubscriptions.deleteAllLines();
+  tblUnusedSubscriptions.appendLines(unusedSubscriptions.count(), &quot;list&quot;, unusedSubscriptions);
+  tblUnusedSubscriptions.adjustColumn(0);
+  lbCountUnusedSubscriptions.text = unusedSubscriptions.count();
+}
+
+displayConfigurationIssues(const dyn_string &amp;configurationIssues){ // TODO: Add column for issue type
+  tblConfigurationIssues.deleteAllLines();
+  tblConfigurationIssues.appendLines(configurationIssues.count(), &quot;list&quot;, configurationIssues);
+  tblConfigurationIssues.adjustColumn(0);
+}
+
+//----------------------------------------------------
+dyn_string getUnusedServers(const dyn_string &amp;serverDps,
+                            const mapping &amp;clientDpsServersMap){
+  dyn_string unusedServerDps =
+      fwOpcUaTools_getUnusedServerDps(serverDps, clientDpsServersMap);
+  dyn_string unusedServers;
+  for(int i=0;i&lt;unusedServerDps.count();i++){
+    unusedServers.append(fwOpcUaTools_serverDp2name(unusedServerDps.at(i)));
+  }
+  return unusedServers;
+}
+
+dyn_string getUnusedSubscriptions(const dyn_string &amp;subscriptionDps,
+                                  const mapping &amp;serverDpsSubscriptionDpsMap){
+  dyn_string unusedSubscriptionDps =
+      fwOpcUaTools_getUnusedSubscriptionDps(subscriptionDps, serverDpsSubscriptionDpsMap);
+  dyn_string unusedSubscriptions;
+  for(int i=0;i&lt;unusedSubscriptionDps.count();i++){
+    unusedSubscriptions.append(fwOpcUaTools_subscriptionDp2name(unusedSubscriptionDps.at(i)));
+  }
+  return unusedSubscriptions;
+}
+
+dyn_string getClientDpsAssignedNonExistingServersIssues(
+    const mapping &amp;clientDpsAssignedNonExistingServersMap){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;clientDpsAssignedNonExistingServersMap.count();i++){
+    string clientDp = clientDpsAssignedNonExistingServersMap.keyAt(i);
+    dyn_string assignedNonExistingServers = clientDpsAssignedNonExistingServersMap[clientDp];
+    configurationIssues.append(&quot;Non existing server(s) in OPC UA driver DP &quot; + clientDp + &quot;: &quot; +
+                               strjoin(assignedNonExistingServers, &quot;, &quot;));
+  }
+  return configurationIssues;
+}
+
+dyn_string getServerDpsAssignedNonExistingSubscriptionDpsIssues(
+    const mapping &amp;serverDpsAssignedNonExistingSubscriptionDpsMap){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;serverDpsAssignedNonExistingSubscriptionDpsMap.count();i++){
+    string serverDp = serverDpsAssignedNonExistingSubscriptionDpsMap.keyAt(i);
+    dyn_string assignedNonExistingSubscriptionDps = serverDpsAssignedNonExistingSubscriptionDpsMap[serverDp];
+    configurationIssues.append(&quot;Non existing or invalid subscription DP(s) in OPC UA driver DP &quot; + serverDp + &quot;: &quot; +
+                               strjoin(assignedNonExistingSubscriptionDps, &quot;, &quot;));
+  }
+  return configurationIssues;
+}
+
+dyn_string getReusedServersClientDpsIssues(
+    const mapping &amp;reusedServersClientDpsMap){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;reusedServersClientDpsMap.count();i++){
+    string reusedServer = reusedServersClientDpsMap.keyAt(i);
+    dyn_string clientDpsReusingServer = reusedServersClientDpsMap[reusedServer];
+    configurationIssues.append(&quot;OPC UA server connection: &quot; + reusedServer + &quot; used in &quot; +
+                               clientDpsReusingServer.count() + &quot; driver DPs: &quot; +
+                               strjoin(clientDpsReusingServer, &quot;, &quot;));
+  }
+  return configurationIssues;
+}
+
+dyn_string getReusedSubscriptionDpsServerDpsIssues(
+    const mapping &amp;reusedSubscriptionDpsServerDpsMap){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;reusedSubscriptionDpsServerDpsMap.count();i++){
+    string reusedSubscriptionDp = reusedSubscriptionDpsServerDpsMap.keyAt(i);
+    dyn_string serverDpsReusingSubscriptionDp = reusedSubscriptionDpsServerDpsMap[reusedSubscriptionDp];
+    configurationIssues.append(&quot;OPC UA subscription DP: &quot; + reusedSubscriptionDp + &quot; used in &quot; +
+                               serverDpsReusingSubscriptionDp.count() + &quot; server DPs: &quot; +
+                               strjoin(serverDpsReusingSubscriptionDp, &quot;, &quot;));
+  }
+  return configurationIssues;
+}
+
+dyn_string getMissingReduPeerServerDpsIssues(
+    const dyn_string &amp;missingReduPeerServerDps){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;missingReduPeerServerDps.count();i++){
+    string missingReduPeerServerDp = missingReduPeerServerDps.at(i);
+    configurationIssues.append(&quot;Missing redu peer DP (ending with '_2') for server DP: &quot; +
+                               missingReduPeerServerDp);
+  }
+  return configurationIssues;
+}
+
+dyn_string getMissingReduPeerSubscriptionDpsIssues(
+    const dyn_string &amp;missingReduPeerSubscriptionDps){
+  dyn_string configurationIssues;
+  for(int i=0;i&lt;missingReduPeerSubscriptionDps.count();i++){
+    string missingReduPeerSubscriptionDp = missingReduPeerSubscriptionDps.at(i);
+    configurationIssues.append(&quot;Missing redu peer DP (ending with '_2') for subscription DP: &quot; +
+                               missingReduPeerSubscriptionDp);
+  }
+  return configurationIssues;
+}
+
+dyn_string getConfigurationIssues(const dyn_string &amp;serverDps,
+                                  const dyn_string &amp;subscriptionDps,
+                                  const mapping &amp;clientDpsServersMap,
+                                  const mapping &amp;serverDpsSubscriptionDpsMap,
+                                  bool lookForReduIssues = true){
+  dyn_string configurationIssues, currConfigurationIssues;
+  currConfigurationIssues = getClientDpsAssignedNonExistingServersIssues(
+      fwOpcUaTools_getClientDpsAssignedInvalidServersMap(serverDps, clientDpsServersMap));
+  dynAppendConst(configurationIssues, currConfigurationIssues);
+
+  currConfigurationIssues = getServerDpsAssignedNonExistingSubscriptionDpsIssues(
+      fwOpcUaTools_getServerDpsAssignedInvalidSubscriptionDpsMap(subscriptionDps, serverDpsSubscriptionDpsMap));
+  dynAppendConst(configurationIssues, currConfigurationIssues);
+
+  currConfigurationIssues = getReusedServersClientDpsIssues(
+      fwOpcUaTools_getReusedServersClientDpsMap(clientDpsServersMap));
+  dynAppendConst(configurationIssues, currConfigurationIssues);
+
+  currConfigurationIssues = getReusedSubscriptionDpsServerDpsIssues(
+      fwOpcUaTools_getReusedSubscriptionDpsServerDpsMap(serverDpsSubscriptionDpsMap));
+  dynAppendConst(configurationIssues, currConfigurationIssues);
+
+  if(lookForReduIssues){
+    currConfigurationIssues = getMissingReduPeerServerDpsIssues(
+        fwOpcUaTools_getMissingReduPeerServerDps(serverDps));
+    dynAppendConst(configurationIssues, currConfigurationIssues);
+
+    currConfigurationIssues = getMissingReduPeerSubscriptionDpsIssues(
+        fwOpcUaTools_getMissingReduPeerSubscriptionDps(subscriptionDps));
+    dynAppendConst(configurationIssues, currConfigurationIssues);
+  }
+  return configurationIssues;
+}
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  treeClients.addColumn(&quot;Configuration&quot;);
+  init();
+}
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="treeClients" shapeType="TREE" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 69.00000000000001</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 69.00000000000001</prop>
+    <prop name="Size">445 347</prop>
+    <extended>
+     <prop type="ENUM" name="verticalScrollBarPolicy">0</prop>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="tblUnusedSrvConn" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">21</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 421</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">17</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="maximumSize">-1 70</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 454</prop>
+    <prop name="Size">445 70</prop>
+    <prop name="ShowColumnHeader">False</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">18</prop>
+    <prop name="RowHeaderWidth">0</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">list</prop>
+     <prop name="Width">60</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">#1</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT1" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">25</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">11 11</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">21</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9999999999804947 0 0 1.008078977865685 2.058758110858535e-09 32.84649942055187</prop>
+    <prop name="Location">11 11</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA clients configuration</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT2" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">30</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 413</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">26</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1 0 0 1.312499999999974 -9 -118.0624999999893</prop>
+    <prop name="Location">20 413</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Unused server connections</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="lbCountUnusedSrvConns" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">31</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">199 422</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">27</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">199 422</prop>
+    <prop name="Size">9 26</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">32</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">214 422</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">28</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">214 422</prop>
+    <prop name="Size">240 26</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="tblUnusedSubscriptions" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">33</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10.28138528138519 502</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">29</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="maximumSize">-1 70</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 562</prop>
+    <prop name="Size">445 70</prop>
+    <prop name="ShowColumnHeader">False</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">18</prop>
+    <prop name="RowHeaderWidth">0</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">list</prop>
+     <prop name="Width">60</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">#1</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT3" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">36</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 539</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">32</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1 0 0 1.312499999999974 -9 -175.437499999986</prop>
+    <prop name="Location">20 539</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Unused subscriptions</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="lbCountUnusedSubscriptions" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">37</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">162 530</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">33</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">162 530</prop>
+    <prop name="Size">9 26</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER2" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">38</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">177 530</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">34</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">177 530</prop>
+    <prop name="Size">277 26</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER3" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">39</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">209 42</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">35</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">209 42</prop>
+    <prop name="Size">245 21</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_TITLE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">54</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">24.87860479791077 8.996989207393923</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">48</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignVCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9995587576822005 0 0 0.9998631645171183 -13.86762730466612 2.504241899968752</prop>
+    <prop name="Location">24.87860479791077 8.996989207393923</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,19,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA configuration viewer</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER4" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">55</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">295 9</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">49</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">295 9</prop>
+    <prop name="Size">73 27</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT4" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">60</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 413</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">54</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1 0 0 1.249999999999957 -9 132.7500000000176</prop>
+    <prop name="Location">20 413</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA configuration consistency issues</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="lbCountConfigurationIssues" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">62</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">287 647</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">56</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">287 647</prop>
+    <prop name="Size">9 25</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON4" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">63</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">374 652.5999999999999</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">57</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">374 647</prop>
+    <prop name="Size">80 25</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">View</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  ChildPanelOnCentral(
+      &quot;fwOpcUaTools/fwOpcUaTools_configurationConsistencyIssues.pnl&quot;,
+      &quot;Configuration consistency issues&quot;,
+      makeDynString(&quot;$issuesString:&quot; + strjoin(configurationIssuesList, &quot;|&quot;))
+      );
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="PUSH_BUTTON5" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">65</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">374 14.59999999999999</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">59</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">374 9</prop>
+    <prop name="Size">80 25</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Reload</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  init();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT6" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">66</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">11 688.9999999999995</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">60</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">11 688.9999999999995</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Peripherial addresses consistency verification</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON6" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">68</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">374 698.4333333333332</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">62</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Minimum" horizontal="Minimum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">374 687</prop>
+    <prop name="Size">80 50</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Start</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  ChildPanelOnCentral(
+      &quot;fwOpcUaTools/fwOpcUaTools_periphAddressesConsistencyIssues.pnl&quot;,
+      &quot;Peripherial addresses consistency issues&quot;,
+      makeDynString(&quot;$bAllDpes:&quot; + (string)(rbAddrVerifScope.number() == 1))
+      );
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="SPACER6" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">69</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">320 687</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">63</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">320 687</prop>
+    <prop name="Size">48 50</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER7" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">70</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">302 647</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">64</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">302 647</prop>
+    <prop name="Size">66 25</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="LINE3" shapeType="LINE" layerId="0">
+   <properties>
+    <prop name="serialId">72</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 43</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">66</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">True</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="Start">10 43</prop>
+    <prop name="End">452.00000000002 43</prop>
+   </properties>
+  </shape>
+  <shape Name="rbAddrVerifScope" shapeType="RADIO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">74</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 714</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">67</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 714</prop>
+    <prop name="Size">305 23</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">JCOP devices</prop>
+      </prop>
+      <prop name="Select">True</prop>
+     </prop>
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">All DPEs (takes time)</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="LINE4" shapeType="LINE" layerId="0">
+   <properties>
+    <prop name="serialId">75</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 639</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">68</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">True</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="Start">10 639</prop>
+    <prop name="End">452.00000000002 639</prop>
+   </properties>
+  </shape>
+  <shape Name="LINE5" shapeType="LINE" layerId="0">
+   <properties>
+    <prop name="serialId">76</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 679</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">69</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">True</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="Start">10 679</prop>
+    <prop name="End">452.00000000002 679</prop>
+   </properties>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="19" Name="LAYOUT_GROUP12" serial="10">
+   <properties>
+    <prop idx="0" name="shapeSerial">25</prop>
+    <prop idx="1" name="shapeSerial">39</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="19" Name="LAYOUT_GROUP13" serial="11">
+   <properties>
+    <prop idx="0" name="shapeSerial">30</prop>
+    <prop idx="1" name="shapeSerial">31</prop>
+    <prop idx="2" name="shapeSerial">32</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="19" Name="LAYOUT_GROUP15" serial="13">
+   <properties>
+    <prop idx="0" name="shapeSerial">36</prop>
+    <prop idx="2" name="shapeSerial">38</prop>
+    <prop idx="1" name="shapeSerial">37</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="19" Name="LAYOUT_GROUP19" serial="15">
+   <properties>
+    <prop idx="0" name="shapeSerial">54</prop>
+    <prop idx="1" name="shapeSerial">55</prop>
+    <prop idx="2" name="shapeSerial">65</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="19" Name="LAYOUT_GROUP20" serial="16">
+   <properties>
+    <prop idx="0" name="shapeSerial">60</prop>
+    <prop idx="1" name="shapeSerial">62</prop>
+    <prop idx="3" name="shapeSerial">63</prop>
+    <prop idx="2" name="shapeSerial">70</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="18" Name="LAYOUT_GROUP27" serial="17">
+   <properties>
+    <prop idx="1" name="shapeSerial">74</prop>
+    <prop idx="0" name="shapeSerial">66</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="19" Name="LAYOUT_GROUP28" serial="18">
+   <properties>
+    <prop idx="1" name="shapeSerial">69</prop>
+    <prop idx="2" name="shapeSerial">68</prop>
+    <prop idx="0" name="groupSerial">17</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP34" serial="19">
+   <properties>
+    <prop idx="9" name="shapeSerial">76</prop>
+    <prop idx="7" name="shapeSerial">75</prop>
+    <prop idx="2" name="shapeSerial">4</prop>
+    <prop idx="4" name="shapeSerial">21</prop>
+    <prop idx="6" name="shapeSerial">33</prop>
+    <prop idx="1" name="groupSerial">10</prop>
+    <prop idx="3" name="groupSerial">11</prop>
+    <prop idx="5" name="groupSerial">13</prop>
+    <prop idx="0" name="groupSerial">15</prop>
+    <prop idx="8" name="groupSerial">16</prop>
+    <prop idx="10" name="groupSerial">18</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

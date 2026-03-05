@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">27 27</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;fwGeneral/fwGeneral.ctl&quot;
+
+/**
+  @deprecated 2024-07-17 use objects/fwGeneral/fwScreenShotButtonIcon.pnl instead
+  */]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    FWDEPRECATED();
+}]]></script>
+ </events>
+ <shapes>
+  <reference parentSerial="-1" Name="PANEL_REF0" referenceId="0">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwScreenShotButtonIcon.pnl</prop>
+    <prop name="Location">0 -10</prop>
+    <prop name="Geometry">1 0 0 1 -1 -2.5</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="layoutAlignment">AlignCenter</prop>
+   </properties>
+  </reference>
+ </shapes>
+</panel>

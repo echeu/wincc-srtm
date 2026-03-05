@@ -1,0 +1,39 @@
+version 1
+
+auth "" ""
+#Manager         | Start  | SecKill | Restart# | ResetMin | Options
+WCCILpmon        | manual |      30 |        3 |        1 |
+WCCILdata        | always |      30 |        3 |        1 |
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 0
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 1
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 2
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 3
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 4
+WCCOAvalarch     | always |      30 |        3 |        1 |-num 5
+WCCILevent       | always |      30 |        3 |        1 |
+WCCILproxy       | manual |      30 |        2 |        2 |
+WCCOActrl        | always |      30 |        3 |        1 |-f pvss_scripts.lst
+WCCILsim         | always |      30 |        3 |        1 |
+WCCILdist        | always |      30 |        3 |        1 |
+WCCOAui          |   once |      30 |        3 |        1 |-m gedi +config config.gedi
+WCCOAopcua       | manual |      30 |        2 |        2 |-num 10
+WCCOActrl        |   once |      30 |        1 |        1 |-f fwScripts.lst
+WCCOActrl        | always |      30 |        3 |        3 |-f fwInstallationAgent.lst
+WCCILsim         | always |      30 |        2 |        2 |-num 13
+WCCOAopcua       | always |      30 |        2 |        2 |-num 6
+WCCILsim         | manual |      30 |        2 |        2 |-num 6
+WCCOAopcua       | manual |      30 |        2 |        2 |-num 14
+WCCILsim         | always |      30 |        2 |        2 |-num 14
+WCCOAmod         | manual |      30 |        2 |        2 |-num 15
+WCCILsim         | always |      30 |        2 |        2 |-num 15
+WCCOAopcua       | always |      30 |        2 |        2 |-num 17
+WCCILsim         | manual |      30 |        2 |        2 |-num 17
+WCCOAopcua       | always |      30 |        2 |        2 |-num 12
+WCCILsim         | manual |      30 |        2 |        2 |-num 12
+WCCILsim         | manual |      30 |        2 |        2 |-num 10
+WCCOAopcua       | always |      30 |        2 |        2 |-num 16
+WCCILsim         | manual |      30 |        2 |        2 |-num 16
+WCCOActrl        | always |      30 |        3 |        2 |unDistributedControl.ctl
+WCCOAui          | manual |       5 |        3 |        5 |-p fwDeviceEditorNavigator/fwDeviceEditorNavigator.pnl -iconBar -menuBar
+WCCOActrl        | always |      30 |        3 |        5 |fwFSM/fwFsmSrvr.ctl
+WCCOActrl        | always |       5 |        3 |        5 |fwRack/fwRackControlApplication.ctl

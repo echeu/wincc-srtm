@@ -1,0 +1,73 @@
+/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+/* JCOP Framework Qt Stylesheet customisation */
+
+QPushButton[type='FW_ICON']
+{
+    background-color: oa-color(FwStdUiIcon);
+    border-radius: 4px; 
+    padding: 0px;
+}
+
+QPushButton[type='FW_ICON']:hover {
+    background-color: oa-color(FwStdUiButtonHover);
+}
+
+QPushButton[type='FW_ICON']:pressed {
+    background-color: oa-color(FwStdUiButtonHover);
+    padding: 1px;
+}
+
+/* JCOP Default: panel header in blue/white */
+*[type = 'FW_PANEL_HEADER']
+{
+    font-size: 14pt;
+    background: oa-color(FwCorporateColor);
+    color: oa-color(white);
+}
+
+*[type = 'FW_PANEL_SECTION']
+{
+    font-size: 11pt;
+    background: oa-color(FwStdUiSectionHead);
+    color: oa-color(FwStdUiText);
+}
+
+*[type = 'FW_PANEL_SUBSECTION']
+{
+    font-size: 9pt;
+    background: oa-color(FwStdUiSubSectionHead);
+    color: oa-color(FwStdUiText);
+}
+
+/* all disabled textlines the type of which starts with or equals to 'FW' */
+QLineEdit[type |= 'FW']:read-only {
+    background-color:  oa-color(FwStdUiInputNoEdit);
+    color:             oa-color(_WindowText);
+    border:            1px solid oa-color(FwStdUiInputNoEditBorder);
+    padding:           2px;
+    border-radius:     2px;
+}
+
+/*** FURTHER CUSTOMIZATIONS POSSIBLE, eg. for UNICOS STYLE  ***/
+/*
+*[type = 'FW_PANEL_HEADER']
+{
+    font-size: 12pt;
+    background: oa-color(FwStdUiPanelHead);
+    color: oa-color(FwStdUiPanelHeadTxt);
+
+}
+
+*[type = 'FW_PANEL_SECTION']
+{
+    font-size: 10pt;
+    background: oa-color(FwStdUiSectionHead);
+    color: oa-color(FwStdUiText);
+}
+*/

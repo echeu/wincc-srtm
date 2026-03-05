@@ -1,0 +1,22 @@
+[general]
+pvss_path = "/opt/WinCC_OA/3.19"
+proj_path = "/home/monitor/WinCC/SRTM_Monitor_EC-01/fwComps"
+proj_path = "/home/monitor/WinCC/fwComponents_20260302"
+proj_path = "/home/monitor/WinCC/SRTM_Monitor_EC-01"
+proj_version = "3.19"
+langs = "en_US.utf8"
+distributed = 1
+userName = "root"
+password = ""
+mxProxy = "none"
+[ui]
+defaultFont = "Noto Sans"
+LoadCtrlLibs = "fwInstallation/fwInstallation.ctl"
+defaultPanelFormat = "XML"
+[ctrl]
+LoadCtrlLibs = "fwInstallation/fwInstallation.ctl"
+[valarch]
+[data]
+[dip_1]
+[event]
+[mod_15]

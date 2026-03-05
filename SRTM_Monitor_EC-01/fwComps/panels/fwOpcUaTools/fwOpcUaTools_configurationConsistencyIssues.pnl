@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">500 437</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">18.00000000000001 27.99999999999999</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  string issuesString = $issuesString;
+  dyn_string issuesList = strsplit(issuesString, &quot;|&quot;);
+  TABLE1.appendLines(issuesList.count(), &quot;list&quot;, issuesList);
+  TABLE1.adjustColumn(0);
+}
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="PRIMITIVE_TEXT_TITLE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">24.87860479791077 8.996989207393923</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignVCenter</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.225838532348698 0 0 0.9998631645171183 -19.49715239235421 2.504241899968752</prop>
+    <prop name="Location">24.87860479791077 8.996989207393923</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,19,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA configuration consistency issues</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="TABLE1" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 42.00000000000001</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">9 42.00000000000001</prop>
+    <prop name="Size">482 355</prop>
+    <prop name="ShowColumnHeader">False</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">18</prop>
+    <prop name="RowHeaderWidth">0</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">list</prop>
+     <prop name="Width">60</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">#1</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON1" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">411 410.2</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">411 403</prop>
+    <prop name="Size">80 25</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Close</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  PanelOff();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">9 403</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">9 403</prop>
+    <prop name="Size">396 25</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="0" Name="LAYOUT_GROUP2" serial="1">
+   <properties>
+    <prop idx="0" name="shapeSerial">4</prop>
+    <prop idx="1" name="shapeSerial">3</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP1" serial="0">
+   <properties>
+    <prop idx="0" name="shapeSerial">0</prop>
+    <prop idx="1" name="shapeSerial">1</prop>
+    <prop idx="2" name="groupSerial">1</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

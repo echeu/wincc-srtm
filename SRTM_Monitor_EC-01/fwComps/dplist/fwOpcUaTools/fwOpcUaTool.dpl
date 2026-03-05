@@ -1,0 +1,49 @@
+# (c) Copyright CERN 2005. All rights not expressly granted are reserved.
+# icecontrols.support@cern.ch
+#
+# SPDX-License-Identifier: LGPL-3.0-only
+
+# ascii dump of database
+
+# Datapoint/DpId
+DpName	TypeName	ID
+_OPCUA_TOOLS_DEFAULT	_OPCUASubscription	2852837
+_OPCUA_TOOLS	_OPCUAServer	2853920
+
+# Aliases/Comments
+AliasId	AliasName	CommentName
+_OPCUA_TOOLS_DEFAULT.	""	lt:1 LANG:10001 "OPC UA TOOLS default subscription@@"
+_OPCUA_TOOLS.	""	lt:1 LANG:10001 "OPC UA TOOLS server connection@@"
+
+# DpValue
+Manager/User	ElementName	TypeName	_original.._value	_original.._status64	_original.._stime
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.RequestedLifetimeCount	_OPCUASubscription	100	0x8300000000000101	01.11.2020 09:43:09.683
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.RequestedMaxKeepAliveCount	_OPCUASubscription	10	0x8300000000000101	01.11.2020 09:43:09.683
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.PublishingEnabled	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Priority	_OPCUASubscription	0	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.SubscriptionType	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.TimestampsToReturn	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.QueueSize	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.DiscardOldest	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.DataChangeFilter.Trigger	_OPCUASubscription	1	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.DataChangeFilter.DeadbandType	_OPCUASubscription	0	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.DataChangeFilter.DeadbandValue	_OPCUASubscription	0	0x8300000000000101	01.11.2020 09:43:09.684
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.MonitoredItems.SamplingInterval	_OPCUASubscription	0	0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Alarm.Acknowledgement	_OPCUASubscription	"", "", ""	0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Alarm.States	_OPCUASubscription		0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Alarm.AlarmRanges	_OPCUASubscription		0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Alarm.AlarmType	_OPCUASubscription	""	0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.Alarm.Flags	_OPCUASubscription	0x0	0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS_DEFAULT.Config.RequestedPublishingInterval	_OPCUASubscription	500	0x8300000000000101	01.11.2020 09:43:09.685
+ASC (1)/0	_OPCUA_TOOLS.Config.ConnInfo	_OPCUAServer	"opc.tcp://localhost:4901"	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.AccessInfo	_OPCUAServer	""	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Password	_OPCUAServer	"5AA09AC6C9D08C80"	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Security.Policy	_OPCUAServer	0	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Security.MessageMode	_OPCUAServer	0	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Security.Certificate	_OPCUAServer	""	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Active	_OPCUAServer	1	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.ReconnectTimer	_OPCUAServer	10	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.StatusMapping	_OPCUAServer		0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Config.Separator	_OPCUAServer	"."	0x8300000000000101	01.11.2020 09:43:09.681
+ASC (1)/0	_OPCUA_TOOLS.Redu.Config.ConnInfo	_OPCUAServer	"opc.tcp://"	0x8300000000000101	01.11.2020 09:43:09.682
+ASC (1)/0	_OPCUA_TOOLS.Redu.Config.Active	_OPCUAServer	0	0x8300000000000101	01.11.2020 09:43:09.682

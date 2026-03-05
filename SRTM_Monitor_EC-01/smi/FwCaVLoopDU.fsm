@@ -1,0 +1,14 @@
+class: $FWPART_$TOP$FwCaVLoopDU_CLASS/associated
+!panel: FwCaVLoop|FwCaVLoopDU.pnl
+    state: OFF
+    !color: FwStateOKNotPhysics
+    state: STAND-BY
+    !color: FwStateOKNotPhysics
+    state: ON
+    !color: FwStateOKPhysics
+    state: LOCKED
+    !color: FwStateOKNotPhysics
+    state: WARNING
+    !color: FwStateAttention1
+    state: ERROR
+    !color: FwStateAttention3

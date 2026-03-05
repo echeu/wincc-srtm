@@ -1,0 +1,57 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwTree</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <subComponent>yes</subComponent>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.2.0</required_installer_version>
+  <postInstall>./scripts/fwTree/fwTree.postInstall</postInstall>
+  <config>./config/fwTree.config</config>
+  <dplist>./dplist/fwTree.dpl</dplist>
+  <file>./data/LICENSES/fwTree/LICENSE-LGPL3</file>
+  <file>./panels/fwTreeDisplay/fwTree.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeAddNodesStd.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeAddNodeStd.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeCreate.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeDisplayMain.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeDisplay.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeRemoveNodesStd.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeRemoveNodeStd.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeRenameNodeStd.pnl</file>
+  <file>./panels/fwTreeDisplay/fwTreeReorderNodeStd.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageInfo.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageInput.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageInputCount.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageButton.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageButtons.pnl</file>
+  <file>./panels/fwTreeDisplay/warningButtons.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageInfoProgress.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageMoreInfo.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageQuestion.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageQuestionReferences.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageWarning.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageWarningTypeInUse.pnl</file>
+  <file>./panels/fwTreeDisplay/myMessageWarningReferences.pnl</file>
+  <file>./panels/fwTreeDisplay/testDefaultTree.pnl</file>
+  <file>./panels/objects/fwTree/fwTree.pnl</file>
+  <file>./panels/objects/fwTree/fwTreeNodeDetail.pnl</file>
+  <file>./scripts/libs/classes/fwTree/FwTree.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTreeImpl.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTreeNodeDelegate.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTree_DpObserver.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTree_Repository.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTree_RepositoryImpl.ctl</file>
+  <file>./scripts/libs/classes/fwTree/FwTree_SimpleImpl.ctl</file>
+  <file>./scripts/libs/fwTree/fwTree.ctl</file>
+  <file>./scripts/libs/fwTree/fwTreeDisplay.ctl</file>
+  <file>./scripts/libs/fwTree/fwTreeUtil.ctl</file>
+  <file>./scripts/libs/fwTree/fwDefaultTree.ctl</file>
+  <file>./fwTree.xml</file>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwTree/commit/5c925a4a93652b976311dc50aafaa947c03b65c1</commit>
+</component>

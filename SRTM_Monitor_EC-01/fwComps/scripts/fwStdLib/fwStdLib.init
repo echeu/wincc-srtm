@@ -1,0 +1,11 @@
+/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+main()
+{
+    fwInstallation_cleanupObsoleteFiles("fwStdLib", makeDynString("help/en_US.utf8/fwStdLib"),true);
+}

@@ -1,0 +1,1183 @@
+WCCILpmon    (1), 2026.02.16 13:26:01.811, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.16 13:26:01.915, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.16 13:26:02.116, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.16 13:26:02.317, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.16 13:26:02.518, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.16 13:26:02.719, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.16 13:26:02.920, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.16 13:26:03.122, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.16 13:26:06.227, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.16 13:26:06.428, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.16 13:26:06.830, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.16 13:26:07.031, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.16 13:26:07.232, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.16 13:26:07.433, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.16 13:26:11.741, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.16 13:26:21.653, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.16 13:26:21.654, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.313, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.314, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.314, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:54.314, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:58.327, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:58.450, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:34:59.468, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 13:35:00.471, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.16 13:35:05.051, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.16 13:35:05.051, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.16 13:35:05.051, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.16 15:09:23.943, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.16 15:09:24.047, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.16 15:09:24.248, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.16 15:09:24.449, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.16 15:09:24.650, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.16 15:09:24.851, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.16 15:09:25.053, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.16 15:09:25.254, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.16 15:09:28.360, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.16 15:09:28.561, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.16 15:09:28.963, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.16 15:09:29.164, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.16 15:09:29.365, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.16 15:09:29.567, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.16 15:09:36.078, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.16 15:09:59.964, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.16 15:09:59.965, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.16 15:12:43.113, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:12:43.114, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:13:13.182, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGKILL
+WCCILpmon    (1), 2026.02.16 15:13:13.200, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:13:13.325, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:13:14.344, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 15:13:15.347, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.16 15:13:15.347, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.16 15:20:17.601, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.16 15:20:17.705, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.16 15:20:17.906, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.16 15:20:18.108, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.16 15:20:18.309, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.16 15:20:18.510, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.16 15:20:18.711, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.16 15:20:18.912, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.16 15:20:22.019, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.16 15:20:22.220, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.16 15:20:22.621, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.16 15:20:22.823, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.16 15:20:23.024, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.16 15:20:23.225, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.16 15:20:28.033, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.16 15:20:39.427, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.16 15:20:39.428, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.16 17:17:34.451, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.16 17:17:34.451, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.451, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.451, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.451, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.452, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.452, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.452, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.452, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:34.452, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:38.465, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:38.582, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:39.605, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.16 17:17:40.608, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.16 17:23:16.506, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.16 17:23:16.506, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.16 17:23:16.506, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.17 08:02:16.865, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.17 08:02:16.969, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.17 08:02:17.170, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.17 08:02:17.372, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.17 08:02:17.573, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.17 08:02:17.774, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.17 08:02:17.975, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.17 08:02:18.176, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.17 08:02:21.282, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.17 08:02:21.484, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.17 08:02:21.985, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.17 08:02:22.187, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.17 08:02:22.388, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.17 08:02:22.589, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.17 08:02:25.495, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.17 08:02:30.919, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.17 08:02:30.920, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.816, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.817, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.817, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.817, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.817, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:17.817, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:21.830, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:21.956, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:22.982, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 08:09:23.985, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.17 08:09:26.247, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.17 08:09:26.247, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.17 08:09:26.247, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.17 14:50:01.081, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.17 14:50:01.185, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.17 14:50:01.387, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.17 14:50:01.588, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.17 14:50:01.789, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.17 14:50:01.990, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.17 14:50:02.191, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.17 14:50:02.392, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.17 14:50:05.498, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.17 14:50:05.699, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.17 14:50:06.200, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.17 14:50:06.402, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.17 14:50:06.603, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.17 14:50:06.804, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.17 14:50:11.111, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.765, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.766, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.766, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:01.766, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:05.779, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:05.896, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:06.923, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 15:27:07.926, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.17 15:28:06.264, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.17 15:28:06.264, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.17 15:28:06.264, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.17 15:28:33.936, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.17 15:28:34.039, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.17 15:28:34.241, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.17 15:28:34.442, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.17 15:28:34.643, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.17 15:28:34.844, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.17 15:28:35.045, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.17 15:28:35.246, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.17 15:28:38.352, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.17 15:28:38.553, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.17 15:28:39.054, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.17 15:28:39.256, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.17 15:28:39.457, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.17 15:28:39.658, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.17 15:28:45.038, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.17 15:29:43.415, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.17 15:29:43.416, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.362, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.363, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.363, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.363, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:28.363, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:32.373, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:32.496, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:33.512, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.17 16:00:34.515, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.17 16:00:38.273, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.17 16:00:38.273, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.17 16:00:38.273, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.20 13:33:43.270, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.20 13:33:43.373, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.20 13:33:43.575, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.20 13:33:43.776, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.20 13:33:43.977, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.20 13:33:44.178, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.20 13:33:44.379, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.20 13:33:44.580, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.20 13:33:47.686, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.20 13:33:47.887, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.20 13:33:48.389, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.20 13:33:48.590, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.20 13:33:48.791, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.20 13:33:48.993, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.20 13:33:50.896, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.20 13:52:47.901, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.20 13:52:47.902, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.20 14:23:58.059, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:23:58.060, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:24:02.072, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:24:02.198, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:24:03.215, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 14:24:04.217, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.20 14:24:13.616, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.02.20 14:24:13.617, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.20 14:24:13.818, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.20 14:24:14.019, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.20 14:24:14.220, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.20 14:24:14.421, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.20 14:24:14.623, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.20 14:24:14.824, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.20 14:24:17.897, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.20 14:24:18.098, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.20 14:24:18.600, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.20 14:24:18.801, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.20 14:24:19.003, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.20 14:24:19.212, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.20 14:24:22.428, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.20 14:24:25.567, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.20 14:24:25.567, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.20 15:07:18.163, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:18.164, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:22.174, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:22.290, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:23.309, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:07:24.312, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.20 15:09:22.760, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.20 15:09:22.760, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.20 15:09:22.760, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.20 15:14:25.860, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.20 15:14:25.964, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.20 15:14:26.165, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.20 15:14:26.366, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.20 15:14:26.568, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.20 15:14:26.769, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.20 15:14:26.971, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.20 15:14:27.172, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.20 15:14:30.278, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.20 15:14:30.479, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.20 15:14:40.944, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.20 15:14:41.145, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.20 15:14:41.346, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.20 15:14:41.548, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.20 15:14:45.874, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.20 15:14:49.480, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.20 15:14:49.480, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.095, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.096, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.096, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.096, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:53.096, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:57.108, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:57.225, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:58.245, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.20 15:20:59.248, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.20 15:21:06.646, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.20 15:21:06.646, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.20 15:21:06.646, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.20 21:08:24.368, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.20 21:08:24.472, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.20 21:08:24.674, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.20 21:08:24.875, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.20 21:08:25.076, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.20 21:08:25.277, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.20 21:08:25.478, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.20 21:08:25.680, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.20 21:08:28.787, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.20 21:08:28.988, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.20 21:08:29.490, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.20 21:08:29.691, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.20 21:08:29.892, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.20 21:08:30.094, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.20 21:08:40.012, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.25 11:12:32.569, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.25 11:12:32.569, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.569, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:32.570, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:36.582, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:36.704, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:37.719, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 11:12:38.721, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.25 11:12:54.343, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.25 11:12:54.343, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.25 11:12:54.343, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.25 11:13:40.985, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.25 11:13:41.089, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.25 11:13:41.291, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.25 11:13:41.492, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.25 11:13:41.693, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.25 11:13:41.894, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.25 11:13:42.095, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.25 11:13:42.296, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.25 11:13:45.402, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.25 11:13:45.603, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.25 11:13:46.004, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.25 11:13:46.205, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.25 11:13:46.407, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.25 11:13:46.608, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.25 11:13:50.915, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.25 11:27:36.069, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.25 11:27:36.070, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.25 13:11:11.277, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:11.278, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:15.292, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:15.408, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:16.427, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 13:11:17.429, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.25 13:11:21.504, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.02.25 13:11:21.504, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.25 13:11:21.696, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.25 13:11:21.897, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.25 13:11:22.098, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.25 13:11:22.299, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.25 13:11:22.500, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.25 13:11:22.701, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.25 13:11:25.826, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.25 13:11:26.028, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.25 13:11:26.429, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.25 13:11:26.630, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.25 13:11:26.831, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.25 13:11:27.032, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.25 13:11:31.056, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.25 13:16:42.935, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.25 13:16:42.935, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.25 15:01:38.926, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.25 15:01:38.926, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:38.927, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:42.940, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:43.055, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:44.074, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.25 15:01:45.077, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.25 15:03:13.775, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.25 15:03:13.776, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.25 15:03:13.776, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.26 08:40:39.383, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.26 08:40:39.486, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 08:40:39.688, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 08:40:39.889, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 08:40:40.090, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 08:40:40.291, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 08:40:40.492, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 08:40:40.693, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 08:40:43.800, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 08:40:44.001, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 08:40:44.402, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 08:40:44.604, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 08:40:44.805, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 08:40:45.006, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 08:40:48.011, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 09:05:41.307, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 09:05:41.307, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:41.308, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:45.319, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:45.436, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:46.459, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:05:47.462, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 09:06:03.346, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.02.26 09:06:03.346, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 09:06:03.558, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 09:06:03.760, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 09:06:03.961, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 09:06:04.162, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 09:06:04.363, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 09:06:04.564, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 09:06:07.690, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 09:06:07.891, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 09:06:08.292, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 09:06:08.493, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 09:06:08.694, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 09:06:08.896, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 09:06:12.220, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 09:07:09.678, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 09:07:09.678, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.678, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:09.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:13.692, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:13.810, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:14.837, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:07:15.840, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 09:07:18.720, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.26 09:07:18.720, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.26 09:07:18.720, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.26 09:07:39.809, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.26 09:07:39.913, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 09:07:40.114, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 09:07:40.315, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 09:07:40.516, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 09:07:40.717, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 09:07:40.918, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 09:07:41.119, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 09:07:44.226, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 09:07:44.427, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 09:07:44.829, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 09:07:45.030, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 09:07:45.231, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 09:07:45.432, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 09:07:49.138, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 09:30:54.279, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 09:30:54.280, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.26 09:36:49.404, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 09:36:49.404, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:49.405, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:53.417, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:53.534, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:54.546, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 09:36:55.549, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 09:37:02.820, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.26 09:37:02.820, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.26 09:37:02.821, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.26 09:37:25.677, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.26 09:37:25.782, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 09:37:25.983, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 09:37:26.184, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 09:37:26.385, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 09:37:26.586, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 09:37:26.787, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 09:37:26.988, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 09:37:30.094, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 09:37:30.296, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 09:37:30.697, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 09:37:30.898, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 09:37:31.099, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 09:37:31.301, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 09:37:34.907, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 09:37:39.794, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 09:37:39.795, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.26 10:01:13.325, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:13.326, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:17.338, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:17.461, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:18.487, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 10:01:19.491, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 10:06:00.673, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.26 10:06:00.673, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.26 10:06:00.673, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.26 16:04:00.019, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.26 16:04:00.123, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 16:04:00.325, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 16:04:00.526, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 16:04:00.727, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 16:04:00.929, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 16:04:01.130, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 16:04:01.331, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 16:04:04.437, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 16:04:04.638, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 16:04:05.040, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 16:04:05.241, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 16:04:05.442, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 16:04:05.643, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 16:04:55.892, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 16:04:58.869, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 16:04:58.870, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.26 16:38:20.645, SYS,  INFO,       25/pmon, Got STOP command (SIGTERM) from ::1, stopping the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 16:38:20.645, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:24.880, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 16:38:24.880, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.644, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:42.645, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:46.658, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:46.775, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:47.797, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 16:38:48.799, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 16:38:51.999, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.26 16:38:51.999, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.26 16:38:52.000, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.02.26 16:39:05.941, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.02.26 16:39:06.045, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.02.26 16:39:06.246, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.02.26 16:39:06.447, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.02.26 16:39:06.648, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.02.26 16:39:06.849, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.02.26 16:39:07.050, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.02.26 16:39:07.251, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.02.26 16:39:10.358, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.02.26 16:39:10.559, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.02.26 16:39:10.960, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.02.26 16:39:11.161, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.02.26 16:39:11.363, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.02.26 16:39:11.564, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.02.26 16:39:16.172, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.02.26 16:39:21.682, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.02.26 16:39:21.683, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.02.26 17:12:38.155, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.02.26 17:12:38.155, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.155, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.155, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.155, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:38.156, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:42.165, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:42.287, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:43.311, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.02.26 17:12:44.314, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.02.26 17:17:03.127, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.02.26 17:17:03.127, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.02.26 17:17:03.127, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.03.02 12:43:08.421, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.03.02 12:43:08.525, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.02 12:43:08.726, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.02 12:43:08.927, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.02 12:43:09.128, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.02 12:43:09.329, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.02 12:43:09.530, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.02 12:43:09.731, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.02 12:43:12.837, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.02 12:43:13.038, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILproxy" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 9 
+WCCILpmon    (1), 2026.03.02 12:43:13.440, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.02 12:43:13.641, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.02 12:43:13.842, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.02 12:43:14.043, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi
+WCCILpmon    (1), 2026.03.02 12:43:19.230, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.02 12:47:23.357, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOActrl at index 15
+WCCILpmon    (1), 2026.03.02 12:47:23.383, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOActrl at index 16
+WCCILpmon    (1), 2026.03.02 12:47:23.383, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(1) - restarting it #1
+WCCILpmon    (1), 2026.03.02 12:47:23.384, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.02 12:53:29.867, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(1) at index 15
+WCCILpmon    (1), 2026.03.02 12:53:29.875, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 13:01:25.069, SYS,  INFO,       29/pmon, Got PROP_PUT command from ::1, changing manager WCCOAui(1) at index 13
+WCCILpmon    (1), 2026.03.02 13:01:40.228, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 17
+WCCILpmon    (1), 2026.03.02 13:01:40.229, SYS,  INFO,       11/pmon, Detected stopped manager WCCILsim(13) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:01:40.229, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.02 13:01:55.998, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAopcua at index 18
+WCCILpmon    (1), 2026.03.02 13:01:55.998, SYS,  INFO,       11/pmon, Detected stopped manager WCCOAopcua(6) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:01:55.998, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.02 13:01:56.024, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 19
+WCCILpmon    (1), 2026.03.02 13:03:00.240, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAopcua at index 20
+WCCILpmon    (1), 2026.03.02 13:03:00.266, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 21
+WCCILpmon    (1), 2026.03.02 13:03:00.266, SYS,  INFO,       11/pmon, Detected stopped manager WCCILsim(14) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:03:00.267, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.02 13:04:05.399, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAmod at index 22
+WCCILpmon    (1), 2026.03.02 13:04:05.428, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 23
+WCCILpmon    (1), 2026.03.02 13:04:05.428, SYS,  INFO,       11/pmon, Detected stopped manager WCCILsim(15) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:04:05.429, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.02 13:04:44.341, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAopcua at index 24
+WCCILpmon    (1), 2026.03.02 13:04:44.342, SYS,  INFO,       11/pmon, Detected stopped manager WCCOAopcua(17) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:04:44.342, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.02 13:04:44.368, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 25
+WCCILpmon    (1), 2026.03.02 13:04:51.455, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAopcua at index 26
+WCCILpmon    (1), 2026.03.02 13:04:51.456, SYS,  INFO,       11/pmon, Detected stopped manager WCCOAopcua(12) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:04:51.456, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.02 13:04:51.482, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 27
+WCCILpmon    (1), 2026.03.02 13:04:58.896, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 28
+WCCILpmon    (1), 2026.03.02 13:05:03.736, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAopcua at index 29
+WCCILpmon    (1), 2026.03.02 13:05:03.737, SYS,  INFO,       11/pmon, Detected stopped manager WCCOAopcua(16) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:05:03.737, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.02 13:05:03.763, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCILsim at index 30
+WCCILpmon    (1), 2026.03.02 13:05:11.601, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(3) at index 15
+WCCILpmon    (1), 2026.03.02 13:05:11.601, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 13:05:11.854, SYS,  INFO,       29/pmon, Got PROP_PUT command from ::1, changing manager WCCILproxy(1) at index 9
+WCCILpmon    (1), 2026.03.02 13:05:12.867, SYS,  INFO,       25/pmon, Got STOP command (SIGTERM) from ::1, stopping the manager WCCILproxy(1) at index 9
+WCCILpmon    (1), 2026.03.02 13:05:12.867, SYS,  INFO,       17/pmon, Stopping Manager WCCILproxy(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:05:13.908, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOActrl at index 31
+WCCILpmon    (1), 2026.03.02 13:05:13.908, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(1) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:05:13.909, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.02 13:05:14.834, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOAui at index 32
+WCCILpmon    (1), 2026.03.02 13:05:14.887, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOActrl at index 33
+WCCILpmon    (1), 2026.03.02 13:05:14.887, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(1) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:05:14.887, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.02 13:05:14.933, SYS,  INFO,       28/pmon, Got INS command from ::1, inserting new manager WCCOActrl at index 34
+WCCILpmon    (1), 2026.03.02 13:05:14.933, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(1) - restarting it #1
+WCCILpmon    (1), 2026.03.02 13:05:14.934, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.02 13:05:16.896, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #2
+WCCILpmon    (1), 2026.03.02 13:05:16.896, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.02 13:30:57.639, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.02 13:30:57.640, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.02 13:34:34.338, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(3) at index 15
+WCCILpmon    (1), 2026.03.02 13:34:34.339, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 13:43:28.589, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(3) at index 15
+WCCILpmon    (1), 2026.03.02 13:43:28.599, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 13:43:28.850, SYS,  INFO,       29/pmon, Got PROP_PUT command from ::1, changing manager WCCILproxy(1) at index 9
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.997, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.998, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.999, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.999, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.999, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:43:58.999, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:44:03.007, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:44:03.166, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 13:44:04.198, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.02 13:44:17.955, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.03.02 13:44:17.955, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.02 13:44:18.257, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.02 13:44:18.458, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.02 13:44:18.659, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.02 13:44:18.861, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.02 13:44:19.062, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.02 13:44:19.263, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.02 13:44:22.319, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.02 13:44:22.720, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.02 13:44:22.922, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.02 13:44:23.123, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.02 13:44:23.324, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.02 13:44:25.237, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 13:44:25.392, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.02 13:44:25.550, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.02 13:44:25.751, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.02 13:44:25.952, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.02 13:44:26.153, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.02 13:44:26.355, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.02 13:44:26.556, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.02 13:44:26.757, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.02 13:44:26.958, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.02 13:44:27.159, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.02 13:44:27.361, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.02 13:44:27.465, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.02 13:45:20.837, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.02 13:45:20.838, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.02 13:56:55.882, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(2) at index 15
+WCCILpmon    (1), 2026.03.02 13:56:55.883, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.02 14:09:00.175, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.176, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:00.177, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:04.188, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:04.355, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.02 14:09:05.380, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 14:11:53.230, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.03.03 14:11:53.231, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:11:53.533, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:11:53.734, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:11:53.935, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:11:54.136, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:11:54.337, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:11:54.539, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:11:57.598, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:11:57.999, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:11:58.201, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:11:58.402, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:11:58.603, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:11:58.748, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:11:58.915, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:11:59.116, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:11:59.264, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:11:59.465, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:11:59.667, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:11:59.868, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:12:00.069, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:12:00.271, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:12:00.472, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:12:00.673, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:12:00.874, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:12:01.075, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:12:06.843, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.03 14:12:06.844, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.03 14:12:29.340, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAui(1) at index 13
+WCCILpmon    (1), 2026.03.03 14:12:29.341, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.370, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:02.371, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:06.382, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:06.554, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:13:07.568, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 14:13:30.863, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.03.03 14:13:30.863, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:13:31.165, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:13:31.366, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:13:31.567, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:13:31.768, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:13:31.969, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:13:32.170, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:13:35.213, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:13:35.614, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:13:35.816, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:13:36.017, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:13:36.218, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:13:36.365, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:13:36.531, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:13:36.727, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:13:36.929, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:13:37.130, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:13:37.331, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:13:37.532, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:13:37.733, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:13:37.934, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:13:38.135, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:13:38.337, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:13:38.538, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:13:38.642, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.967, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:19.968, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:23.979, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:24.145, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:14:25.164, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 14:15:19.529, SYS,  INFO,       20/pmon, Got START_ALL command from ::1, starting the project
+WCCILpmon    (1), 2026.03.03 14:15:19.529, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:15:19.831, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:15:20.032, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:15:20.233, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:15:20.434, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:15:20.636, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:15:20.837, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:15:23.921, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:15:24.322, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:15:24.523, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:15:24.724, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:15:24.926, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:15:25.073, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:15:25.238, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:15:25.440, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:15:25.636, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:15:25.837, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:15:26.039, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:15:26.240, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:15:26.441, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:15:26.643, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:15:26.844, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:15:27.045, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:15:27.246, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:15:27.447, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:15:36.011, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAui(1) at index 13
+WCCILpmon    (1), 2026.03.03 14:15:36.012, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:15:46.302, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.03 14:15:46.303, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.03 14:15:59.755, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAui(1) at index 13
+WCCILpmon    (1), 2026.03.03 14:15:59.755, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:20:26.817, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAui(1) at index 13
+WCCILpmon    (1), 2026.03.03 14:20:26.817, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.992, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:05.993, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:10.005, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:10.173, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:24:11.200, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 14:24:14.840, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.03.03 14:24:14.841, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.03.03 14:24:14.841, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.03.03 14:29:04.786, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.03.03 14:29:04.890, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:29:05.192, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:29:05.393, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:29:05.594, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:29:05.795, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:29:05.996, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:29:06.198, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:29:09.306, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:29:09.707, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:29:09.908, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:29:10.109, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:29:10.310, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:29:12.315, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:29:12.481, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:29:12.682, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:29:12.883, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:29:13.084, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:29:13.286, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:29:13.487, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:29:13.688, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:29:13.889, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:29:14.090, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:29:14.291, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:29:14.493, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:29:14.693, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:29:26.836, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.03 14:29:26.837, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.03 14:34:26.839, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(2) at index 15
+WCCILpmon    (1), 2026.03.03 14:34:26.840, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:35:27.389, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOActrl(6) at index 15
+WCCILpmon    (1), 2026.03.03 14:35:27.390, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:38:42.940, SYS,  INFO,       22/pmon, Got RESTART_ALL command from ::1, restarting the project
+WCCILpmon    (1), 2026.03.03 14:38:42.940, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.941, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:42.942, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:46.954, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:47.128, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:38:48.155, SYS,  INFO,       14/pmon, Completely stopped the project - restarting it
+WCCILpmon    (1), 2026.03.03 14:38:48.256, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:38:48.557, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:38:48.759, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:38:48.960, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:38:49.125, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:38:49.327, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:38:49.528, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:38:52.645, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:38:53.047, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:38:53.258, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:38:53.459, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:38:53.660, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:38:56.175, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:38:56.358, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:38:56.383, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:38:56.395, SYS,  INFO,       29/pmon, Got PROP_PUT command from ::1, changing manager WCCILproxy(1) at index 9
+WCCILpmon    (1), 2026.03.03 14:38:56.596, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:38:56.797, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:38:56.999, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:38:57.191, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:38:57.392, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:38:57.609, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:38:57.810, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.012, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.167, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #1
+WCCILpmon    (1), 2026.03.03 14:38:58.168, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.324, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #2
+WCCILpmon    (1), 2026.03.03 14:38:58.325, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.422, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.565, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #3
+WCCILpmon    (1), 2026.03.03 14:38:58.566, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.722, SYS,  INFO,       12/pmon, Manager WCCOActrl(5) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.03 14:38:58.722, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(6) - restarting it #1
+WCCILpmon    (1), 2026.03.03 14:38:58.723, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:38:58.866, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #2
+WCCILpmon    (1), 2026.03.03 14:38:58.867, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:38:59.012, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(5) - restarting it #3
+WCCILpmon    (1), 2026.03.03 14:38:59.013, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:38:59.159, SYS,  INFO,       12/pmon, Manager WCCOActrl(5) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.03 14:38:59.159, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:39:15.232, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.03 14:39:15.232, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.289, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:13.290, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:17.304, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:17.455, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 14:56:18.475, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 14:56:21.527, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.03.03 14:56:21.527, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.03.03 14:56:21.528, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.03.03 14:56:41.807, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.03.03 14:56:41.911, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.03 14:56:42.213, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.03 14:56:42.414, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.03 14:56:42.615, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.03 14:56:42.816, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.03 14:56:43.017, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.03 14:56:43.218, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.03 14:56:46.325, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.03 14:56:46.826, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.03 14:56:47.028, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.03 14:56:47.229, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.03 14:56:47.430, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.03 14:56:49.234, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.03 14:56:49.401, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.03 14:56:49.602, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.03 14:56:49.803, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.03 14:56:50.004, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.03 14:56:50.206, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.03 14:56:50.407, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.03 14:56:50.608, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.03 14:56:50.809, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.03 14:56:51.010, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.212, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.368, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #1
+WCCILpmon    (1), 2026.03.03 14:56:51.369, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.515, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #2
+WCCILpmon    (1), 2026.03.03 14:56:51.516, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.672, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #3
+WCCILpmon    (1), 2026.03.03 14:56:51.673, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.828, SYS,  INFO,       12/pmon, Manager WCCOActrl(4) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.03 14:56:51.829, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:56:51.975, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #1
+WCCILpmon    (1), 2026.03.03 14:56:51.975, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:56:52.121, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #2
+WCCILpmon    (1), 2026.03.03 14:56:52.122, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:56:52.265, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #3
+WCCILpmon    (1), 2026.03.03 14:56:52.266, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.03 14:56:52.421, SYS,  INFO,       12/pmon, Manager WCCOActrl(4) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.03 14:56:52.421, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.03 14:57:31.313, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.03 14:57:31.314, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.03 16:34:20.679, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.03 16:34:20.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.679, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.680, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.681, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:20.681, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:24.693, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:24.742, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.03 16:34:25.762, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.03 16:35:13.491, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.03.03 16:35:13.491, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.03.03 16:35:13.491, SYS,  INFO,        2, Manager Stop
+WCCILpmon    (1), 2026.03.04 11:15:41.907, SYS,  INFO,        1, Manager Start, START_MODE
+WCCILpmon    (1), 2026.03.04 11:15:42.011, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdata" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 1 
+WCCILpmon    (1), 2026.03.04 11:15:42.313, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 2 -num 0
+WCCILpmon    (1), 2026.03.04 11:15:42.514, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 3 -num 1
+WCCILpmon    (1), 2026.03.04 11:15:42.715, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 4 -num 2
+WCCILpmon    (1), 2026.03.04 11:15:42.916, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 5 -num 3
+WCCILpmon    (1), 2026.03.04 11:15:43.118, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 6 -num 4
+WCCILpmon    (1), 2026.03.04 11:15:43.319, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAvalarch" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 7 -num 5
+WCCILpmon    (1), 2026.03.04 11:15:46.525, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILevent" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 8 
+WCCILpmon    (1), 2026.03.04 11:15:47.027, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 10 -f pvss_scripts.lst
+WCCILpmon    (1), 2026.03.04 11:15:47.228, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 11 
+WCCILpmon    (1), 2026.03.04 11:15:47.429, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILdist" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 12 
+WCCILpmon    (1), 2026.03.04 11:15:47.630, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAui" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 13 -m gedi +config config.gedi
+WCCILpmon    (1), 2026.03.04 11:15:50.535, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 15 -f fwScripts.lst
+WCCILpmon    (1), 2026.03.04 11:15:50.710, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 16 -f fwInstallationAgent.lst
+WCCILpmon    (1), 2026.03.04 11:15:50.912, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 17 -num 13
+WCCILpmon    (1), 2026.03.04 11:15:51.113, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 18 -num 6
+WCCILpmon    (1), 2026.03.04 11:15:51.314, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 21 -num 14
+WCCILpmon    (1), 2026.03.04 11:15:51.516, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCILsim" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 23 -num 15
+WCCILpmon    (1), 2026.03.04 11:15:51.717, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 24 -num 17
+WCCILpmon    (1), 2026.03.04 11:15:51.918, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 26 -num 12
+WCCILpmon    (1), 2026.03.04 11:15:52.120, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 29 -num 16
+WCCILpmon    (1), 2026.03.04 11:15:52.153, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 31 unDistributedControl.ctl
+WCCILpmon    (1), 2026.03.04 11:15:52.256, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.04 11:15:52.411, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #1
+WCCILpmon    (1), 2026.03.04 11:15:52.412, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.04 11:15:52.569, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #2
+WCCILpmon    (1), 2026.03.04 11:15:52.569, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.04 11:15:52.715, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #3
+WCCILpmon    (1), 2026.03.04 11:15:52.715, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 33 fwFSM/fwFsmSrvr.ctl
+WCCILpmon    (1), 2026.03.04 11:15:52.860, SYS,  INFO,       12/pmon, Manager WCCOActrl(4) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.04 11:15:52.860, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.04 11:15:53.006, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #1
+WCCILpmon    (1), 2026.03.04 11:15:53.007, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.04 11:15:53.151, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #2
+WCCILpmon    (1), 2026.03.04 11:15:53.152, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.04 11:15:53.295, SYS,  INFO,       11/pmon, Detected stopped manager WCCOActrl(4) - restarting it #3
+WCCILpmon    (1), 2026.03.04 11:15:53.296, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOActrl" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 34 fwRack/fwRackControlApplication.ctl
+WCCILpmon    (1), 2026.03.04 11:15:53.442, SYS,  INFO,       12/pmon, Manager WCCOActrl(4) restarting too rapidly - giving up restarting
+WCCILpmon    (1), 2026.03.04 11:15:53.442, SYS,  INFO,        9/pmon, The project is up and running. Entering monitor mode
+WCCILpmon    (1), 2026.03.04 11:16:55.180, SYS,  INFO,       24/pmon, Got START command from ::1, starting the manager WCCOAopcua(10) at index 14
+WCCILpmon    (1), 2026.03.04 11:16:55.180, SYS,  INFO,        1, Manager Start, "/opt/WinCC_OA/3.19/bin/WCCOAopcua" -PROJ "SRTM_Monitor_EC-01" -pmonIndex 14 -num 10
+WCCILpmon    (1), 2026.03.04 16:58:52.379, SYS,  INFO,       21/pmon, Got STOP_ALL command from ::1, stopping the project
+WCCILpmon    (1), 2026.03.04 16:58:52.379, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(16) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(12) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(17) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(15) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(14) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(6) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(13) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAopcua(10) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.380, SYS,  INFO,       17/pmon, Stopping Manager WCCOAui(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCILsim(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOActrl(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(5) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(4) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(3) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(2) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(1) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:52.381, SYS,  INFO,       17/pmon, Stopping Manager WCCOAvalarch(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:56.392, SYS,  INFO,       17/pmon, Stopping Manager WCCILevent(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:56.540, SYS,  INFO,       17/pmon, Stopping Manager WCCILdata(0) with signal SIGTERM
+WCCILpmon    (1), 2026.03.04 16:58:57.568, SYS,  INFO,       13/pmon, Completely stopped the project - waiting for commands
+WCCILpmon    (1), 2026.03.04 17:15:46.335, SYS,  INFO,        3/pmon, Got shutdown command - stopping the project and terminating
+WCCILpmon    (1), 2026.03.04 17:15:46.335, SYS,  INFO,       15/pmon, Completely stopped the project - terminating
+WCCILpmon    (1), 2026.03.04 17:15:46.335, SYS,  INFO,        2, Manager Stop

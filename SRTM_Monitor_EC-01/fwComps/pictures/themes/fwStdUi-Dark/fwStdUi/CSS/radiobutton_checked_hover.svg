@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <g id="Checked_hover" data-name="Checked hover" transform="translate(-611 -544)">
+    <g id="Ellipse_130" data-name="Ellipse 130" transform="translate(611 544)" fill="#454545" stroke="#616161" stroke-width="1">
+      <circle cx="6" cy="6" r="6" stroke="none"/>
+      <circle cx="6" cy="6" r="5.5" fill="none"/>
+    </g>
+    <circle id="Ellipse_131" data-name="Ellipse 131" cx="3" cy="3" r="3" transform="translate(614 547)" fill="#c2c2c2"/>
+  </g>
+</svg>

@@ -1,0 +1,1713 @@
+     JCOP Framework version 9.3.0 - Release Notes - 26 November 2024
+========================================================================
+
+Requirements
+------------
+* Component Installation Tool 9.3.0 (or higher).
+
+* WinCC OA 3.19 with patch P014 (CERN release 20241125) or higher. 
+  NOTE: component installation or upgrade may fail on systems which
+  do not have the adequate WinCC OA 3.19 patch installed!
+
+* The fwConfigurationDB component requires an upgrade of its database
+  schema to address an important (even though quite rare) issue with
+  recipe consistency (issue FWCDB-1226, already fixed in the
+  fwConfigurationDB-9.1.1 release).
+
+Distribution package version number
+-----------------------------------
+Note that due to internal technical reasons the distribution 
+package holds the "9.3.0.1" version number (ie. additional ".1"),
+so that to incorporate a fixup for an issue spotted shortly after
+the pre-release of the 9.3.0 version of the framework.
+
+
+
+Resolved issues
+-----------------
+
+The complete list of resolved issues may be found at 
+https://its.cern.ch/jira/issues/?filter=44527
+
+Release notes:
+--------------
+* This yearly release of the JCOP Framework accumulates the releases of 
+  individual components prepared since the 9.1.0 release in Autumn'2023
+* The newest WinCC OA patches contain the completely new release of
+  CtrlRDBAccess-11.03; it is a 100% compatible drop-in replacement,
+  completely re-engineered and consolidated.
+* As the new CtrlRDBAccess provides improved mechanism to keep the 
+  User Interface responsive even during length operation, this may
+  lead to a situation when a user may interact with the UI in a way
+  that has previously not been possible (e.g. initiate another DB
+  command while the previous one is still in progress).
+  To address that, the fwConfigurationDB has a new option in the config
+  file, fwConfigurationDB_ForceSynchronousMode (disabled by default)
+  that would switch to synchronous (blocking) mode of DB operation,
+  ie. the previous behaviour. Even though we consider this should not
+  be needed, it stays as an optional additional compatibility switch.
+* ConfigurationDB tool issue with recipe-data inconsistency (FWCDB-1226) 
+  resolved, and a recipe-repair tool panel is distributed. 
+* Advanced Recipe Operation panel in fwConfigurationDB tool now allows 
+  to remove entries (devices, elements of a device) when editing the 
+  recipeObject content.
+* Numerous panels in fwConfigurationDB and fwDevice have been layouted
+  (they adjust their content in response to being resized) and many of
+  them got minor touch-ups to make them look correctly with the new
+  color themes mentioned above.
+* There are numerous improvements for the NextGen Alarm Screen,
+  documented in the release notes of the component (over 30 issues
+  resolved). Notably, filter-views and popups as well as the issues
+  with fwAccessControl integration have been addressed.
+* The New Trending Tool (fwTrending3 component) provides numerous
+  enhancements to usability and functionality as well as bug fixes,
+  and in particular mass configuration and interactive legend.
+  Please, refer to the release notes of fwTrending3 for details.
+  It makes use of the new visualization of the Trend Tree,
+  enabling drag-and-drop as well as numerous new options in its
+  context-menu. Numerous scalability/performance issues with the Trend Tree 
+  used by the new Trending present in the previous releases have been addressed,
+  notably for large dist systems.
+* It is now possible to configure delayed alarms (ie. "time hysteresis")
+  for the alarm configs. The feature is exposed in the fwAlertConfig
+  panels and also integrated with the fwConfigurationDB tool.
+* A number of issues related to the use of discrete alarms and 
+  alarm status bit in the fwConfigurationDB and fwAlertConfig have been fixed.
+* Significnt performance improvements in the framework device creation 
+  functionality. Reference tests indicate up to 40% speed-up when
+  creating fully populated CAEN crate with 16-boards.
+  This is achieved by numerous improvements in the fwDevice and fwConfigs
+  subcomponents of the Core.
+* The new fwFSM version, 35, implements the long-awaited "FOR" loop construct.
+* The documentation of the APIs for all components have been converted from HTML
+  files to the Qt help, resulting in much smaller distribution package. 
+  In addition, the documentation of all subcomponents of FwCore is now 
+  centralized in a single help file (minimizing the number of entries at the 
+  top of the documentation tree and making the installation faster).
+* fwAccessControl component addresses the issue with serious performance 
+  regression encountered in WinCC OA 3.19. It als resolves the problem with LDAP
+  authentication not falling-back properly to local authentication when the 
+  LDAP server cannot be contacted
+* fwCAEN supports 3 new board types: A6601, A2551, A7435D
+  and fixes issues with addressing of specific EASY boards: A1396, A380x family.
+* fwCaen panels reworked to display the artwork (pictures of crates, boards) 
+  only if fwCompatArtwok component is installed.
+* fwCaen deprecates the A1676 branch controller configuration panels:
+    fwCaen/fwCaenBoardSY1527A1676Import.pnl
+    fwCaen/fwCaenBoardSY1527A1676ExpertConfiguration.pnl
+    replaced with equivalent panels: fwCaen/fwCaenBranchControllerImport.pnl
+  and
+    fwCaen/fwCaenBranchControllerExpertConfiguration.pnl 
+    (preparation for R6060 integration)
+* fwELTEK component has operation panels now
+* Majority of the components licensed on GNU Lesser General Public License
+  (LGPL) v3, with dedicated release package (jcop-framework-oss).
+  The OSS (Open Source Software) distribution does not include the 
+  CERN-specific components (not being of general interest), notably 
+  fwDIP, fwRack, fwCaV, fwMCS and it contains a dedicated build
+  of the fwAccessControl component with CERN-specific elements removed.
+* The artwork (icons, pictures) used by the components have been reviewed,
+  and a set of dedicated new ones was developed, providing a homogeneous
+  and modernized look. The new standard icons are placed in the new fwStdUi 
+  subcomponent of fwCore, and are guaranteed to be compatible with Open Source
+  licensing. All the Framework components have been reviewed and modified
+  to use the new artwork and hence maintain the OSS license compliance
+* To assure maximum compatibility for the existing project, the previous
+  artwork elements are included in the new fwCompatArtwork component,
+  which is a part of the CERN distribution of the Framework, but not the 
+  OSS release. The components SHOULD be installed in the existing projects
+  being upgraded to this release of the Framework, to guarantee that the 
+  previously distributed artwork elements that might have been integrated
+  into users' custom panels is still available (as it is NOT distributed
+  anymore by the components to which they previously belonged). This way
+  the compatibility is assured and there is NO NEED to modify any of the
+  existing panels (even though it is recommended to consider using the
+  new artwork delivered by fwStdUi instead for all the new developments
+  and revisions of existing panels).
+* The FwStdUi subcomponents provides a technical preview of the 
+  "UI Theme swiching" functionality which allows, notably, to enable
+  a dark color palette for the application. It has some limitation at the
+  moment. The functionality is not active by default and may be enabled by
+  uncommenting the line "fwStdUiThemesEnable = 1" in the project config file.
+  When enabled, a theme-switch toolbar is added to GEDI, allowing to activate
+  the "fwSdtUi-Light", "fwStdUi-Dark" themes or bring the UI back to the
+  standard (drfault) theme. There are still some technical limitation 
+  of this functionality in this release of the Framework, hence it should be
+  considered a "technical preview" (demonstration of functionality) for the 
+  time being.
+* Associated with the theme-switching functionality, there are new color
+  databases and themed sets of standard icons, with a proposal of color
+  definitions that are provided (in the fwStdUi-Dark and fwStrUi-Light themes)
+  for test and would serve for discussion of an update of the JCOP Framework
+  Guidelines. Such discussion is planned to take place at the JCOP Framework
+  Working Group forum in 2025.
+* A set of new dialog standard boxes are also provided by fwStdUi, to be used
+  efforlessly from CTRL code using the methods of the new FwStdUi class.
+  They could be used, in particular, to ask a used for a confirmation, 
+  an input of a value or a selection from a list. Look in the examples
+  distributed with the fwStdUiUnitTests component for more details.
+  At this moment the feature is considered to be a technical-preview,
+  and used internally by e.g. the new Trending Tool component, hence it
+  is not yet recommended for public use (and hence not documented).
+  The feature will be presented for discussion at the JCOP Framework
+  Working Group forum
+* FwStdUi provides an initial proposal of feature-rich reference panels
+  enabling rapid GUI development in particular when using Object-Oriented
+  approach and CTRL++ (e.g. a table, a selection list, text line).
+  Again, this is a technical preview of the feature, provided for testing
+  with the aim of being discussed at the JCOP Framework Working Group forum.
+  Examples of its use are distributed with the fwStdUiUnitTests component.
+* The operation/configuration panels for the unDistributedControl components
+  have been refreshed with a new look-and-feel (notably used by the upcoming
+  release of the UNICOS framework).
+
+
+
+
+     JCOP Framework version 9.1.0 - Release Notes - 31 October 2023
+========================================================================
+
+Highlights
+----------
+* First release of the new Trending component. For the time being it is kept as a separate
+    (optional) component called "fwTrending3", which coexists with the standard fwTrending
+    (and requires it to be installed). The new Trending provides a 1:1 functionality
+    replacement for the standard one and also provides numerous long-awaited improvements
+    (unlimited number of curves per plot, flexible layout of plots in a page, resizable
+    layouted panels). It also implements some of the features of the "lbTrending" tool,
+    (LHCb Trending) such as mass-creation of panels - these features will be developed
+    further in upcoming releases of the new Trending component.
+    New FwTrending blends with the standard one, with a switch between the two possible.
+* AlarmScrenNG has all the requested and mandatory features implemented
+* New component: fwStdLib regroups the recently implemented core functionality,
+   notably enabling effective CTRL++ programming:
+   - FwException class (previously in fwGeneral)
+   - CtrlOOUtils (previously in fwCtrlUtils component)
+   - CtrlJsonSerialization (previously in fwCtrlUtils)
+* New component: fwStdUi providing utilities and building blocks for advanced user interfaces (panels):
+   - new FwStdUi class with utility functions to pop up modernized dialog boxes
+      for selection of item, text input or a message
+   - new FwPanel class allowing to develope much cleaner code related to the use of reference panels,
+      and binding shapes to class/struct, effectively enabling Model-View programming.
+   - initial set of feature-rich Object-Oriented reference panels, working smoothly with CTRL++ lists
+      and objects: selection list with filtering, powerful table with feature-rich headers, sorting/filtering.
+      The API and look and feel not yet guaranteed to stay 100% compatible - a "feature preview".
+   - definition of modernized color style definitions, for the "light" and "dark" style; initial set of
+      standardinzed icons (will be enhanced in the upcoming releases)
+   - initial support for "variable UI density" (e.g. changing the text/icon sizes and spacing at runtime, e.g.
+      for more ergonomic use at large/high-DPI screens); initial integration in the new Trending Tree.
+* FwTree component with the alternative Object-Oriented API for tree structure management and a new
+   reference panel for visualization/operation, enabling drag-and-drop, etc; used e.g. in the new Trending Tool.
+* Component help migrated to QtHelp format making the components much more compact, and integrating
+   with WinCC OA help system. HTML help not distributed anymore, yet browsable at https://jcop.docs.cern.ch
+   (latest but also a couple of previously releaased versions). Component postInstall files clean up the old
+   HTML help files. The review and migration of panels' help has not yet been completed in this release - this
+   cleanup will be continued in the subsequent releases of components and the framework
+* All the binaries have their debug symbols stripped. The debug symbols may however be recovered from the
+   distributions of individual components (PDB or .debug files)
+* fwWiener: CAN->SNMP migration panel fully reviewed following users' feedback
+* fwRack: Consolidation and improvements contributed by CMS, mainly:
+   - Optimized calculation of devices powering state; added possibility to define device types directly powered
+       from a backup source, that are calculated differently
+   - Added possibility to optimize command queue w.r.t processing ACKA/ACK commands
+   - Default location of ExcelFiles moved to data/fwRack/ to follow JCOP convention. Backwards compatibility
+      with old directory structure assured. Fixed issues in default ExcelFile.csv
+  More informations are provided in component release notes
+* The new fwInstallation-9.1.0 pops up an information in any open GEDI window informing about the progress
+   of postInstallation step execution.
+* RDB Archiver component has a new functionality to convert password-encryption
+* fwConfigs has a set of new utility classes to handle the S7 configuration datapoints
+* All the components in this release have the version number set to "9.1.0" except for
+   the fwFSM (v34r24) and fwDIM (v24r6) as well as the new fwTrending3, fwStdUi and fwStdLib components
+* fw3DViewer component has been removed from the distribution and as of WinCC OA 3.19
+    it will not be maintained anymore
+* To have the NextGenArchiver configured consistently, notably with CERN-developed Oracle backend,
+    additional components need to be installed. The next release of the Framework will include the
+   "fwNextGenArchiver" component which is in development at the time of the release of the
+   JCOP Framework 9.1.0. The component as well as detailed instructions will also be available on the 
+   Framework Components downloads pages once released. In addition, the component providing the
+   NGA Oracle Backend will be distributed internally at CERN, as it is not a part of the JCOP Framework;
+   please contact the Industrial Controls Support teaam for more details.
+   
+
+Requirements
+------------
+* The latest version of fwInstallation tool 9.1.0 should be deployed in the project before
+installing the JCOP Framework 9.1.0 components.
+* We recommend the use of WinCC OA 3.19 with patch P006 or later.
+* The framework is compatible with projects running either RAIMA or SQLite based data manager
+* The framework is compatible with NextGen Archiver (with CERN Oracle backend), Oracle RDB Archiver
+   and ValueArchiver (only available for RAIMA-based projects)
+* Supported operating system versions are Alma Linux 9, RedHat Enterprise Linux 9 and Windows Server 2022
+* For instruction concerning the installation/upgrade please refer to fwReadme.txt file in this distribution
+* Note that the following warning reported in the project log file during the component upgrade are considered "normal"
+  - while installing fwRack component, ASCII import issues warning with code 77 
+    due to some new DP Elements being added to the _fwRackSettings datapoint in the new version of the component
+  - while installing fwCaen component, ASCII import issues warning with code 55 when importing device
+    definitions for CAEN Easy device types, the datapoints being created will have a different DPID allocated
+    than the one specified in the DPL file - this is completely harmless in this context
+  - while installing fwAnalogDigital component the same warning with code 55 is issued,
+    which is again harmless
+* During the upgtade of the nextGenAlarmScreen component, a verification is made to assure the configuration DPs
+    are consistent. For older version of the component these datapoints have no version information and its
+    migration may not be done in a reliable way; hence, during the installation, the user is asked if these datapoints
+    should be dropped (which means loosing the settings contained in them).
+
+Resolved issues and features
+----------------------------
+
+The list of resolved issues in Jira is available at https://its.cern.ch/jira/issues/?filter=33608
+
+FWCORE:
+* Fix in CtrlOOUtils: fwIsInstanceOf() always returned false
+* the AlertTone.wav file distributed with fwAlarmHandling component replaced with well known origin
+   (sound-theme-freedesktop project); see data/licensing/fwAlarmHandling/CREDITS for details.
+* FWCORE-3153: fwAlerConfig_initialize(): if the object already initialized, clear it
+* FWCORE-3386: Alarm Smoothing config panel: do not truncate the value by applying the formatting to text field
+* FWCORE-3556: un-deprecate fwTableStatusValue.pnl; ensure other deprecated panels are reported as such
+* FWCORE-3524: fix _fwConfigs_getConfigAttributes() producing unreadable exceptionInfo
+* FWCORE-3570/FWAH-376: AlarmHandling: make the configuration-export work with SQLite-based projects
+* FWCORE-3579: Fix the Archive Configuration panel: the Valarch DB configuration button should be open when
+   archive class is selected
+* FWCORE-3580: Fix the Y2038-compliance warning in fwArchiveConfig.pnl
+Fix the panels popped up when NGA or RDB is used
+* FWCORE-3581: fwArchiveConfig panel was too big to fit in the AnalogDigital devices; fix for the "parameterize" button
+* FWCORE-3582: fix the runtime warning in the fwScreeShotButtonIcon.pnl
+* FWCORE-3583: run the CTRL Syntax-Checker on all the libraries
+* FWCORE-3583: fwDevice.ctl: use the Framework function to check if a dpType exists
+* FWCORE-3583: fwGeneral: fix undefined variables in the init script and fwPanelUtils.ctl
+* FWCORE-3584: fix the documentation in fwStdLib
+* FWCORE-3587: consistent way to refer to the archive groups used by NGA
+* FWCORE-3588: proper handling of address type in the fwDeviceAddressCommonSettings.pnl ; cleanup/refactor
+* FWCORE-3591: fwConfigs should report error on wrong DPE rather than fail
+* FWCORE-3592: clean up/refactor log output in fwException_raise, suppress misleading and wrong error-location log lines
+* FWCORE-3593: fwCinfigs: fix unhandled exceptionInfo on missing datapoints
+* UCPC-4331: fwPeriphAddess adds the PVSS_MODBUS_BOOLEAN_AS_BYTE constant
+* UNCORE-270: Fix the name of the archive-select panel to be compliant with the new name in WinCC OA 3.19
+* UNAESCRN-391: Link to the AlamrmScreenNG added to the GEDI menu
+* FWAH-376: alarms screen group configuration panels import/export does not work with SQLite
+* Some fixes in the FwTreeDisplay as submitted by Clara
+* FwDevice_create panel: protect from errors when the device definition is inconsistent/incomplete
+* Fix for the number of parameters passed and swich int address types in the fwPeriphAddressConfig panel
+* Fixes in fwArchiveConfig functions for REDU systems
+
+TOOLS:
+* UNAESCRN-320: NextGenAlarmScreen: Access control based on user-defined rules
+* UNAESCRN-397: NextGenAlarmScreen: Fix loading of JCOP custom library
+* UNAESCRN-326: NextGenAlarmScreen: Create method to apply embedded filters
+* UNAESCRN-187: NextGenAlarmScreen: Display warning when default filter is applied
+* UNAESCRN-383: NextGenAlarmScreen: Fix filter view variable not defined in panel
+* UNAESCRN-378: NextGenAlarmScreen: Disable Filter in Filter View
+* UNAESCRN-376: NextGenAlarmScreen: Add possibility to call to user defined for help
+* UNAESCRN-372: NextGenAlarmScreen: Correct the moveColumn return value type
+* UNAESCRN-371: NextGenAlarmScreen: Fixing missing icons on Windows
+* UNAESCRN-247: NextGenAlarmScreen: Add JSON config versioning
+* UNAESCRN-282: NextGenAlarmScreen: Rework splitter to make hidden areas more evident
+* UNAESCRN-34:  NextGenAlarmScreen: Add ctrl callback functions for footer
+* UNAESCRN-369: NextGenAlarmScreen: Fix and simplify getVisibleRowsData function
+* UNAESCRN-334: NextGenAlarmScreen: Error when grouping 1 row
+* UNAESCRN-327: NextGenAlarmScreen: Support for color name with dashes
+* UNAESCRN-324: NextGenAlarmScreen: AlarmScreenNg cosmetic update + help update
+* UNAESCRN-332: NextGenAlarmScreen: ypo in variable of Acknowledge script in *aes-ng*
+* ENS-33064:    NextGenAlarmScreen: Change PanelOff() by PanelOffReturn() as part of migration to 3.19
+* FWAC-556 fwAccessControl_setRole should only act on YU manager
+* FWAC-557 workaround for multiple dpConnect triggers when a new user logs in (awaiting a fix for ETM)
+* corrections in fwAccessControl for issues detected by the syntax-checker
+* FWCDB-1217: strip systemName from OPCUAServer's .Config.Subscription when saving/loading device configurations
+* FWCDB-1223: skip non-existing DPElements on configuration load (warn in the log)
+* FWCDB-1224: "on the flight" conversion between NGA/RDB archive classes when loading/saving device configuration,
+   depending on the configuration of the archiving subsystem
+* FWDIM: some fixes on top of v24r6 as submitted by Clara
+* FWDIP: rebuilt using fficial release of DIP libraries for Alma9 and Windows2022
+* FWDEN: rewrite of documentation, including the one for the panel, integrated into QtHelp
+* FWFSM: some fixes on top of v34r24 as submitted by Clara
+* FwFsmConfDB: complete restructuring of documentation
+* FWINS-2276: DB Agent synchronization of project paths and dist connections in central mode now
+   triggers an update of corresponding DB tables storing current configuration of the project
+* FWINS-2277: Popup panels displaying list of components selected to be installed or removed are
+   resizeable
+* FWINS-2279: Fixed unnecessary multiple dependency warning popups during removal of a component
+   that has subcomponents (subcomponents are now removed in order according to their mutual dependencies)
+* FWINST-2281: fix "Declaration of "i shadows old declaration..." in fwInstallationFakeScript
+* FWINS-2283: Missing required components are highlighted in the component details panel
+* FWINS-2284: Popup message with progress displayed in gedi during execution of postinstall
+   scripts, project help registration now takes place after running component scripts
+* FWINST: prevent "Process crashed" warning on closing Qt help
+* FWINST: fix the position of bgRectangle for REDU systems
+* FWMCS: fix undefined variable in fwMCS.ctl
+* FWCORE-3572: fwOpcUaTools: fix cancel button in the fwOpcUaTools_ConnectionsTool_createConnection.pnl
+* fwOpcUaTools: convert remaining panels from PNL to XML format
+* FWARCH-133: fwRDBArchiver: password-conversion functionality
+* FWTREND-1223 fix fwTrending_trendUpdateAlarmLimits to not fail when DPE does not have alert handling configured
+
+DEVICES:
+* FWCORE-3556: fwAnalogDigital: ensure that fwProcsMonitor config/operation panel are reported as deprecated
+* FWCAEN: hide "Add boards..." button in CAEN Crate Configuration panel id device has no children (case of NGPS crate)
+* FWCAEN: do not generate useless (empty) QtHelp file
+* FWPDUPS-12: don't overwrite existing OPC UA configuration during component installation
+* FWRACK-18: fixes for excel file processing'
+* FWRACK-19: optimize command queue
+* FWRACK-22: introduce DirecTypes that don't depend on parent when calculating the hasPower state
+* FWRACK-23: trigger electrical tree recalculation only when equipment status changes
+* FWRACK-17, FWRACK-24: fix racks positioning in fwRackMap.pnl, optimize panel loading
+* FWRACK-25: optimize electrical tree calculation
+* FWRACK-26: in NGA projects use NGA with Oracle backend archive group when configuring achiving for Rack devices DPEs
+* FWRACK-27 fwRackPLCManage panel code improvements, reduce number of irrelevant log messages
+* FWWIENER-304: Fix opening new modules (panels) in several panels that were opening new panels in gedi instead of vision
+* FWWIENER-306: complete review and cleanup of the CAN->SNMP migration panel
+* FWWIENER: deprecation of some panels reverted
+* FWWIENER: fwWienerMarathonSettings.pnl made functional only for IP crates. Removed deprecated Krakow addressing functionality for CAN crates
+
+
+
+
+     JCOP Framework version 9.0.0 - Release Notes - 4 April 2023
+========================================================================
+
+Initial, developer-grade release of the JCOP Framework for WinCC OA 3.19.
+It is not intended to be used in production environment.
+
+This release is feature-compatible with JCOP Framework 8.4.3 release.
+The major exception to that is the fw3DViewer component that was removed
+from the distribution (see deprecation notice below).
+Minor enchancements and bugfixes not related with migration to WinCC OA
+3.19 can be found in the 'List of resolved issues' section.
+
+Components distributed in this release must be installed with
+fwInstallation tool version 9.0.0 (or higher).
+
+Requirements
+------------
+The 9.0.0 release requires WinCC OA 3.19 P002, which corresponds to the
+CERN WinCC OA 3.19 release 20230403 (or later).
+
+Supported Operating Systems are RHEL9/ALMA9, Windows 10, Windows 11,
+Windows 2019 Server, Windows 2022 Server.
+
+WinCC OA 3.16 is *NOT* supported.
+
+The existitng projects must be upgraded to WinCC OA 3.19 prior to
+installation of jcop-framework-9.0.0.
+
+For more details about the procedure for installation or upgrade of
+JCOP framework in a WinCC OA project please refer to the fwReadme.txt
+file shipped with this release.
+
+Deprecation of fw3DViewer component
+-----------------------------------
+The fw3DViewer component was removed from the distribution of the Framework
+as deprecated. This component is not going to be migrated to WinCC OA 3.19.
+A 3.16 version will remain available for download on the Framework pages.
+
+fwAlarmHandling component entering maintenance mode
+--------------------------------------------------
+As of this release of the JCOP Framework, the fwAlarmHandling component
+enters the maintenance mode. No active development is forseen for this
+component and only bugfixes for blocker/critical issues will be provided.
+
+It is highly recommended to use now the new Alarm Screen provided by the
+fwAlarmScreenNg and AlarmScreenNg components instead. These components
+reached the maturity state and are actively supported.
+
+Binaries debug symbols availability
+-----------------------------------
+To optizimze the size of the distribution package all of the binaries got
+the debug symbols separated-out. They are, however, included in the
+distributions of individual components available to download on the
+Framework pages.
+Note that these files are not installed with component by default.
+
+Known bug and limitations
+-------------------------
+The following non-critical issues are known and should be considered
+as limitations of the current 9.0.0 developer version.
+* FWAC-552    LDAP Connection timeout does not work
+* FWAC-553    LDAP authentication: credentials-caching does not seem to work
+* FWCORE-3570 fwAlarmHandling/fwAlarmScreen GroupConfiguration panels
+              Import/Export does not work with SQLite DB
+
+List of component versions
+--------------------------
+ - fwCore			9.0.0
+     - fwAlarmHandling	9.0.0
+     - fwConfigs		9.0.0
+     - fwDevice			9.0.0
+     - fwGeneral		9.0.0
+     - fwNode			9.0.0
+     - fwTree			9.0.0
+     - unDistributedControl	9.0.0
+ - fwAccessControl		9.0.0
+ - fwCtrlUtils			9.0.0
+ - fwConfigurationDB	9.0.0
+ - fwDeviceEditorNavigator	9.0.0
+ - fwDIM				24.6.1
+ - fwDIP				9.0.0
+ - fwFSM				34.24.1
+ - fwFSMConfDB			9.0.0
+ - fwRDBArchiver		9.0.0
+ - fwTrending			9.0.0
+ - fwOpcUaTools			9.0.0
+ - fwViewer				9.0.0
+ - fwXML				9.0.0
+ - fwAlarmScreenNg		9.0.0
+ - AlarmScreenNg		9.0.0
+ - fwRack				9.0.0
+ - fwCaV				9.0.0
+ - fwMCS				9.0.0
+ - fwAnalogDigital		9.0.0
+ - fwCaen				9.0.0
+ - fwWiener				9.0.0
+ - fwWienerMPOD			9.0.0
+ - fwPdu				9.0.0
+ - fwLxiPs				9.0.0
+
+List of resolved issues
+-----------------------
+Below are listed only issues *not* related with the migration of the
+jcop-framework to WinCC OA 3.19. The full list of the issues with their
+details may be found at
+ https://its.cern.ch/jira/issues/?filter=32545
+
+* FWCORE-3568 fwConfigs: Annoying warnings when uploading MODBUS addresses to confDB
+* FWCORE-3557 fwConfigs: fwArchive_get does not set default value to isActive flag
+* FWCORE-3569 fwOpcUaTools: fwOpcUaTools_periphAddressesConsistencyIssues.pnl unusable to see any configuration errors
+* FWCAEN-758: Integration of A1539LP CAEN board in fwCAEN component
+* FWWIENER-297: Don't overwrite existing OPC UA configuration during component installation
+* FWWIENER-298: Don't overwrite UserDefined DPTs definition during component installation
+* FWTREND-1227: Wrong exception handling during fwTrending component installation
+* UNAESCRN-324: AlarmScreenNg cosmetic update
+
+
+
+     JCOP Framework version 8.4.3 - Release Notes - 17 February 2023
+========================================================================
+Yearly JCOP Framework release for WinCC OA 3.16, consolidating numerous improvements
+and bugfixes in the individual components
+
+It is highly recommended to update the version of fwInstallation tool to 8.4.6
+in the project before the update of the components.
+
+List of component versions
+--------------------------
+ - fwCore			8.5.2
+     - fwAlarmHandling	8.4.3 (unchanged)
+     - fwConfigs		8.5.3 
+     - fwDevice			8.4.5
+     - fwGeneral		8.5.2
+     - fwNode			8.4.0 (unchanged)
+     - fwTree			8.4.3
+     - unDistributedControl	8.4.2
+ - fw3DViewer			8.4.0 (unchanged)
+ - fwAccessControl		8.4.9
+ - fwCtrlUtils			8.5.5
+ - fwConfigurationDB	8.4.6
+ - fwDeviceEditorNavigator	8.4.2
+ - fwDIM				24.6.0
+ - fwDIP				8.5.4
+ - fwFSM				34.24.0
+ - fwFSMConfDB			8.4.2
+ - fwRDBArchiver		8.4.0 (unchanged)
+ - fwTrending			8.4.4
+ - fwOpcUaTools			0.2.0
+ - fwViewer				8.4.1 (unchanged)
+ - fwXML				8.4.0 (unchanged)
+ - fwAlarmScreenNg		0.9.7
+ - AlarmScreenNg		0.9.7
+ - fwRack				8.4.2 (unchanged)
+ - fwCaV				8.4.1 (unchanged)
+ - fwMCS				8.4.0 (unchanged)
+ - fwAnalogDigital		8.4.0 (unchanged)
+ - fwCaen				8.5.0
+ - fwWiener				8.5.0
+ - fwWienerMPOD			8.4.6
+ - fwPdu				0.0.2
+ - fwLxiPs				0.0.8
+
+List of resolved issues
+-----------------------
+The list of the issues with their details may also be found at
+ https://its.cern.ch/jira/issues/?filter=31986
+ 
+* The documentation of large part of the fwGeneral component has been reviewed and restructured. The manuals describing the errors/exceptions and the ways to load the libraries have been added.
+* New library: fwGeneral/fwPanelUtils.ctl implementing fwOOPanelOpen() function allowing to open the OO-panel and invoke its method (such as initialize()) and pass the parameters. See the help for details and FwException::handle() for an example of use
+* FwCaen and FwWiener components when upgraded they will not overwrite user changes in the OPC-UA Server/Connections.
+* FWCORE-3546: CtrlOOUtils - support for typed nullptr in fwGetClass
+* FWCORE-3545: CtrlOOUtils - fwClassMemberVars() and fwClassMemberFuncs() -> recursively scan through the class hierarchy; returned methods do not have a class prefix
+* CtrlOOUtils: fwCreateInstace() - proper extended type information for created instances
+* CtrlOOUtils: fwCreateVector() - new function allowing to create typed vectors
+* FWCORE-3551 unDistributedControl: integrate the code for redundancy contributed by CMS
+* FWCORE-3552 unDistributedControl: improve the log output in postInstall and refactor deprecated _fwInstallation_parseDistPeer()
+* FWCORE-3544: JCOP Fw GEDI Menu: show (raise) the module if already open
+* FWCORE-3543: Mass-configuration of addresses fails with an error
+* FWCORE-3452: fwTree - suppress debug messages from appendTreeNodes
+* FWCORE-3540: Wrong label for the "width" field in the "create device" panel
+* FWCORE: FwException::checkLastError() - new static method particularly useful to properly check the status of dpGet()/dpSet()/dpConnect()....
+* FWCORE: Extended documentation for error/exception handling for dpGet()/dpSet()/dpConnect()... (dedicated chapter in the Exceptions manual)
+* fwPanelUtils: new fwOOPanelInvokeMenthod() function
+* FWCORE-3548: FwDevice address configuration panel not working if DIM not installed
+* FWCORE-3535: fwGeneral_loadCtrlLib works properly with CTRL Extensions
+* FWCORE-3534: refactoring of fwPeriphAddress_OPCUA to remove the "dpe" variable in the library-scope (moved to reference panel)
+* FWCORE-3531: FwTree: restore the possibility to pass the top node of FwTreeDisplay via $-parameters
+* FWCORE-3527: FwTree triggers a redo also in some problematic situations (notably for fwFSM v34r6)
+* FWCORE-3367: Integration of MODBUS addressing for fwDevice
+* FWCORE: Bugfix in fwDevice_dpNames() for the case where inquired dpType does not exist in remote system
+* FWCORE: FwException::rethrow() converted to a static method and made to work correctly with CtrlOOUtils
+* FWCORE: Integration of new Object-Oriented exceptions (FwException class)
+* FWCORE-3528, FWCORE-3532: fix in MQTT addressing for fwConfigs
+* UNCORE-184: Schneider PLC specific constants moved to unCore for better consistency/extendability and integration with UNICOS.
+* FWDIM-46:  FwDIM: use critical sections instead of mutexes on Windows to improve performance
+* FwDim: Increased the number of possible DIM Managers to 256
+* FWFSM-135: FwFSM: use critical sections instead of mutexes on Windows to improve performance
+* FwFsm: Generate FSM would not correctly generate SML code when a node had as children CUs and LUs of the same type - fixed
+* FwFsm: The "Incomplete" yellow square had stopped working for deep LU trees - fixed.
+* FwFsm: fwCU_getParameter couldn't retrieve parameter values containing a '|' - fixed. A proper fix would require changes in WCCOAsmi, now only the retrieval was fixed.
+* ENS-32372: Avoiding warnings during FSM stop
+* FwFsm: Fixed problems in the FSM Operate panel (most changes in fwTree).
+* FwFsm: Fixed little bugs in the FSM Action Editor.
+* FwFsm: The "Diff" between FSM types had stopped working, fixed.
+* FwFsm: Renamed "Restart PVSS00smi" and "Restart PVSS00ctrl" to respectively: "Restart SMI Handler" and "Restart Device Handlers".
+* FwFsm: Can now restart the "Device Handler" for a single node/subtree from the DEN Operations tree(only when "One Ctrl Manager per CU" is set for that node/subtree).
+* FwFsm: Hopefully now really fixed the empty parameter problem properly.
+* FwFsm: Default action parameters were not found if command not all capitals - fixed.
+* FwFsm: The flag "One Ctrl Manager per CU/DU" didn't always work properly - fixed. This setting can also now be changed at run time (without restarting anything).
+* FwFsm: fwUi_getCurrentState could return an old state for non-existing objects - fixed
+* FwFsm: Improved the feature of updating system name for tree nodes, now works for the whole tree (not just for top-level nodes)
+* FwFsm: Tried to fix a long-standing bug by which Device Units would sometimes get empty parameters.
+* FwFsm: The fix to WCCOAsmi in v34r16 introduced a bug at FSM start/stop reported by CMS - fixed.
+* FwFsm: FSM Summary alarms where not removed when the DEN Settings box was unticked, reported by ALICE - fixed.
+* FwFsm: Latest version of SMI++
+* FwFsm: Fixed a wrong label in the Action Editor panel (Functions/Actions)
+* FwFsm: The User Messages were no longer arriving in WinCC-OA - Fixed WCCOAsmi.
+* FwFsm: Disable DUs (in particular if "not propagated") weren't taken into account at FSM restart - hopefully fixed.
+* FwFsmConfDB: revert the deprecation of the fwFSMConfDB_getFwHierarchy() function
+* FWAC-550: Access Control Toolbar integrated as a dock module in GEDI; refactored as a layouted panel.
+* FWAC-548: AC-Export panel would still continue after the file-chooeser dialog was cancelled
+* FWAC-547: password-change panel deadlocking for local accounts when LDAP Authentication used
+* FWAC-547: also the user-edit panel could not edit neither the password nor the user full name
+* FWAC-546: EgroupSync status panel: buttons remained enabled for a while after manager was restarted
+* FWAC-545: improve sync performance: avoid setting _UsersDp.PermissionSet unnecessarily
+* FWAC-544: proper handling of PARA user/group when AC Configuration changes
+* FWAC-543: exception raised when editing a group
+* FWAC-541: AccessControlServer: fix for datapoints not being properly locked when the server started (only when registered for the first time).
+* FWAC-540: AccessControlServer: improve diagnostics for Suspend/Resume
+* FWAC-539: Access Control Server setup panel reworked to enable the Suspend/Resume functionality, indicate if the server is running, show/hide the buttons depending on the selected AC Server.
+* FWAC-538: correct the scope of some global variables that got wrong in the 8.4.4 release, affecting various areas of functionality.
+* FWAC-536: fix for race condition when external authentication devices are used
+* FWAC: Timeout on LDAP authentication reduced from 15 to 5 seconds
+* FWAC-531: systematic use of SYSTEM: as domain; reduce unnecessary syncs in egroup/ldap sync
+* FWAC-525: EGroupSync config panel: disable buttons if privileges not sufficient
+* FWAC-491: ACServer should only set up alarms if they do not exist
+* FWAC-467: Access Control Console indicates the state of disconnected systems as "Disconnected" rather than OK.
+* FWAC-354: "Ping" functionality allowing to check the communication with the AC Server. Note, that the connection is also indicated by the new icons in the AC Setup panel.
+* FWCORE-3523: fwGetFuncPtr() should work for static methods
+* FWCORE: CtrlOOUtils: fwInvokeMethod() is usable with function_ptr
+* FWCORE: CtrlOOUtils: allow to pass objects through either a mixed or anytype var
+* FWCDB-1217: strip sysname when saving static configurations for datapoints with the elements of type dpid or dyn_dpid (such as .Config.Subscription in _OPCUAServer)
+* FWCDB-1216: support system names with trailing colon passed to fwConfigurationDB_resolveDevices()
+* FWCDB-1215: fix an issue with saving string values containing the "|" character and being 29-31 characters long
+* ENS-30948: fix for the wrong link to FSM documentation in the DE&N
+* FWDEN-65: Enable drag-and-drop of devices from the DEN hardware and logical trees
+* FWDEN-64: Integrate Device Editor & Navigator as a dock module in GEDI
+* FWDEN: Make the initTree() synchronized in the DeviceEditorNavigator to avoid problem at startup (reported by CMS)
+* FWDEN: Removed misleading multi-selection in the DEN tree panel, as it is not integrated anyway
+* FWDEN: Cleanup of stale ISO-encoded properties in the panels of fwDeviceEditorNavigator
+* FWDIP: component is based on DIP-6.1.0
+* FWDIP: Fix Windows deadlock on exit
+* FWDIP: log4cplus added again (used as static library in DIP API)
+* FWDIP-171:  Added -invalid-timestamp-at-start functionality
+* FWFSM: A lot of changes in fwFSM - please refer to fwFSM_README_v34
+* FWTREND-1176: fwTrending_addQuickFaceplate function producing warnings
+* FWCORE-3416: fwOpcUaTools: API library to check the OPC UA consistency
+* FWCORE-3417: fwOpcUaTools_ConfigurationDiagnosticTool.pnl panel allowing the user an easy verification of their OPC UA configuration and addressing
+* Lots of enhancements and improvements in the NextGen Alarm Screen - please refer to its updated documentation
+* General deprecation of OPC-DA connectivity
+* FWCAEN-762: Disable OPC DA addressing in device models (fwCaenDPs.dpl, fwCaenEasyDPs.dpl, fwCaenEasy6000.dpl), remove OPC DA configuration DPs.
+* FWCAEN-763: Remove usae of deprecated fwDevice function in EASY board operation
+* FWCAEN-759: OPC DA manager no longer suggested during component installation. Removed config entry for OPC DA driver. Updated OPC UA server popup.
+* FWCAEN-757: Suppressed creation of OPC UA client driver configuration by importing an ASCII file. Init script adapted to create configuration if it does not exist yet. Added script that allows to restore default OPC UA client driver configuration
+* FWCAEN-755: Integrated in fwCaen the A3009HP board
+* FWCAEN-754: Fixes to fwCaen_Hotfix_readBackSettingsOnOff.pnl: Don't throw exception if channel with missing settings.onOff address config encountered, corrected variable name typo
+* FWCAEN-751: Wrong slot number digits in A1660 device name
+* FWCAEN: disable "OPC DA Server" button in fwCaenDeviceManage panel
+* FWWIENER-272: Init script adapted to avoid overwriting existing OPC UA client configuration. Added script that allows to restore default OPC UA client driver configuration
+* FWWIENER: Suppressed adding OPC DA client driver manager and its config file entry
+* FWWIENER-289: fwWiener: Do not propose to append OPC-DA driver during the component installation
+* FWWIENER-290, FWWIENER-281 (CAN->SNMP migration): initial "preview" version of the panel
+* FWWIENER: renamed hotfix panel to fwWienerHotfixes-maraton.pnl and moved to subdir Hotfixes. This panel fixes the default transformation
+* FWWIENER-194: remove obsolete driver 11 which served for OPC-DA
+* ENS-28054 : added hotfix panel for int32-bool tranformations, rather like an exercise.
+* FWWIENER-278: review device definition for Wiener MPOD devices
+* FWWIENER-290: fwWiener: various corrections to panels
+* FWPDUPS-10: fwPdu review/fix device definitions
+* FWLXIPS-12: fwLxiPs review/fix device definitions
+* AlarmScreenNG: numerous improvements and bugfixes - please refer to the release notes of the component
+
+In addition, the following improvements were made in fwInstallation-8.4.6 with respect to fwInstallation-8.4.3, 
+improving not only the functionality of the tool but also of the library used for redundant systems
+(see also the release notes of fwInstallation):
+* FWINS-2107: Installation Details window with possiblility to copy rows from log table to clipboard. Panel layouted
+* FWINS-2253: Ensure Installation panel is closed automatically when user choose to restart project after component installation
+* FWINS-2256: fwInstallation_popup() with support for displaying HTML formatted text in a panel (eg. clickable links)
+* FWINS-2259: Make sure Installation panel that is already open, but not visible, is brought back on the screen when user clicks the gedi menu JCOP Framework -> Installation
+* FWINS-2262: Ensure all component installation log messages are printed to the log file (by temporary disabling WinCC OA mechanism to suppress log messages of the same type after 50 being produced, which is the case for log messages '10/fwInstallation')
+* FWINS-2255, FWINS-2260: fwInstallationRedu_execScriptConnectedToBothPeers to start CTRL manager with different number depending on the peer to which caller is connected. New manager numbers are 111 (peer1) and 112 (peer2), replacing 101. Ensuring required DPs forCTRL manager exist to avoid warnings during start
+* FWINS-2261: Fixed warnings about non-existing DPs printed to the log on the first start of the installation panel in a new redundant project
+* FWINS-2263: Give user a possibility to parametrize a result of checking if system is redundant by supplying user-managed DP 'fwReduInfo'. See help for fwInstallation_isRedundant() for information on how to configure this mechanism.
+* FWINS-2243: Fixed problem with DB errors printed to log when agent establishes connection to DB and schema owner is different than the user used to connect
+* FWINS-2244: Prevent exception during components installation that may occur when subcomponent is missing in component package. Improved information about this installation issue
+* FWINS-2257: Clean up existing CDBSI schema upgrade scripts from double semicolons. These were causing failure during execution of these SQL scripts
+* FWINS-2236: fwInstallationRedu_myReduHostNum() reimplemented with new logic to produce correct results also when from scattered managers
+* FWINS-2237: fwInstallationRedu_getActivePeer() improved to handle the situation when internal datapoints of Redu managers contain inconsistent data and to report to log when probed distributed system is not reachable (CMS contribution)
+* FWINS-2240: Prevent displaying "Requested module does not exist (...)" log warning when user closes fwInstallation.pnl panel
+* FWINS-2241: Removed redundant 'cmd /c' passed to system() on Windows when starting ASCII import or opening help file in system browser. Prevents spawning unnecessary additional 'cmd' process
+* FWINS-2239: Fixed issue causing a corruption of a project config.redu file on component reinstallation/upgrade, when it contains config.redu entries; project config.redu is now treated same as the main project config file - backup and proper cleanup ensured on components installation/removal actions
+* FWINS-2238: Fixed problem with an exception in fwInstallationAgent script occuring when distPeer entry in project config file contains tab (\t) delimiter
+* FWINS-2235: Fixed routine for searching component libraries to be included in includes_legacy.ctl library. In certain cases libraries were searched in wrong path and thus not found.
+
+
+
+     JCOP Framework version 8.4.2 - Release Notes - 05 October 2021
+========================================================================
+
+This is the yearly release of the JCOP Framework for the currently recommended WinCC OA 3.16.
+
+In addition to numerous bugfixes, it also brings the following new components
+
+* fwLxiPs : integration of the LXI power supplies
+* fwPdu   : integration of PDU (Power Distribution Unit) devices 
+* fwWienerMPOD: integration of MPOD power supplies
+* AlarmScreenNg and fwAlarmScreenNg: the new Alarm Screen
+* fwOpcUaTools : tools used for OPC-UA migration
+
+The complete list of changes as well as component-specific may be found below.
+Users and developers are also encouraged to review the release notes of individual components.
+
+The 8.4.2 release of the framework should be used with the latest version
+of the fwInstallation tool, *8.4.3*, available at the Downloads page.
+For existing projects we strongly recommend upgrading the fwInstallation prior
+to the upgrade of components.
+
+The recommended WinCC OA 3.16 patch version is P028, which corresponds
+to the CERN release *20210804* available on the WinCC OA Service Downloas page.
+
+
+
+New Alarm Screen
+----------------
+The new alarm screen is composed of two components: 
+ - AlarmScreenNg : the base and generic implementation of the alarm screen
+ - fwAlarmScreenNg: the integration and customizations of the generic implementation
+    for the JCOP community.
+
+For proper functioning, both of these components need to be installed (and upgraded).
+
+The new alarm screen comes with an exhaustive user manual available at
+https://edms.cern.ch/file/2607588/0.9.1/AlarmScreenNg-User_Manual-0.9.1.pdf
+
+The new alarm screen has been validated with a battery of automated tests.
+However, this release should still be used with caution (and treated as a "Preview" version)
+in particular in production systems - please, use it alongside the "old" Alarm Screen.
+
+The functionality of both the live and the historical mode should now be close to complete
+and in a fully usable state. 
+Please note that in order to use the historical mode, you need to use the Oracle RDB Archiver,
+(or NextGenArchiver with the Oracle backend) and configure the AlarmScreenNg following the 
+instructions in its documentaion.
+
+WienerMPOD integration
+----------------------
+The fwWienerMPOD component extends the "Wiener" device tree in the DeviceEditorNavigator
+with the possibility to declare new type of power supplies (ie. there is no separate
+"vendor node" in the hardware view).
+
+New Ctrl Extensions
+-------------------
+The fwCtrlUtils component have been extended with two new Ctrl Extensions
+- CtrlJsonSerializer : robust and effective tool to serialize/deserialize CTRL++ objects
+- CtrlOOUtils : tools to support object-oriented programming with CTRL++, such as
+    extended RTTI, instantiation/inspection of objects, etc.
+
+Both of these extensions are provided in a "preview" form - care and adequate testing should
+be applied before relying on them in production systems. Nevertheless, we believe their features
+should become available to developers already at this stage. Feedback on their usability
+or suggested enhancement will be much appreciated. 
+The JSON Setializer was developed to underpin the new Trending Tool (not yet released in this version),
+yet the scope for its use is much wider (e.g. for effective calls of web services).
+The CtrlOOUtils is the outcome of the JCOP CTRL++ workshop as well as discussions with ETM to
+implement certain CTRL++ features requested by CERN users.
+    
+Trending
+--------
+This release of the framework contains the "classical" version of the fwTrending component,
+with a couple of bug fixes and extensions. Notably, the trend plots and pages have been layouted, 
+enhancing their functionality when being resized.
+The "new" version of the Trending Tool has progressed over the past year, yet it is still considered
+to be in a prototype stage, not suitable for being included in the framework distribution or applied
+to production systems.
+
+ConfigurationDB Tool
+--------------------
+The 8.4.3 version of the ConfigurationDB tool comes with the new DB Schema version, 
+which addresses a potentially serious issues with data corruption while loading recipes.
+
+For this reason it is strongly recommended to upgrade the ConfigurationDB schema straight
+after the upgrade of the component.
+
+
+List of component versions
+--------------------------
+ - fwCore			8.4.5
+     - fwAlarmHandling		8.4.3
+     - fwConfigs		8.4.6
+     - fwDevice			8.4.3
+     - fwGeneral		8.4.3
+     - fwNode			8.4.0 (unchanged)
+     - fwTree			8.4.1 (unchanged)
+     - unDistributedControl	8.4.1 (unchanged)
+ - fw3DViewer			8.4.0 (unchanged)
+ - fwAccessControl		8.4.4
+ - fwAnalogDigital		8.4.0 (unchanged)
+ - fwCaen			8.4.6
+ - fwCtrlUtils			8.5.2
+ - fwConfigurationDB		8.4.3
+ - fwDeviceEditorNavigator	8.4.0 (unchanged)
+ - fwDIM			24.5.0
+ - fwDIP			8.5.2
+ - fwFSM			34.14.0
+ - fwFSMConfDB			8.4.0 (unchanged)
+ - fwOpcUaTools			0.1.2 (NEW)
+ - fwRDBArchiver		8.4.0 (unchanged)
+ - fwTrending			8.4.3 (unchanged)
+ - fwViewer			8.4.1 (unchanged)
+ - fwWiener			8.4.5
+ - fwXML			8.4.0 (unchanged)
+ - fwRack			8.4.2
+ - fwCaV			8.4.1 (unchanged)
+ - fwMCS			8.4.0 (unchanged)
+ - fwAlarmScreenNg		0.9.2 (NEW)
+ - AlarmScreenNg		0.9.2 (NEW)
+ - fwWienerMPOD			8.4.5 (NEW)
+ - fwPdu			0.0.1 (NEW)
+ - fwLxiPs			0.0.7 (NEW)
+
+List of resolved issues
+-----------------------
+The list of the issues with their details may also be found at
+ https://its.cern.ch/jira/issues/?filter=29934
+
+* ENS-27677 	JCOPfw8.4.1: Downloading OPC DA addresses from confDB no longer working?
+* FWAC-524 	Review Access Control Changes seems to not show diff correctly
+* FWAC-530 	Improve the debug output for Egroup-Sync
+* FWAC-531 	Editing group's privileges in the SYSTEM domain make them being lost
+* FWAC-532 	Replace some globals with consts
+* FWAC-533 	Mutex must not be private
+* FWAC-534 	Calls to nonexisting warning panel
+* FWCAEN-577 	Integrate A7236N in FwCaen component
+* FWCAEN-593 	Integration of CAEN A1821H modules
+* FWCAEN-681 	Integrate AG7236SN board
+* FWCAEN-682 	Integrate AG7435SN board
+* FWCAEN-683 	Integrate AG7236DN board
+* FWCAEN-684 	Integrate AG7435N board
+* FWCAEN-685 	Integrate A1550DN board
+* FWCAEN-686 	Integrate A1560HD board
+* FWCAEN-688 	Integrate A7030SP, A7030SN boards
+* FWCAEN-705 	Integrate A1538DP board
+* FWCAEN-742 	Fix issue in Linux with the recover backup panel
+* FWCAEN-751 	Wrong slot number digits in A1660 device name
+* FWCAEN-752 	Hotifx panel to fix missing address on .readBackSettings.onOff element for CAEN EASY Channels
+* FWCDB-1204 	Recipe loaded from DB with recent "validAt" yields duplicated values
+* FWCDB-1205 	Cannot load devices with OPC DA addresses from confDB
+* FWCDB-1206 	Completely new schema rejected as outdated
+* FWCDB-1208 	fwConfigurationDB - Unable to create new DB connection
+* FWCDB-1209 	fwConfigurationDB DB connection create/edit panel - set input focus on opening
+* FWCDB-1212 	Component upgrade fails on missing CDBSI info
+* FWCORE-3434 	Potentially unsafe dpQuery in the fwDeviceCreate.pnl
+* FWCORE-3445 	Problem in fwArchive_getAllRDBArchiveClasses in fwArchive.ctl
+* FWCORE-3464 	JSON Serialization: prepare requirements
+* FWCORE-3465 	JSON Serialization: initiate the development process
+* FWCORE-3466 	JSON Serialization: implementation of serialization part
+* FWCORE-3467 	JSON Serialization: implementation of deserialization part
+* FWCORE-3468 	JSON Serialization: Add handling of missing data types:
+* FWCORE-3469 	JSON Serialization: provide end-user documentation
+* FWCORE-3470 	JSON Serialization: improve processing fuction parameters and reflect this in function signatures
+* FWCORE-3472 	JSON Serialization: option to select JSON format
+* FWCORE-3473 	JSON Serialization: reduce code duplication in deserializer by using templated function
+* FWCORE-3474 	JSON Serialization: improve/provide error handling
+* FWCORE-3476 	JSON Serialization: Use valgrind to detect memory issues and fix them if any
+* FWCORE-3478 	JSON Serialization: Prevent falling into infinitive recursion when object contains pointer to itself
+* FWCORE-3493 	Elements to remove not visible in Edit Device/Model Definition
+* FWCORE-3494 	JSON Serialization: Prevent serialization and deserialization of static variables of CTRL++ class/struct
+* FWCORE-3495 	Error in fwPeriphAddressOPCUA.pnl - function not defined and other problems (No System)
+* FWCORE-3504 	Review all fwCore libraries to eliminate non-const variable declarations
+* FWCORE-3512 	Non functioning panel objects/fwGeneral/fwWebBrowser.pnl
+* FWCORE-3514 	fwAlertConfig_objectGetMany() may fail with Index Out Of Range error
+* FWCORE-3515 	Send screenshot by email when sModuleName and sPanelName specified does not work properly
+* FWCORE-3517 	CtrlOOUtils crashes on fwClassMemberFuncs()
+* FWCORE-3518 	JsonSerializer incorrectly handles bit64 variables on Windows
+* FWCORE-3521 	Error when adding channels and using model selector
+* FWCORE-3523 	fwGetFuncPtr does not work for static methods
+* FWCORE-3525 	Errors when opening expert panels for some devices
+* FWDIP-159		Too many warnings when DIP publication quality is set to BAD
+* FWDIP-160 	Cleanup of fwDIP code repo -> for the Framework Licensing
+* FWDIP-165 	fwDipEditDptCreate.pnl - default table row issue
+* FWINS-2193 	Prevent showing components as wrongly installed if the post-install scripts are still running
+* FWINS-2227 	fwInstallationManager_command - RESTART comand may start another instance instead of restarting exsting
+* FWINS-2228 	Suggestion to change names for synchronisation time in fwInstallation
+* FWINS-2229 	Post delete script doesn't work in fwInstallation
+* FWINS-2230 	Warning messages from file issues checking after migration to 8.4.2
+* FWINS-2232 	fwInstallationRedu_myReduHostNum not producing the proper result on scattered panels
+* FWTREND-1142 	Display issue with controller trend in faceplate
+* FWTREND-1170 	Disable menu entry send snapshot to logbook in trending if the function lbTrending_sendSnapshotToLogbook is undefined
+* FWTREND-1171 	fwTrending configuration panel bug
+* FWTREND-1173 	Make Trend Plots and Pages resizable
+* FWTREND-1174 	Issue with Close button in trending plot and pages
+* FWTREND-1175 	Close and control buttons for trending page misaligned with trends on page
+* FWWIENER-258 	Remove useless code from fwWienerOpcUaMigration.pnl panel
+* FWWIENER-259 	Update release notes for fwWiener-8.4.1
+* FWWIENER-266 	Fix issue in Linux with the recover backup panel
+* FWWIENER-268 	Increase the version number in the DPT for 8.4.0 modifications
+* FWWIENER-271 	Make compatible Supervision Behaviour panel with OPC UA middleware
+* FWWIENER-272 	fwWiener, should not overwrite default Wiener OPC UA connection and subscriptions
+* FWWIENER-273 	Add comment message to update dpList, when OPC UA default settings are changed
+
+ 
+
+     JCOP Framework version 8.4.1 - Release Notes - 30 June 2020
+========================================================================
+
+This is a bugfix release of the JCOP Framework. It consolidates fixes for a number
+of issues in various component, and notably contains the fwFSM v34r6 with numerous
+fixes encountered in the previous releases.
+
+To keep stability some changes/enhancemenents being implemented in the components
+have not been included (e.g. new AlarmScreen, consolidation of fwTrending or 
+extension of CtrlUtils).
+
+A new component fwOpcUaTools debuts in this release of the framework with version 0.1.0
+Its aim is to provide various tools related to configuration and diagnostics of
+OPC-UA in WinCC OA. 
+
+This release of the JCOP Framework requires WinCC OA 3.16 with patch P013
+or higher, and it has been tested with patch P020.
+
+The components need to be installed with fwInstallation tool version 8.4.1
+or higher.
+
+The distribution contains the following version of component (those for which
+there was no change w.r.t. the 8.4.0 release of the framework are marked):
+
+Components:
+- fwCore:					8.4.2
+  - fwAlarmHanding			8.4.1
+  - fwConfigs				8.4.2
+  - fwDevice				8.4.1
+  - fwGeneral				8.4.1
+  - fwTree					8.4.1
+  - unDistributedControl	8.4.1
+  - fwNode					8.4.0 (unchanged)
+- fw3DViewer				8.4.0 (unchanged)
+- fwAccessControl			8.4.1
+- fwAnalogDigital			8.4.0 (unchanged)
+- fwCaen					8.4.0 (unchanged)
+- fwConfigurationDB			8.4.1
+- fwCtrlUtils				8.4.0 (unchanged)
+- fwDeviceEditorNavigator	8.4.0 (unchanged)
+- fwDIM						24.1.1(unchanged)
+- fwDIP                     8.5.0
+- fwFSM						34.6.1
+- fwFSMConfDB				8.4.0 (unchanged)
+- fwRDBArchiver				8.4.0 (unchanged)
+- fwTrending				8.4.0 (unchanged)
+- fwWiener					8.4.1
+- fwXML						8.4.0 (unchanged)
+- fwRack					8.4.1
+- fwCaV						8.4.1
+- fwMCS						8.4.0 (unchanged)
+- fwViewer					8.4.1
+- fwOpcUaTools              0.1.0 (new component)
+
+The following issues have been resolved in the 8.4.1 release:
+- FWCDB-1201 fix for syntax error (wrong variable name) in fwConfigurationDB_DeviceConfiguration.ctl
+- fwFSM: 34.6.1 version with cleanup of stale copy of panels/fwFSM/fsm/fwTreeAdvancedSettings.pnl during postInstall
+   and correcting the use of deprecated fwInstallation_loadProjPaths() in panels/fwFSM/ui/fwTreeAdvancedSettings.pnl
+- FWCORE-3484: More improvements to NGA support in fwArchive.ctl library
+- fwDIP: log4cplus binary got debug symbols stripped and hence binary size reduced
+- FWAC-523: fwAccessControl: LDAP connections are secured by default now; see fwAccessControl release notes
+   for more details: help/en_US.utf8/fwAccessControl/fwAccessControlReleaseNotes.txt
+- FWAC-504: fwAccessControl: fix for stray default table row
+- FWAC-506: fwAccessControl: Remove linux code from windows implementation in CtrlLDAP
+- fwAccessControl: added tests against the new FreeIPA auth infrastructure
+- FWAC-522 fwAccessControl: Added a way to manipulate the e-group synchronization ldap server from the UI
+- ENS-27122: fwAlarmHandling: Undefined variable was used
+- FWAH-373: fwAlarmHandling: fix for stray default table row
+- FWCORE-3481: fwArchiveConfig panel: Fix inconsistent ISO/UTF strings
+- FWCORE-3444: fix for stray default table row in fwDeviceProperties and fwGeneralEditDynString panels
+- FWCORE-3447: fwTree: remove dependency on fwFSM functions - replace with their fwTree counterparts
+- fwTree: some more fixes to fwTree to enhance compatibility
+- ENS-27014: Allow fwScreenshot to save into EOS-hosted home folders
+- FWCDB-1190: fwConfigurationDB: Preserve dyn_string with one empty element in recipe value.
+- FWCDB-1194: Fix inconsistent ISO/UTF strings in some panels of fwConfigurationDB
+- FWCDB-1187 Add ConfigurationDB to the GEDI menu
+- FWCDB-1186 fwConfigurationDB: Proper treatment of poll groups for various address types
+- FWCDB-1196 Recipes (cache) not working for dyn_long and dyn_ulong data types
+- FWCDB-1197 Recipe cache: truncated milliseconds for time-typed elements
+- FWCDB-1198 Unit tests for recipe caches to work with all supported DPElement types and their corner cases
+- FWDIP-149 Integrate variable-sized arrays to fwDIP
+- FWDIP-157 Integrate DIP API 5.7.0
+- FWDIP-151 Use dpSelector with showCompressions argument set to FALSE
+- FWDIP-158 Fix suspected problems with table rows of many panels
+- FWDIP-161 When deleting DIP config confirmation mesage is cut
+- fwFSM release v34r6 with numerous IMPORTANT fixes and extensions: see the release notes of fwFSM at
+   help/en_US.utf8/fwFSM/fwFSM_README_v34 for details!
+- FWFSM-124 fwFsm_separator, etc should be declared as const (variable visibility problem with dynamic lib loading)
+- FWFSM-119 Errors (harmless) on the first start of the FSM domain
+- FWFSM-122 Errors from WCCOAsmi: Only one thread my call Manager::send() at:494
+- UNCORE-139: FwViewer: enable misc options of the viewer to make modern pages work
+- FWAPPS-267: fwCaV: Removed default row from tables, that are not cleared during initialization
+- FWCAEN-676: Integrate CAEN EASY6000, A1660 as requested by ATLAS
+- FWCORE-3482: fwPeriphAddress_setOPCUA managing OPC UA polling setting
+- UNCORE-148 unDistributedControl - minor issues with configuration panel
+- UNCORE-151 unDistributedControl postinstall - false positive warning about configuration problem
+- FWCORE-3484: improvements in fwArchive, added missing documentation
+- FWCORE-3486: fix problem with CMW and BACnet addresses returning data with inconsistent types and affecting eg fwConfigurationDB
+
+
+
+     JCOP Framework version 8.4.0 - Release Notes - 27 November 2019
+========================================================================
+
+IMPORTANT NOTE:
+---------------
+We strongly encourage all users to get familiar with the list of changes,
+and undertake possible necessary steps to verify that their systems
+would work with this latest release of the framework. Due to the
+nature of consolidation/cleanup steps performed it *may* be necessary
+to adjust the code of existing applications as instructed below.
+
+COMPLETE LIST OF CHANGES:
+-------------------------
+The list of all Jira issues resolved in this release may be found at
+https://its.cern.ch/jira/issues/?filter=26305
+
+REQUIREMENTS:
+-------------
+The 8.4.0 release requires WinCC OA 3.16 with patch P015 (or later),
+and CtrlRDBAccess 9.04 (or later); effectively, in CERN context,
+this means the WinCC OA 3.16 release 20191028 or later.
+
+WinCC OA 3.15 is *NOT* supported.
+
+The project must use fwInstallationTool vesion 8.4.0 (or later).
+Existing projects with an older version of fwInstallation must firstly
+get the newer version installed.
+For more details about the procedure for installation or upgrade of
+JCOP framework in a WinCC OA project please refer to the fwReadme.txt
+file shipped with this release.
+
+Supported Operating Systems are CentOS 7.6/7.7, Windows 7, Windows 10,
+Windows 2016 Server.
+
+The database schema of fwConfigurationDB needs to be upgraded, in preparation 
+for the parallel-archiving feature of the NextGeneration Archiver. The process
+of schema-upgrade was reviewed and fixes for previously-encountered problems
+were applied.
+
+
+UTF-8 CHARACTER ENCODING ENFORCED BY WINCC OA 3.16
+--------------------------------------------------
+The previously used "iso8859-1" character encoding for projects is
+NOT SUPPORTED anymore by WinCC OA 3.16, and the use of the 
+Unicode UTF-8 is enforced. This may pose compatibililty problems
+with applications that make use of non-ASCII characters, such as
+accented french characters, as their binary representaion in now
+different. Even though existing projects are converted to UTF
+during the upgrade process, some additional work may be required
+to clean up possible artifacts. 
+Some of the issues related to the ISO->UTF conversions which we
+encountered and studied are documented at 
+https://readthedocs.web.cern.ch/display/ICKB/Validation+WinCCOA+3.16
+
+The code, panels, and data files of all the components of the framework
+were reviewed and corrected for compatibility as necessary.
+
+XML PANEL FORMAT
+----------------
+As a part of consolidation project, all the panels of the JCOP Framework
+have been converted to the XML panel format, to ease their maintenance
+(e.g. having more meaningful diff-files, etc). The file names for these
+panels are conserved (.pnl), even though the content is now in XML.
+There should be no difference in their use.
+To convert own panels to the XML format, we recommend looking through
+the procedure we list at
+https://readthedocs.web.cern.ch/display/ICKB/Validation+WinCCOA+3.16
+
+Nothe that upon the installation (or upgrade) of fwCore 8.4.0, the default
+panel format used by GEDI whenever a panel is changed to XML.
+This could be changed in the project config file (and such change will 
+be respected during future upgrades of the fwCore component).
+
+CLEANUP: LIBRARY LOADING
+--------------------------
+In the scope of the Consolidation&Redesign project, JCOP CB approved
+the proposal to change the way in which CTRL libraries are loaded 
+in the project.
+
+The previous policy in which the libraries were loaded to all UI/CTRL
+managers using the LoadCtrlLib statement in the config file is now
+deprecated. Instead, all the necessary libraries must be explicitly
+loaded throug the #uses statement, in whichever place they are used.
+
+The change was applied to all the common components of the framework
+WITH NOTABLE EXCEPTIONs of the large part of fwCore and fwInstallation
+components that remain loaded "always".
+
+This change has a direct impact on the projects that make use of the
+CTRL API provided by any of the framework components: as of this release
+of the framework it is mandatory to put explicit #uses statements for
+necessary libraries for every panel or script or library that makes
+use of component's functionality. The "fallback" solution of adding the
+library-loading statement to the config file is technicaly possible,
+yet STRONGLY DISCOURAGED by the JCOP CB.
+
+To make the transition easier, it was decided that every component will
+make sure it delivers a library called <fwCompName>/<fwCompName>.ctl, which
+will be sufficient to load all the other libraries containing public APIs
+of the component. Hence, for a user, it should be sufficient to put
+the single #uses statement on this "main" library, and other libs will
+be loaded (by subsequent #uses statements) as dependencies.
+Cross-component dependencies are permitted (ie. the library of fwCompB
+may put the #uses statement on the libs coming from fwCompA).
+
+A mechanism is provided to have a fallback library containing
+appropriate #uses statements for the main libraries from all installed component.
+It is though as a "safety net": in case of dependency-resolution problems,
+and emergency to resolve these in a production system it could be activated
+through the LoadCtrlLib statement of the config file. This library,
+is stored in <proj_dir>/scripts/libs/includes_legacy.ctl" file, and its
+content is managed by the component installation tool, which regenerates
+its content at every component installation/upgrade, therefore the file
+should not be edited manually.
+Whenever a maximum backward-compatibility is required, this file may be
+made to be loaded by all the UI/CTRL managers in the project by putting
+an appropriate LoadCtrlLib statement in the project config file.
+Please refer to the comment on the top of this file for further information.
+
+
+CLEANUP: STRUCTURE CHANGES
+--------------------------
+
+In response to the requirement of better modularity, the fwFSM
+and fwDeviceEditorNavigator are *NOT* included in the fwCore anymore.
+They become standalone tools that must be installed/upgraded explicitely.
+
+This has a particular impact on the developer systems, as these tools 
+were previously coming pre-installed by fwCore. We strongly recommend that
+all developer system that need the functionality of either of these 
+(or both) do remember to install them explicitly now.
+
+The new fwTree component was separated-out from the fwFSM, and included
+in fwCore; it provide the tree-handling functionality used by, among
+others, fwDE&N, fwFSM, fwTree, without dependency of fwFSM.
+
+A lot of consolidation effort was invested in cleaning up the structure
+of components. Particularly, fwFSM and fwDIM components now have their
+libraries kept in a subdirectory (e.g. libs/fwFSM rather than directly
+in libs/). There should be no change for the users, however, because
+the fwFSM component should take care of all the library-loading 
+adjustments that were necessary. Proper cleanup of libraries that were
+installed in previous location is done. 
+The mechanism used to load the fwFsmUser.ctl (if exists) was changed too.
+Previously used solution of creating a dummy empty file (if a user-provided
+one did not exist) was replaced by a new mechanism provided by the fwGeneral
+component of fwCore, whereby a library could be loaded conditionally, if it exists.
+Ultimately, the handling of binaries was improved, with WCCOAdim and WCCOAsmi
+managers having their own copies of the libdim.dll, which is properly loaded from
+the appropriate subfolder. As the binaries now "know" where to look for libraries,
+they do not need to be copied to the "bin/" folder directly and may remain in
+a subfolder. As a consequence of that, the dns executables are now found in
+bin/fwDIM and bin/fwFSM instead of the bin/ directly.
+
+Similarly, the libraries of fwInstallation was moved to a subfolder;
+as they are loaded by all the UI and CTRL managers, one should ensure
+that there are no stray #uses "fwInstallation*.ctl" statements in the code,
+as there is no need for it.
+
+Help files and message-catalogue files were moved from the "iso88591"
+subfolders to "utf8" subfolders, with proper cleanup.
+
+A number of enhancements to fwInstallation allowed to simplify the
+init/postInstall scripts; tasks such as proper installation of binaries,
+cleanup of deprecated files and folders, etc are now handled much easier
+(refer to the documentation of fwInstallation for details).
+
+
+CLEANUP: REMOVED UNUSED COMPONENTS:
+-----------------------------------
+The following components have been removed from the JCOP Framework distribution
+because they are not in general use:
+ - fwRPC, 
+ - fwDeviceComment
+Whereas fwDeviceComment is going to be maintained as a component of the UNICOS
+framework, support for fwRPC is discontinued.
+
+SUPPORT FOR THE NEXT GENERATION ARCHIVER
+----------------------------------------
+WinCC OA NextGeneration Archiver will get initial support as of this release of
+the framework. Notably, it will be possible to configure archiving using the 
+NGA-specific archive classes, and use a number of archiving backends (ie. classes)
+in parallel. This requires the extension of fwConfigs library (and configuration panels), 
+and then also related tools (such as fwDevice's mass configuration, fwConfigurationDB,
+fwTrending etc). 
+
+SUPPORTED HARDWARE & OPC-UA MIGRATION
+-------------------------------------
+There is a number of new boards supported by the fwCAEN component - the up-to-date
+list is kept as a part of the component help.
+fwWiener and fwCaen components provide support for OPC-UA addressing as well
+as appropriate migration tools. Whereas for fwCAEN it is ready to be used in production
+systems, the OPC-UA support in fwWiener should only be used for testing, as some
+features are still missing.
+A number of enhancements (as well as bugfixes) was introduced: for more details
+please refer to the ReleaseNotes documents for these two components.
+
+PREVIEW: NEW HELP SYSTEM
+------------------------
+To consolidate the new features provided by WinCC OA, this release provides
+a preview of the new help system (based on the QtHelp, used already by WinCC OA,
+and recently integrated into the "HighSpeedProgramming" feature. Efforts were put
+to enable mechanisms for project-specific help (rather than machine-specific, as
+used by default by WinCC OA help files), with automatisation through the fwInstallation
+tool. The new QtHelp-based help files are in stalled alongside the previously used HTML
+help files, providing the same content (generated using the Doxygen tool), which integrates
+smoothly into e.g. the GEDI script-editor. Care is taken to maintain the help collections
+as components are upgraded, added or uninstalled to keep the cross-references up to date.
+
+IMPROVEMENTS in FWINSTALLATION
+------------------------------
+Numerous enhancements were introduced in the fwInstallation tool, providing
+new functionalities for components authors. For details please refer to the
+release notes of the fwInstallation Tool.
+
+ENABLING NEW WINCC OA FEATURES
+------------------------------
+New features of CTRL++ scripting are now enabled by default when fwCore is installed.
+This could be changed by editing the config file (modifications will be honoured
+by future component upgrade). Even though none of these constructs is used as 
+of the 8.4.0 release, it is likely they will be used in the very next releases already
+for parts of the consolidation/redesign tasks (eg. in fwTrending).
+
+The Script Editor of GEDI already contained a feature allowing to "parse" all the libraries
+in the project, not only the ones that have already been loaded (and thus offer syntax-hinting, etc).
+This mechanism had to be disabled until now, as it was delivering wrong hinting under certain circumstances
+(e.g. parsing the files renamed to _old.ctl or _bak.ctl, etc). With this release of the framework
+a mechanism of "whitelisting" was enabled through an additional file: config/config.gedi ; the
+file whitelists explicitly some of the well-known libraries of the Framework, to make them "visible"
+to the hinting-engine. This feature was of particular need because of a migration from the
+central loading of libraries from the config file into explicit #uses.
+The functionality is enabled by appending the "+config config.gedi" option to the UI manager(s)
+configured in the project console with the "-m gedi" flag.
+
+SUPPORT FOR MULTIPLE ARCHIVING (NGA): CORE, CONFIGURATION DB
+------------------------------------------------------------
+The WinCC OA NextGenArchiver is becoming available for pilot deployments at CERN, and this
+release of the JCOP Framework integrates necessary extensions to support new archive classes
+as well as the option for multiple archive "procedures", leading to parallel archiving.
+
+The libraries and panels for the archive config were extended to enable this functionality,
+keeping the compatibility and provided new functionality on top. The Configuration Database Tool
+has also been extended to support multiple archive groups, as possible to configure with NGA;
+the latter required that the database schema is upgraded to the new version 3.05.
+
+A dedicated tool to convert archive configs to the NextGenArchiver has been developed yet it
+is not included in the Framework distribution - it could be obtained on demand from the
+ICEControls.Support@CERN.CH .
+
+IMPROVEMENTS IN TRENDING
+------------------------
+An initial part of consolidation effort for fwTrending was included, namely to expose hooks
+used by the LHCb trending components, but also a number of bugs were fixed.
+
+CHANGES IN DIP
+--------------
+The fwDIP release 8.4.0 included in the framework is based on the stable version of DIP
+libraries (5.6.4), and hence it does not yet support variable-length arrays. We also prepared
+the 8.5.0-beta release, which makes use of the pre-release of version 5.7.0 of DIP libraries
+- it could be provided on demand for testing and will also become available on the fwDIP component
+download pages.
+
+The much anticipated functionality to filter-out debug messages may be configured following
+the documentation at https://readthedocs.web.cern.ch/display/ICKB/DIP+Logging+with+LOG4CPLUS
+
+
+
+     JCOP Framework version 8.3.0 - Release Notes - January 2018
+========================================================================
+
+---
+Note: 8.3.0.1 is a hotfix on top of 8.3.0 release, distributing 
+  proper binaries for fw3DViewer.
+---
+
+The 8.3.0 release of the Framework marks the official support of
+WinCC OA 3.16, while transparently providing compatibility for 
+WinCC OA 3.15. As such, it provides a baseline version to be used for the 
+projects being upgraded during the LHC LS2.
+
+It is intended to be used with either of:
+ - WinCC OA 3.15 + P016 (20181203) or later
+ - WinCC OA 3.16 + P005 (20181210) or later
+
+The full list of resolved issues in Jira is available at
+https://its.cern.ch/jira/issues/?filter=24373
+
+CleanTheCode and deprecation of unused functions
+---
+In course of its development, the components of the framework
+overwent a "CleanTheCode" operation which aimed at identifying
+unused/unreferenced code pieces and deprecating them. During the process
+we referred to the code of production DCS/ECS projects of the LHC experiments.
+The fact of deprecation of function and panels should be transparent to the
+cases where these might still be in use. Incidents of the use of deprecated
+functionalities result in a printout of a message to the log (only once!),
+and recording such incident, with a stack trace. A tool available in the 
+"JCOP Framework" GEDI menu allows to list the incidents. 
+In addition, deprecated reference panels, when used, will flash a "Deprecated" 
+text for 3 seconds on opening.
+Deprecated functions were moved to separate libraries (the name of which 
+implies it), which is loaded from the libraries that were original locations
+for deprecated construct; they are also listed in online help as deprecated.
+To signal deprecation in the code, a new public function FWDEPRECATED() is provided.
+It could also be used in custom code to take advantage of the functionality.
+
+Cleaner Project Console and where is my DeviceEditor&Navigator
+---
+As of this version the installation of component will avoid adding 
+dedicated UI managers, such as the one for DE&N to the project console.
+Instead, these tools are now added to the "JCOP Framework" menu in GEDI.
+Similarly, managers which are not supported on Linux (e.g. OPC-DA driver)
+are not added to console. At the same time, for devices such as CAEN,
+where both OPC-DA and OPC-UA are supported, both driver types will be added
+to the console (if installed in non-interactive mode).
+
+Cleaner installation of binaries
+---
+For certain binaries, such as fwAccessControl's CrtlLDAP extension,
+or fw3DViewer EWO, only necessary binaries are copied during the installation.
+A new <bin> tag in fwInstallation-8.3.0 allows for automation of this task.
+
+OPC-UA and multiple types of addressing for devices
+---
+The Device-management panels as well as API of fwDevice were enhanced to 
+support cases of devices that could have multiple types of addresses, such 
+as CAEN. As a result, it is possible at device-creation time to specify
+which type of addressing (eg. OPC-UA vs OPC-DA) should be applied.
+Diagnostics inside fwDevice functions was also enhanced.
+
+Layout-management (resizing) of panels
+---
+Some of frequently used panels, such as DeviceEditor&Navigator were redesigned
+to allow resizing at runtime (using layour management). These panels are 
+visually marked by 3 diagonal strips in their bottom-right corner.
+
+FwCAEN component enhancement
+---
+OPC-UA addressing is fully supported by fwCaen component now, and a tool
+(panel) to migrate addressing of existing devices from OPC-DA to OPC-UA
+was provided. In addition, device definitions for all existing models were
+reviewed and inconsistencies were eliminated.
+A number of new board models was also integrated (see the component help
+file for details).
+
+New archive smoothing behaviour for status/user bit-changes
+---
+Archive smoothing behaviour was tuned so that a change in status bits
+(such as invalid bit) and user bits (used e.g. for data quality) would
+cause the value to be archived overpassing the smoothing criterias.
+In particular for trend plots this would allow to spot incidents such
+as hardware or driver disconnections for types of drivers that support
+exposing such information through status bits.
+
+Improvements to fwInstallation
+---
+Numerous improvements and bugfixes were added to the Installation Tool,
+including the new <bin> tag for installation of binaries with no need
+for postInstall scripts
+
+Deprecation of fwRPC component
+---
+The fwRPC component was removed from the distribution of the Framework
+as deprecated. It might be downloaded separately from the Framework pages.
+
+New fwViewer component
+---
+A new fwViewer tool was added to distribution, allowing to open URL links
+leading to HTML and PDF documents (provided one uses WinCC OA 3.16) and 
+display them in a panel, rather than an external browser. This may 
+allow for significantly faster opening of such documents and may remove
+the necessity of having a dedicated PDF viewer installed on your runtime
+system. In addition adequate mechanism to integrate logging it to 
+CERN EDMS document handling system was integrated.
+FwViewer replaces the functionality of fwWebBrowser panel previously 
+available by the fwGeneral component.
+
+
+
+
+
+
+
+     JCOP Framework version 8.2.0 - Release Notes - June 2018
+========================================================================
+
+This release of JCOP Framework, 8.2.0, gathers numerous bugfixes 
+and enhancements accumulated since the previous release, and
+provides initial support for WinCC OA 3.16 ("technical preview").
+
+It is recommended to use it with WinCC OA 3.15 with patch P011 (20180507),
+or patch P009 (20180209); in the latter case, obviously some of the 
+functionality would be limited by what is in the patch.
+
+The reason for which the "middle" version number was raised to "2" in this release
+is for that this release is now usable on WinCC OA 3.16. As such, we
+already encourage to try experiment with this new WinCC OA version for
+new developments. However, we are not in a position to consider it mature
+for large production systems of high availability, and we may only provide
+limited support for this platform.
+
+It is also recommended to use the Component Installation Tool version 8.2.0,
+available at
+https://edms.cern.ch/file/1085149/8.2.0/fwInstallation-8.2.0.zip
+
+
+The complete list of issues resolved with this release please refer to
+the list of Jira issues at the following URL:
+https://its.cern.ch/jira/issues/?filter=23486
+
+As of the release 8.2.0 of the framework, there is a limitation 
+that the fw3DViewer component installation for WinCC OA 3.16
+for the Windows platform is not yet available; attempt to install
+this component on WinCC OA 3.16/Windows may fail.
+
+To use the tool with WinCC OA 3.16, one needs to create a project
+with UTF-8 character encoding. Existing 3.15 projects (with ISO8859-1 encoding)
+are converted to UTF-8 during the upgrade. As usually, if you would like to
+upgrade a 3.15 project to 3.16, we recommend the procedure of uninstalling
+all the component while 3.15, followed by project upgrade, and then installation
+of new components; this is namely to avoid possible clashes with installed binaries.
+
+All the panels were reviewed (and edited, if necessary) to eliminate stray and
+out-of-date text labels in UTF encoding in widgets such as push-buttons.
+This resulted in wrong texts being displayed when the panel was run in a project
+with UTF encoding (e.g. on WinCC OA 3.16). Now, all the panels only have
+ISO8859-1 encoded text labels, and all other labels (german, french, "unknown", utf)
+were removed. This was a necessary step to make the Framework compatible with
+WinCC OA 3.16 (which does not support ISO-encoding).
+Tools/procedures exist to perform similar job on your panels, if necessary.
+
+
+The highlits of the 8.2.0 framework release are as follows:
+
+- fwFSM v33r3 (with some bugfixes and recompilation for WinCC OA 3.16);
+ notably, recent enhancements and extensions are included
+
+- Initial version of the panel to migrate addresses of CAEN devices
+ from OPC-DA to OPC-UA. Note that this is an initial version of the tool,
+ and further enhancements are expected to be released soon
+
+- There is a couple of new CAEN board types supported (A2016HP, A7038STP/STN, 
+ AG536S Positive and Negative)
+
+- Further protections from misconfiguration of the Access Control component
+(one should not be able to login interactively as para, or drop/disable 
+this account)
+
+- Exception-handling panel was enhanced to be resizable (with layout-management);
+ it also allows to page through the list of exceptions, instead of popping-up
+ many exception panels.
+
+- The fwWebBrowser included in fwGeneral allows now to display PDF files inline
+ (and embed them in your panels) through the mozilla's "pdf.js" project. Note
+ that this seems to have problems on WinC OA 3.15+P011 though. Numerous other
+ enhancements were introduced, including the option to use the fwWebBrowser 
+ (instead of external browser) to display JCOP Framework Components help pages.
+
+- Additional enhancements and minor bugfixes in the standard panels of "fwGeneral"
+ components (progress bar, fwGetTimes, fwGeneral_openMessagePanel() function)
+
+- Bugfixes in unDistributedControl subcomponent of fwCore, to avoid damaging 
+ the project config file
+
+- Further bugfixes and enhancements in the function that verifies that a driver
+ is running (optimization for address-configuration)
+
+- ConfigurationDB Tool got the recipe-loading functionality restored to be
+ backward-compatible when systemName parameter is used; proper documentation
+ was provided. Similarly, fwConfigurationDB_resolveDevices() was reviewed
+ to support the case of an empty dyn_string as deviceSystems parameter.
+
+- Numerous fixes in the Trending Tool component, and namely for the problem
+ of transparent legend/background colour. Note that to have the functionality
+ work as expected, one needs to use WinCC OA 3.15 patch P011 or higher, and
+ configure the background of the trend to be "_Transparent". Issues with
+ axis-configuration were addressed.
+
+- the Component Installation Tool 8.2.0 is now capable of hiding some
+ components reserved for internal/advanced use.
+ The mechanism is now employed to "hide" test components present in
+ the framework distribution.
+ Fixes with installation agent and installationDB were also implemented.
+
+- fwBarGraph component is now deprecated and will not be further released.
+
+
+
+
+
+     JCOP Framework version 8.1.0 - Release Notes - December 2017
+========================================================================
+
+The JCOP Framework 8.1.0 release for WinCC OA 3.15 delivers numerous 
+bugfixes in the components, and does not deliver important new features.
+It also consolidates the changes released previously in components since
+the last release of JCOP Framework (8.0.3) in February 2017.
+This release is considered as suitable for production systems, and 
+notably for upgrades during the YETS2017/2018.
+
+It is recommended to use this version of the JCOP Framework with 
+WinCC OA 3.15 release 20171204 or later.
+
+The complete list of issues resolved by this release could be found 
+in Jira, at the following URL:
+    https://its.cern.ch/jira/issues/?filter=22315
+
+Most important changes in this release are located in the 
+Installation Tool, Alarm Handling, Trending Tool, Configuration Database
+Tool and CtrlRDBAccess components. 
+Please find below the list of most important changes (the changes for
+fwInstallation are at the bottom of this list; there are more 
+information about limitations as well as the list of unchanged 
+components at the bottom of the file.
+
+* fwAccessControl-8.0.3
+ - FWAC-464 : the fwAccessControl_isGranted() function now respects
+    the inheritance of access rights through the groups-in-groups.
+    This mechanism, not widely used, was broken during
+    code-restructuring in one of the releases a few years ago.
+ - FWAC-472 : diagnostic messages for Egroup-Synchronization errors
+    were improved
+
+
+* fwAlarmHandling-8.1.0 (part of fwCore-8.1.0)
+ - general usability was improved by eliminating certain bugs and
+    implementing workarounds, this includes certain cases whereby
+    the alarm screen was constantly refreshing (FWAH-354)
+ - saving the layout of columns works correctly now (FWAH-355, FWAH-356)
+ - reinstallation of the component does not overwrite the settings 
+    introduced by user anymore (FWAH-353), as part of the initialization
+    code was moved away from DPL files
+ - minor improvements to the UI (alarm counter FWAH-359, overlapping
+    device name FWAH-360)
+
+
+* fwCAEN-8.0.3
+ - integration of CAEN SY5527LC mainframe and AG550DP board
+    (FWCAEN-573, FWCAEN-574)
+
+
+* fwConfigurationDB-8.1.0
+ - major enhancement to the recipes, allowing to use aliases from
+    remote dist systems (FWCDB-1107); by default, a compatibility mode
+    is kept in which remote aliases are not resolved (ie. a recipe
+    containing them may not be applied); a new mode is activated by
+    setting the global variable fwConfigurationDB_allowResolveRemote to
+    true (to be effecive one also needs to set the optional parameter
+    allowApplyRemote to true in the fwConfigurationDB_applyRecipe()
+    function. The functionality is also exposed in the Advanced Recipe
+    Operations panel, through the new checkbox "Resolve remote aliases".
+    Care should be taken when using the new mode in large distributed
+    systems as the lookup of aliases may take significantly longer.
+    The feature was originally required for UNICOS projects yet may find
+    its application for JCOP Projects too. It is a natural extension of
+    the already existing option for applying recipes remotely, which
+    worked only for devices from the hardware tree so far.
+ - it is now possible to store/restore the Mod_Plc internal datapoints
+    into static configuration (blob/dyn_blob DPEs are treated correctly
+    now) (FWCDB-1125)
+
+
+* CtrlRDBAccess  8.6/8.7
+ - note that it is technically distributed with WinCC OA distribution
+    (20171204), yet due to correlation in the release date we comment on
+    its content here; the help is now fully integrated with WinCC OA 
+    help system
+ - FWCDB-1006: the mechanism to disconnect on inactity timeout and
+    automatically reconnect was restored; this functionality (which was 
+    lost during refactoring of the code for WinCC OA 3.8) is not used by
+    default and needs to be specifically activated; for more details
+    refer to the help file. 
+    Note that the functionality was not yet introduced to the JCOP 
+    Framework tools (ConfigurationDB, fwInstallation)
+ - FWCDB-1127: memory leak was investigated and traced down to a problem
+    in Oracle client installation. It is fixed in Oracle instantclient 
+    12.2 for Centos7 and in "Oracle Instant Client 12.1.0.2 cern x64"
+    CMF package for Windows. Upgrade to these client versions is highly
+    recommended to obtain the effective fix for the memory leak
+ - FWCDB-1137 it is now possible to use exceptions in the CtrlRDBAccess
+    functions (instead of relying on return code); this may lead to
+    significant simplification of users' CTRL code; an example is
+    attached to Jira issue FWCDB-1137.
+ - FWCDB-1139 a new function fwDbRunSQL() that combines the
+    functionality of many low-level functions into a single call,
+    which allows to execute a query, pass bound-variables, and fetch
+    the results. Example is attached to the FWCDB-1139 issue in Jira.
+ - Other minor issues: support for bit32 and bit64 type-casting
+    (FWCDB-1139), safer handling of casting to time variables
+    (FWCDB-1126) and proper cleanup of data variables in fwDbGetData
+    (FWCDB-1079)
+
+
+* fwCore-8.1.0
+ - imported the latest version of fwFSM ver 33r1
+ - FWCORE-3308: due to the deprecation of the mechanism in which one
+    would return values from a panel by a dpSet to the _Ui datapoints,
+    the panels had to be reviewed and modified to use PanelOffReturn()
+    instead
+ - FWCORE-3317: eliminate severe errors during reinstallation/upgrade
+    of fwGeneral about WCCILproxy
+ - improvements to unDistributed component (FWCORE-3315, FWCORE-3316)
+    not creating its internal datapoints correctly
+ - FWCORE-3304 added support for SNMP addresses
+ - FWCORE-3292: problem with displaying MODBUS peripherial address
+    configuration
+ - FWCORE-3294: resolve the bug which remover_all_ the files from the
+    pictures/* subfolder when fwGeneral was uninstalled, possibly
+    damaging projects. Such uninstallation was in particular 
+    performed in the recommended procedure to upgrade an existing
+    project from one version to another (uninstallation of components
+    before the upgrade)
+ - a few other minor bugs
+
+
+* fwDeviceComment-8.1.0
+ - introduce access right support (FWDC-11)
+ - make sure that the colors used in the panels are those of JCOP 
+    Framework, and not UNICOS (FWDC-27, FWDC-28)
+
+
+* fwDIM-23.1.1
+ - latest version of fwDIM ver 23r1
+
+
+* fwDIP-8.1.0
+ - a handful of minor bugfixes including FWDIP-116 (DIP managers do not
+    work after uninstalling and reinstalling the component).
+ - a new version of fwDIP component is expected shortly after this 
+    release, bringing new bugfixes
+
+* fwTrending-8.1.0
+ - FWTREND-1048, FWTREND-999: it is now possible again to have trend
+    panels (not only fwTrend) to have transparent background, notably
+    behind the legend; this was implemented using a CSS stylesheet,
+    distributed now with the component, and restoring the previous
+    look known from WinCC OA 3.11 in which the background was
+    transparent, rather than light-grey. Embedding a fwTrending plot 
+    object in a panel with dark background looks consistently now if one
+    declares in the fwTrending configuration the transparent background
+ - Fixes for issues with access rights (FWTREND-1044, FWTREND-1045)
+ - Fix for dpQuery errors in the log in trends with DPEs from remote
+    systems (FWTREND-1043)
+ - The values such as INF or NaN are now treated correctly, without the
+    annoying popup panel (FWTREND-1033, FWTREND-1041)
+ - Part of initialization of datapoints was moved from DPL to
+    postInstall files, so that to avoid having the configuration
+    overwritten with every upgrade of the component (FWTREND-1000)
+ - Verified that log scale is not blocking the UI now when negative
+    values are in data (FWTREND-974); this requires a recent patch
+ - Resolve some of the issues with trending not working across
+    distributed systems, without any meaningful diagnostic, in
+    particular for mixed JCOP-UNICOS projects (FWTREND-983,
+    FWTREND-1009)
+ - Improvements for trending boolean signals (FWTREND-1015) and for
+    dynamic trends (FWTREND-1011)
+
+* fwRDBArchiver-8.0.1
+ - FWARCH-110 Integrate the panel that cleans up the ELEMENTS table,
+    contributed by ATLAS
+
+* fwRPC-8.0.3
+ - Bugfixes FWCORE-3291, FWCORE-3298
+
+
+* fwWiener-8.0.2
+ - FWWIENER-181 Enable integration of Wiener MPOD devices; note that 
+    fwWienerMPOD component is not yet distributed with this release of
+    the framework.
+
+
+* fwInstallation-8.1.0
+ - report progress of installation and potential errors in more clear
+    way (FWINS-2081)
+ - add a check if the postInstall scripts were executed correctly
+    (FWINS-2052)
+ - allow to configure how often the installation agent is started
+    (FWINS-2077)
+ - improvements in hash-comparison (storing of hashes, allow to
+    recalculate a hash, dont report error if proper file is loaded
+    anyway) (FWINS-2072)
+ - support for UNC paths (FWINS-2078)
+ - reordering of project paths in the advanced options panel
+    (FWINS-2087)
+ - proper handling of XML comments in the component files (FWINS-2086)
+ - replace obsolete code to return value from panel with
+    PanelOffReturn() function (FWINS-2082)
+ - fwInstallationManager: handling managers specified with old PVSS00
+    name (FWINS-2083)
+ - fix for memory leak (proper resourse cleanup on error in SQL queries)
+    FWINS-2085
+ - allow to store custom key-value pairs in the installation database
+    (CDBSI) (FWINS-2063, FWINS-2066); note that this functionality is 
+    not being used yet at other components such as fwConfigurationDB
+ - Improve diagnostic messages for manager removal (FWINS-2037)
+
+
+Limitations:
+ - recently implemented changes in the DIP manager were not tested
+    on time for this release
+ - if you want to use transparent background on the 
+    fwTrendingFaceplate panel, you should not use the predefined
+    "_Transparent" colour, but rather define a new colour yourself
+    and set the "alpha" channel to zero; otherwise the menu of 
+    this trend plot will become black; this will be followed up
+    in the next release of fwTrending
+ - similarly (fwTrendingFaceplate with transparent background),
+    if you deactivate the Captions in the configuration panel,
+    then you may see that your plot still have these captions
+    rendered inside the plot; this is an artifact of transparency
+    and will be addressed in the next release of fwTrending
+ - the "sticky ruler" sometimes works improperly on Windows:
+    when you try to close it with the "X" button, it will signal
+    errors; this will be addressed in the next release of fwTrending.
+
+
+
+The following components did not change since the last release of 
+the JCOP Framework and are kept with the same versions:
+
+ - fw3DViewer-8.0.0
+ - fwAnalogDigital-8.0.0
+ - fwBarGraph-8.0.0
+ - fwCaV-8.0.1
+ - fwCtrlUtils-8.0.2
+ - fwFSMConfDB-8.0.1
+ - fwMCS-8.0.0
+ - fwRack-8.0.0
+ - fwXML-8.0.0
+
+The fwExternalApps component is not included in the distribution.
+Please, contact us if needed.
+
+The fwWienerMPOD component is not distributed with this release of 
+the JCOP Framework, as it it awaiting the resolution of issues at the 
+OPC server layer before the first official release.
+
+------------------------------------------------------------------------

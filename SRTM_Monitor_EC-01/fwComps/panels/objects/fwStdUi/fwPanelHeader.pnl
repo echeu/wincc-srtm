@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8">FwPanelHeader</prop>
+  </prop>
+  <prop name="Size">163 36</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96.05337872048406</prop>
+  <prop name="PDPI">96.05337872048405</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+  <prop name="sizePolicy">
+   <sizePolicy vertical="Fixed" horizontal="Preferred"/>
+  </prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+enum FwPanelHeaderType {
+    Header=1,
+    Section=2,
+    SubSection=3,
+    Custom=99
+};
+
+private FwPanelHeaderType _panelHeaderType=FwPanelHeaderType::Header;
+private int _textSize=0;
+private bool _textCentered=false;
+
+#property FwPanelHeaderType headerType
+#property string header
+#property color  bgColor
+#property color  fgColor
+#property color  borderColor
+#property bool   shadowEnabled
+#property string helpPath
+#property bool helpButtonVisible
+#property int textSize
+#property bool textCentered
+
+public FwPanelHeaderType getHeaderType()     { return _panelHeaderType;             }
+public string getBgColor()                   { return TheHeader.backCol;            }
+public string getFgColor()                   { return TheHeader.foreCol;            }
+
+public bool   getShadowEnabled()             { return TheHeader.shadowEnabled;      }
+public bool   getHelpButtonVisible()         { return TheHelpButton.visible;        }
+public string getHelpPath()                  { return TheHelpButton.getHelpPath();  }
+public int    getTextSize()                  { return _textSize;                    }
+public void   setBgColor(string newColor)    { TheHeader.backCol=newColor; TheButtonBackground.backCol=newColor;}
+public void   setFgColor(string newColor)    { TheHeader.foreCol=newColor; TheButtonBackground.foreCol=newColor;}
+
+public void   setShadowEnabled(bool on)      { TheHeader.shadowEnabled=on; TheButtonBackground.shadowEnabled=on;}
+public void   setHelpButtonVisible(bool b)   { TheHelpButton.visible=b;}
+public void   setHelpPath(string sHelpPath)  { TheHelpButton.setHelpPath(sHelpPath);}
+
+
+public string getBorderColor()
+{
+    return TheBorder.foreCol;
+}
+public void   setBorderColor(string newColor)
+{
+    if (newColor==&quot;_Transparent&quot;) {
+        TheBorder.border=&quot;[none,oneColor,JoinMiter,CapButt,0]&quot;;
+        TheBorder.visible=false;
+    } else {
+        TheBorder.border=&quot;[solid,oneColor,JoinMiter,CapButt,1]&quot;;
+        TheBorder.visible=true;
+    }
+    TheBorder.foreCol=newColor;
+}
+
+public bool getTextCentered() { return _textCentered;}
+public void setTextCentered(bool b)
+{
+    if (_textCentered==b) return;
+    _textCentered=b;
+    setHeader(getHeader());
+}
+
+const string _txtCenterStart=&quot;&lt;div align=\&quot;center\&quot;&gt;&quot;;
+const string _txtCenterEnd=&quot;&lt;/div&gt;&quot;;
+
+
+public string getHeader()
+{
+    string txt=TheHeader.text;
+    if (txt.startsWith(_txtCenterStart) &amp;&amp; txt.endsWith(_txtCenterEnd)) {
+        txt=txt.mid(_txtCenterStart.length(), txt.length()-_txtCenterEnd.length()-_txtCenterStart.length());
+    }
+    return txt;
+}
+
+public void   setHeader(string newHeader)
+{
+    string txt=newHeader;
+    if (_textCentered) {
+        txt=_txtCenterStart+txt+_txtCenterEnd;
+    }
+    TheHeader.text=txt;
+}
+
+
+public void   setTextSize(int newSize) {
+    if ( (newSize&lt;0 || newSize&gt;4) &amp;&amp; newSize!=_textSize) {setTextSize(_textSize); return;} // reset...
+    _textSize=newSize;
+    string newFont;
+    switch (_textSize) {
+        case 0:
+            newFont=&quot;Noto Sans,-1,11,5,50,0,0,0,0,0,Regular&quot;; break; // noto sans 8
+        case 1:
+            newFont=&quot;Noto Sans,-1,12,5,50,0,0,0,0,0,Regular&quot;; break; // noto sans 9
+        case 2:
+            newFont=&quot;Noto Sans,-1,13,5,50,0,0,0,0,0,Regular&quot;; break; // noto sans 10
+        case 3:
+            newFont=&quot;Noto Sans,-1,15,5,50,0,0,0,0,0,Regular&quot;; break; // noto sans 11
+        case 4:
+        default:
+            newFont=&quot;Noto Sans,-1,16,5,50,0,0,0,0,0,Regular&quot;; break; // noto sans 12
+    }
+    TheHeader.font=newFont;
+}
+
+public void setHeaderType (FwPanelHeaderType hType)
+{
+    // note: the whole styling for header, section and subsection is controlled by CSS
+    // this means: background, foreground and font.
+    // for this to work, the foreground and background colours need to be the default ones
+    // (otherwise the stylesheet will not override them).
+    // we modify the &quot;type&quot; selector (shape property) explicitly here depending on hType selected,
+    // so that different &quot;type=&quot; selectors will fire up!
+    // we still leave the border color as a non-CSS property for the time being
+
+    // reset to defaults (so CSS is effective) for non-default
+    if (hType!=FwPanelHeaderType::Custom) {
+        TheHeader.foreCol=&quot;_3DText&quot;;
+        TheButtonBackground.foreCol=&quot;_3DText&quot;;
+        TheHeader.backCol=&quot;_3DFace&quot;;
+        TheButtonBackground.backCol=&quot;_3DFace&quot;;
+        TheHeader.font=&quot;Noto Sans,-1,13,5,50,0,0,0,0,0,Regular&quot;; // Noto Sans 10
+    }
+
+    string newType;
+
+    switch (hType) {
+
+        case FwPanelHeaderType::Header:
+            newType=&quot;FW_PANEL_HEADER&quot;;
+            setBorderColor(&quot;_Transparent&quot;);
+            break;
+        case FwPanelHeaderType::Section:
+            newType=&quot;FW_PANEL_SECTION&quot;;
+            setBorderColor(&quot;FwStdUiBorder01&quot;);
+            // in addition, make the border slightly fatter
+            TheBorder.border=&quot;[solid,oneColor,JoinMiter,CapButt,2]&quot;;
+            break;
+        case FwPanelHeaderType::SubSection:
+            newType=&quot;FW_PANEL_SUBSECTION&quot;;
+            setBorderColor(&quot;FwStdUiBorder01&quot;);
+            break;
+        case FwPanelHeaderType::Custom:
+            newType=&quot;&quot;; // should not be used with CSS!!!
+            setTextSize(getTextSize());
+            setBgColor(getBgColor());
+            setFgColor(getFgColor());
+            setBorderColor(getBorderColor());
+            break;
+        default:
+            break;
+    }
+
+    // change the type!
+    TheHeader.type=newType;
+    TheButtonBackground.type=newType;
+
+    // repaint after this change with the applicable stylesheet
+    TheHeader.styleSheet=&quot;&quot;;
+    TheButtonBackground.styleSheet=&quot;&quot;;
+}
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    if (isDollarDefined(&quot;$sPanelRelativePath&quot;)) {
+        string s=getDollarValue(&quot;$sPanelRelativePath&quot;);
+        TheHelpButton.setHelpPath(s);
+    }
+    TheHelpButton.visible(getHelpPath()!=&quot;&quot;);
+}
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="TheButtonBackground" shapeType="GENERIC" layerId="0">
+   <properties>
+    <prop name="serialId">10</prop>
+    <prop name="Type">FW_PANEL_HEADER</prop>
+    <prop name="RefPoint">10 23</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">6</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="maximumSize">-1 40</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Preferred"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">210 30</prop>
+    <prop name="Size">25 25</prop>
+    <prop name="ObjectType">BackgroundCover.ewo</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="styleSheet"></prop>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="TheBorder" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">0 0</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiBorder01</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Preferred" horizontal="Preferred"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[none,oneColor,JoinBevel,CapButt,0]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.8305647840531561 0 0 2.259259259259174 -6.611295681063135 -1185.185185185137</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">20 530</prop>
+    <prop name="Size">302 31</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+  </shape>
+  <reference parentSerial="2" Name="TheHelpButton" referenceId="1">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwHelpButton.pnl</prop>
+    <prop name="Location">200 7</prop>
+    <prop name="Geometry">1 0 0 1 10 23</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="dollarParameters">
+     <prop name="dollarParameter">
+      <prop name="Dollar">$sPanelRelativePath</prop>
+      <prop name="Value"></prop>
+     </prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+   </properties>
+  </reference>
+  <shape Name="TheHeader" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">7</prop>
+    <prop name="Type">FW_PANEL_HEADER</prop>
+    <prop name="RefPoint">30 30</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="maximumSize">-1 40</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">30 30</prop>
+    <prop name="Size">161 31</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="text">Panel Header</prop>
+     <prop type="ENUM" name="frameShadow">16</prop>
+     <prop type="ENUM" name="frameShape">0</prop>
+     <prop type="INT" name="margin">6</prop>
+     <prop type="CHAR_STRING" name="styleSheet"></prop>
+    </extended>
+   </properties>
+  </shape>
+ </shapes>
+ <groups>
+  <group parentSerial="3" Name="SHAPE_GROUP4" serial="2">
+   <properties>
+    <prop name="shapeSerial">10</prop>
+    <prop name="groupSerial">1</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Preferred" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+   </properties>
+  </group>
+  <layout parentSerial="4" Name="LAYOUT_GROUP1" serial="3">
+   <properties>
+    <prop name="shapeSerial">1</prop>
+    <prop idx="0" name="shapeSerial">7</prop>
+    <prop idx="1" name="groupSerial">2</prop>
+    <prop name="isContainerShape">True</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">0</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP2" serial="4">
+   <properties>
+    <prop idx="0" name="groupSerial">3</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

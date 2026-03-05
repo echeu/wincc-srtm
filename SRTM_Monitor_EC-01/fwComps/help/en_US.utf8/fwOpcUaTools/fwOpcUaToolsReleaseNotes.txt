@@ -1,0 +1,58 @@
+             JCOP Framework - fwOpcUaTools
+
+15 November 2024: fwOpcUaTools-9.3.0
+---------------------------------
+Open-source compliant release.
+
+
+30 October 2023: fwOpcUaTools-9.1.0
+---------------------------------
+fwOpcUaTools production-grade release for WinCC OA 3.19
+
+- FWCORE-3572: Correct implementation of Cancel button in fwOpcUaTools_ConnectionsTool_createConnection.pnl to avoid unexpected behavior
+               when using that button
+- Panels that were still in PNL format were saved in XML format
+
+
+31 March 2023: fwOpcUaTools-9.0.0
+---------------------------------
+Initial developer-grade release for WinCC OA 3.19
+
+- FWCORE-3569: fwOpcUaTools_periphAddressesConsistencyIssues.pnl does not display address issues (if there are any) due to undeclared variable
+
+
+02 February 2022: fwOpcUaTools-0.2.0
+------------------------------------
+- FWCORE-3416: API library to check the OPC UA consistency
+- FWCORE-3417: Includes fwOpcUaTools_ConfigurationDiagnosticTool.pnl panel allowing the user an easy verification of their OPC UA configuration and addressing
+- Testing component - fwOpcUaToolsUnitTests - included in the package
+
+
+11 November 2020: fwOpcUaTools-0.1.2
+------------------------------------
+- FWCORE-3503: Improved visualization of panels in Linux
+- FWCORE-3507: Added option to include output addresses without subscriptions
+- FWCORE-3508: Added a panel to copy server connection and subscription settings into a new ones
+- FWCORE-3509: Improved JCOP web page documentation with new features
+
+
+09 September 2020: fwOpcUaTools-0.1.1
+-------------------------------------
+- FWCORE-3500 Added input selector for the OPC UA server connection and subscriptions
+- FWCORE-3501 Added documentation in the JCOP web page
+
+
+15 June 2020: fwOpcUaTools-0.1.0
+--------------------------------
+- First version of the component
+
+- Includes panel fwOpcUaTools_ConnectionsTool.pnl:
+  This panel allows to select a JCOP device and their children to move their OPC UA server connection (driver number) and subscriptions to a different ones automatically.
+
+
+
+-------------------------------------------------
+Jonas ARROYO, CERN BE/ICS/FD
+
+Support: icecontrols.support@cern.ch
+

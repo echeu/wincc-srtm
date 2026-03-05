@@ -1,0 +1,2117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8">Distributed System Configuration</prop>
+  </prop>
+  <prop name="Size">882 889</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;unDistributedControl/unDistributedControl.ctl&quot;
+
+string g_sPanelFileName;
+dyn_dyn_string g_OldTableContent;
+bool g_bEdited = FALSE;
+bool g_bGranted = FALSE;
+bool g_bInitialising = FALSE;
+
+//---------------------------------------------------------------------------------------------------------
+
+const string SYSTEM_DP_SEPARATOR= &quot;:&quot;;
+
+const string SYS_IN_CFG_YES = &quot;Y&quot;;
+const string SYS_IN_CFG_NO = &quot;N&quot;;
+
+//---------------------------------------------------------------------------------------------------------
+
+loadData()
+{
+	dyn_string dsSystemName, dsHostName;
+	dyn_int diSystemId, diPortNumber;
+	int i, len;
+	string sHostName, sPortNumber;
+  dyn_string exception;
+  g_bInitialising = TRUE;
+
+	confTable.deleteAllLines();
+	unDistributedControl_getAllDeviceConfig(dsSystemName, diSystemId, dsHostName, diPortNumber);
+	len = dynlen(dsSystemName);
+  int count = 0;
+	for(i=1;i&lt;=len;i++) {
+		if(diPortNumber[i] &lt;=0)
+			sPortNumber = &quot;&quot;;
+		else
+			sPortNumber = diPortNumber[i];
+		if(dsHostName[i] == &quot;localhost&quot;)
+			sHostName = &quot;&quot;;
+		else
+			sHostName = dsHostName[i];
+   unDistributedControl_convertHostPort(sHostName, sPortNumber);
+		if(dsSystemName[i] + SYSTEM_DP_SEPARATOR == getSystemName()) {
+			localPortNumber.text = sPortNumber;
+			localHostName.text = sHostName;
+		}
+		else
+    {
+      bool match = false;
+      bool present = unDistributedControl_isSystemInFile(diSystemId[i], sHostName, diPortNumber[i], &quot;&quot;, match, exception);
+      string inFile = (present &amp;&amp; match)?SYS_IN_CFG_YES:SYS_IN_CFG_NO;
+
+
+      confTable.appendLine(&quot;remoteSystemName&quot;, dsSystemName[i], &quot;remoteSystemId&quot;, (string)diSystemId[i],
+                           &quot;remoteHostName&quot;, sHostName, &quot;remotePortNumber&quot;, sPortNumber, &quot;configFile&quot;, inFile);
+      //confTable.cellWidgetRC(count,&quot;remove&quot;,&quot;PushButton&quot;,&quot;X&quot;);
+      confTable.cellFillRC(count,&quot;remove&quot;,&quot;[pattern,[fit,any,fwStdUi/actions/cancel.svg]]&quot;);
+      if(inFile != &quot;Y&quot;)
+      {
+        setValue(&quot;confTable&quot;, &quot;cellBackColRC&quot;, count, &quot;configFile&quot;, &quot;FwStdUiAttention1&quot;);
+      }
+      count++;
+
+    }
+	}
+
+  //Finally, append the systems in the config file we do not have an internal datapoint for:
+ 	dyn_string dsFileSystemName, dsFileHostName, dsFileReduHost;
+	dyn_int diFileSystemId, diFilePortNumber;
+  bool match = false;
+  bool showPopup = false;
+
+	unDistributedControl_getAllDeviceConfigFromFile(diFileSystemId, dsFileHostName, diFilePortNumber, dsFileReduHost, exception);
+
+  int n = dynlen(diFileSystemId);
+  for(int j = 1; j &lt;= n; j++){
+    if(!unDistributedControl_systemDpExists(diFileSystemId[j], dsFileHostName[j], diFilePortNumber[j], dsFileReduHost[j], match, exception)){
+      showPopup = true;
+
+  		if(diFilePortNumber[j] &lt;=0)
+  			sPortNumber = &quot;&quot;;
+  		else
+  			sPortNumber = diFilePortNumber[j];
+
+  		if(dsFileHostName[j] == &quot;localhost&quot;)
+  			sHostName = &quot;&quot;;
+  		else
+  			sHostName = dsFileHostName[j];
+
+      unDistributedControl_convertHostPort(sHostName, sPortNumber);
+
+      confTable.appendLine(&quot;remoteSystemName&quot;, &quot;&quot;, &quot;remoteSystemId&quot;, (string)diFileSystemId[j],
+                           &quot;remoteHostName&quot;, sHostName, &quot;remotePortNumber&quot;, sPortNumber, &quot;configFile&quot;, SYS_IN_CFG_YES);
+      int row = confTable.lineCount() - 1;
+      setValue(&quot;confTable&quot;, &quot;cellBackColRC&quot;, row, &quot;remoteSystemName&quot;, &quot;FwStdUiAttention2&quot;);
+    }//end of if system dp does not exist
+  }// end of loop over systems in the config file
+
+  if(showPopup)
+  {
+    FwStdUi::dialogInfo(&quot;Config file contains peers which are not known to unDistributedControl.\nThese systems have been added to the table.\nPlease, complete their info...&quot;,
+                           &quot;Missing Datapoints&quot;);
+  }
+  g_bInitialising = FALSE;
+}
+
+
+
+loadDataFromConfig()
+{
+  g_bInitialising = TRUE;
+
+  dyn_string exception;
+  dyn_string dsFileSystemName, dsFileHostName, dsFileReduHost;
+	dyn_int diFileSystemId, diFilePortNumber;
+	unDistributedControl_getAllDeviceConfigFromFile(diFileSystemId, dsFileHostName, diFilePortNumber, dsFileReduHost, exception);
+
+  confTable.deleteAllLines();
+
+  bool showPopup = false;
+  int distPeerCount = dynlen(diFileSystemId);
+  for(int i=1;i&lt;=distPeerCount;i++)
+  {
+    int iSystemId = diFileSystemId[i];
+    string sSystemName = strrtrim(getSystemName(iSystemId), SYSTEM_DP_SEPARATOR);
+
+    string sHostname = dsFileHostName[i];
+    if(sHostname == &quot;localhost&quot;){
+			sHostname = &quot;&quot;;
+    }
+    int iPortNum = diFilePortNumber[i];
+    string sPortNum = iPortNum;
+    if(iPortNum &lt;= 0){
+      if(sHostname != &quot;&quot;){
+        sPortNum = DEFAULT_DIST_PORT;
+      }else{
+        sPortNum = &quot;&quot;;
+      }
+    }
+    unDistributedControl_convertHostPort(sHostname, sPortNum);
+
+    confTable.appendLine(&quot;remoteSystemName&quot;, sSystemName, &quot;remoteSystemId&quot;, (string)iSystemId,
+                         &quot;remoteHostName&quot;, sHostname, &quot;remotePortNumber&quot;, sPortNum, &quot;configFile&quot;, SYS_IN_CFG_YES);
+    int row = confTable.lineCount() - 1;
+    //confTable.cellWidgetRC(row,&quot;remove&quot;,&quot;PushButton&quot;,&quot;X&quot;);
+    confTable.cellFillRC(row,&quot;remove&quot;,&quot;[pattern,[fit,any,fwStdUi/actions/cancel.svg]]&quot;);
+    if(sSystemName == &quot;&quot;)
+    {
+      setValue(&quot;confTable&quot;, &quot;cellBackColRC&quot;, row, &quot;remoteSystemName&quot;, &quot;FwStdUiAttention2&quot;);
+      showPopup = true;
+    }
+  }
+  if(showPopup)
+  {
+    FwStdUi::dialogInfo(&quot;&lt;p&gt;Could not resolve system name for one or more systems defined in config file.&lt;/p&gt;&lt;p&gt;Please, complete their system names.&lt;/p&gt;&quot;,&quot;Complete missing system names&quot;);
+  }
+  g_bInitialising = FALSE;
+}
+
+const int DEFAULT_DIST_PORT = 4777;
+
+bool areDpsAndConfigMatch()
+{
+  dyn_string dsSystemName, dsHostName;
+	dyn_int diSystemId, diPortNumber;
+	unDistributedControl_getAllDeviceConfig(dsSystemName, diSystemId, dsHostName, diPortNumber);
+  int dpSystemsLen = dynlen(diSystemId);
+
+  dyn_string exception;
+  dyn_string dsFileSystemName, dsFileHostName, dsFileReduHost;
+	dyn_int diFileSystemId, diFilePortNumber;
+	unDistributedControl_getAllDeviceConfigFromFile(diFileSystemId, dsFileHostName, diFilePortNumber, dsFileReduHost, exception);
+  int configSystemsLen = dynlen(diFileSystemId);
+
+  if(dynlen(exception) &gt; 0)
+  {
+    DebugTN(&quot;Problem occured while retrieving data from config file, cannot check if current distributed system configuration match config file&quot;);
+    return true;
+  }
+
+  int distPeersInDp;
+  bool match = true;
+
+  for(int i=1;i&lt;=dpSystemsLen;i++)  {
+    if(dsHostName[i] == &quot;localhost&quot; || dsSystemName[i] + SYSTEM_DP_SEPARATOR == getSystemName()){
+      continue;
+    }
+    int distPeerIx = dynContains(diFileSystemId, diSystemId[i]);
+    if(distPeerIx &lt;= 0){
+      return false;
+    }
+    distPeersInDp++;
+
+    if(diFilePortNumber[distPeerIx] &lt;= 0){
+      diFilePortNumber[distPeerIx] = DEFAULT_DIST_PORT;
+    }
+
+    string sRealSystemName = strrtrim(getSystemName(diSystemId[i]), SYSTEM_DP_SEPARATOR);
+    if(dsHostName[i] != dsFileHostName[distPeerIx] ||
+       diPortNumber[i] != diFilePortNumber[distPeerIx] ||
+       (sRealSystemName != &quot;&quot; &amp;&amp; dsSystemName[i] != sRealSystemName)){
+     // DebugTN(diSystemId[i], dsHostName[i] != dsFileHostName[distPeerIx],  diPortNumber[i] != diFilePortNumber[distPeerIx], sRealSystemName != &quot;&quot; &amp;&amp; dsSystemName[i] != sRealSystemName);
+      return false;
+    }
+  }
+  return (distPeersInDp == configSystemsLen);
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+checkData(dyn_string &amp;exceptionInfo)
+{
+	dyn_string dsSystemName, dsSystemId, dsPortNumber, dsHostName;
+	string sPortNumber, sHostName, sTemp;
+
+  // Check and replace if necessary the provided portnumber in case it has not been done yet
+  setDistPortNumber();
+
+// get all new config
+	dynAppend(dsSystemName, localSystemName.text);
+	dynAppend(dsSystemId, localSystemId.text);
+	dynAppend(dsPortNumber, localPortNumber.text);
+	dynAppend(dsHostName, localHostName.text);
+
+	for(int i=0;i&lt;confTable.lineCount();i++) {
+
+		sTemp = confTable.cellValueRC(i, &quot;remoteSystemName&quot;);
+		if(sTemp == &quot;&quot;) {
+		  fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;The table contains errors: empty system names. The configuration cannot be saved...&quot;, &quot;&quot;);
+    }
+	  dynAppend(dsSystemName, strrtrim(sTemp, SYSTEM_DP_SEPARATOR));
+	  dynAppend(dsSystemId, confTable.cellValueRC(i, &quot;remoteSystemId&quot;));
+		dynAppend(dsPortNumber, confTable.cellValueRC(i, &quot;remotePortNumber&quot;));
+		dynAppend(dsHostName, confTable.cellValueRC(i, &quot;remoteHostName&quot;));
+	}
+	dynUnique(dsSystemName);
+	dynUnique(dsSystemId);
+
+// check that the system name, system Id are unique and port number is unique if on different computer.
+	if(dynlen(dsSystemName) != dynlen(dsSystemId))
+  {
+		fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;saving unDistribtuedControl configuration: incorrect data, redundant systemName or systemId&quot;, &quot;&quot;);
+  }
+	else {
+		sPortNumber = dsPortNumber[1];
+		dynRemove(dsPortNumber, 1);
+		sHostName = dsHostName[1];
+		dynRemove(dsHostName, 1);
+
+		while(dynlen(dsPortNumber) &gt; 0) {
+			int pos = dynContains(dsPortNumber, sPortNumber);
+			if(pos&gt;0) {
+				if(sHostName == dsHostName[pos]) {
+					fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;saving unDistribtuedControl configuration: same portNumber on same host&quot;, &quot;&quot;);
+//					DebugN(i, dsSystemName, dsHostName, dsPortNumber, sPortNumber, sHostName);
+				}
+			}
+			sPortNumber = dsPortNumber[1];
+			dynRemove(dsPortNumber, 1);
+			sHostName = dsHostName[1];
+			dynRemove(dsHostName, 1);
+		}
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+saveData(dyn_string &amp;exceptionInfo, string buttonPressed = &quot;otherButton&quot;)
+{
+	int iSystemId, iPortNumber;
+	string sSystemName, sHostName, sPortNumber;
+	dyn_string dsOldSystemName, dsSystemName, dsHostName;
+	dyn_int diSystemId, diPortNumber;
+
+  g_bEdited = FALSE;
+
+  // check data and do not save if the data is not correct
+	checkData(exceptionInfo);
+
+  if(dynlen(exceptionInfo)) {
+      fwException_raise(exceptionInfo,&quot;ERROR&quot;,&quot;Configuration error. Correct errors in the table. Configuration will not be saved&quot;,&quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+	else{
+	// save local config
+		sSystemName = localSystemName.text;
+		iSystemId = localSystemId.text;
+		sHostName = localHostName.text;
+		sPortNumber = localPortNumber.text;
+		if(sPortNumber == &quot;&quot;)
+			iPortNumber = 0;
+		else
+			iPortNumber = sPortNumber;
+
+	// get current configs
+		unDistributedControl_getAllDeviceConfig(dsOldSystemName, diSystemId, dsHostName, diPortNumber);
+
+	// create the local system if not already created
+		unDistributedControl_checkCreateDp(c_unDistributedControl_dpName+sSystemName, exceptionInfo);
+		if(dynlen(exceptionInfo) &lt;= 0) {
+			unDistributedControl_checkSetAlias(c_unDistributedControl_dpName+sSystemName, sSystemName, exceptionInfo);
+			unDistributedControl_setDeviceConfig(sSystemName, iSystemId, sHostName, iPortNumber, exceptionInfo);
+			dynAppend(dsSystemName, sSystemName);
+		}
+	// save remote PVSS server config
+		for(int i=0;i&lt;confTable.lineCount();i++) {
+			sSystemName = strrtrim(confTable.cellValueRC(i, &quot;remoteSystemName&quot;), SYSTEM_DP_SEPARATOR);
+			iSystemId = confTable.cellValueRC(i, &quot;remoteSystemId&quot;);
+			sHostName = confTable.cellValueRC(i, &quot;remoteHostName&quot;);
+			sPortNumber = confTable.cellValueRC(i, &quot;remotePortNumber&quot;);
+			if(sPortNumber == &quot;&quot;)
+				iPortNumber = 0;
+			else
+				iPortNumber = sPortNumber;
+			if(sSystemName != &quot;&quot;) {
+	// create the remote system if not already created
+				unDistributedControl_checkCreateDp(c_unDistributedControl_dpName+sSystemName, exceptionInfo);
+				if(dynlen(exceptionInfo) &lt;= 0) {
+					unDistributedControl_checkSetAlias(c_unDistributedControl_dpName+sSystemName, sSystemName, exceptionInfo);
+					unDistributedControl_setDeviceConfig(sSystemName, iSystemId, sHostName, iPortNumber, exceptionInfo);
+					dynAppend(dsSystemName, sSystemName);
+				}
+			}
+		}
+	}
+
+// in case of error do nothing
+	if (dynlen(exceptionInfo) &lt;= 0)
+	{
+	// delete the others
+		for(int i=1;i&lt;=dynlen(dsOldSystemName);i++) {
+			iPortNumber = dynContains(dsSystemName, dsOldSystemName[i]);
+			if(iPortNumber &lt;= 0) {
+// delete systemIntegrity
+				deleteSystemIntegrity(dsOldSystemName[i]);
+// delete unDistributedControl DP
+				dpDelete(c_unDistributedControl_dpName+dsOldSystemName[i]);
+			}
+		}
+	// save config in the config file
+		unDistributedControl_saveInConfigFile(exceptionInfo);
+
+// 2. Reload data
+		loadData();
+	}
+	else
+  {
+    fwExceptionHandling_display(exceptionInfo);
+    if(buttonPressed != &quot;okButtonPressed&quot;)
+    {
+        FwStdUi::dialogInfo(&quot;Error while saving&quot;,&quot;Warning&quot;);
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+deleteSystemIntegrity(string sSystemName)
+{
+	// send the command
+	dpSetWait(UN_SYSTEM_INTEGRITY_DIST+UN_SYSTEMINTEGRITY_EXTENSION+&quot;.interface.command&quot;, UN_SYSTEMINTEGRITY_DELETE,
+				UN_SYSTEM_INTEGRITY_DIST+UN_SYSTEMINTEGRITY_EXTENSION+&quot;.interface.parameters&quot;,
+									makeDynString(c_unDistributedControl_dpName+sSystemName));
+// just wait it is done. not the best secure way but this is the only available.
+	delay(1);
+//	DebugN(&quot;delete systemIntegrity: &quot;, sSystemName);
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+userCB(string sDp, string sUser)
+{
+	bool bFileExists;
+	dyn_string exceptionInfo, domainList, priviledgeList;
+	string user;
+
+  if(isFunctionDefined(&quot;unGenericButtonFunctionsHMI_isAccessAllowed&quot;)) {
+     unGenericButtonFunctionsHMI_isAccessAllowed(g_sPanelFileName, UN_GENERIC_USER_ACCESS,
+                                                      unGenericButtonFunctionsHMI_getPanelAccessLevel(g_sPanelFileName, bFileExists), g_bGranted, exceptionInfo);
+  }
+	else {
+			g_bGranted = true;
+	}
+
+	buttonApply.enabled = g_bEdited &amp;&amp; g_bGranted;
+  okButton.enabled = g_bGranted;
+
+	if(isFunctionDefined(&quot;unMessageText_sendException&quot;)) {
+		if(dynlen(exceptionInfo)&gt;0)
+			unMessageText_sendException(getSystemName(), myManNum(), &quot;Distribtued Control configuration&quot;, &quot;user&quot;, &quot;*&quot;, exceptionInfo);
+	}
+
+// handle here any error during the the send message:
+	if(dynlen(exceptionInfo)&gt;0) {
+		fwExceptionHandling_display(exceptionInfo);
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+eventClose()
+{
+	int pos;
+
+	if(isFunctionDefined(&quot;unGenericButtonFunctionsHMI_closePanel&quot;)) {
+		if(globalExists(&quot;g_unGraphicalFrame_childOpenedPanel&quot;)) {
+			pos = dynContains(g_unGraphicalFrame_childOpenedPanel, myModuleName()+&quot;/&quot;+myPanelName());
+			if(pos &gt;0)
+				dynRemove(g_unGraphicalFrame_childOpenedPanel, pos);
+		}
+
+		unGenericButtonFunctionsHMI_closePanel(true);
+	}
+	else
+		PanelOff();
+}
+
+setDistPortNumber()
+{
+  string sHostName, sPortNumber=localPortNumber.text;
+
+  unDistributedControl_convertHostPort(sHostName, sPortNumber);
+  localPortNumber.text = sPortNumber;
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+void trimSpaces(string &amp;sItem)
+{
+  sItem = strrtrim(sItem, &quot; &quot;);
+  sItem = strltrim(sItem, &quot; &quot;);
+}
+
+enableUiButtons(bool enable)
+{
+  reloadButton.enabled(enable);
+
+  if(enable){
+    userCB(&quot;&quot;, &quot;&quot;);
+  }else{
+    okButton.enabled(false);
+    buttonApply.enabled(false);
+  }
+  loadFromConfigButton.enabled(enable &amp; (!areDpsAndConfigMatch()));
+
+}
+
+bool askUserBeforeSave()
+{
+  dyn_string ds;
+  dyn_float df;
+  ChildPanelOnCentralModalReturn(&quot;fwGeneral/fwOkCancel.pnl&quot;, &quot;Confirm&quot;, makeDynString(&quot;$text:Modified distributed systems configuration will be saved.\n&quot;
+                                                                                      &quot;Note: Dist section of config file will be overwritten.\n&quot;
+                                                                                      &quot;Are you sure you want to proceed?&quot;), df, ds);
+  if(dynlen(ds) &gt;= 1 &amp;&amp; ds[1] == &quot;ok&quot;){
+    return true;
+  }
+  return false;
+}
+
+
+]]></script>
+  <script name="Close" isEscaped="1"><![CDATA[main()
+{
+	eventClose();
+}]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  // Table properties
+  confTable.tableMode(TABLE_SELECT_BROWSE);
+  confTable.selectByClick(TABLE_SELECT_LINE);
+  confTable.sortOnClick(false);
+  confTable.columnStretchable(0,true);
+  confTable.columnStretchable(1,false);
+  confTable.columnStretchable(2,true);
+  confTable.columnStretchable(3,false);
+  confTable.columnStretchable(4,false);
+
+  DistManConfigurePlaceholder.text=&quot;&quot;;
+  DistManConfigurePlaceholder.visible=true;
+
+
+  if(isFunctionDefined(&quot;unGenericButtonFunctionsHMI_getPanelFileName&quot;))
+  {
+    addSymbol(
+        myModuleName(),
+        myPanelName(),
+        &quot;objects/UN_INFOS/unManagerInfo.pnl&quot;,
+        &quot;MANAGER&quot;, 4, &quot;LayoutLocalSys&quot;,
+        makeDynString(
+            &quot;$sFrontEndOrSystemName:&quot; + getSystemName(),
+            &quot;$sPanelName:&quot;+g_sPanelFileName,
+            &quot;$sShortName:WCCILdist&quot;,
+            &quot;$sLongName:WCCILdist&quot;,
+            &quot;$sManager:WCCILdist&quot;,
+            &quot;$sCommandLine:&quot;,
+            &quot;$iManType:&quot; + DIST_MAN,
+            &quot;$iManNum:&quot;+getSystemId(),
+            &quot;$sShapeName:&quot;,
+            &quot;$sSymbolName:WCCILdist&quot;,
+            &quot;$bAddDelete:true&quot;
+        ));
+        DistManConfigurePlaceholder.visible=false;
+  }
+
+  int iRes;
+  dyn_string exceptionInfo;
+  string systName = getSystemName();
+
+  if(isFunctionDefined(&quot;unGraphicalFrame_setCorporateColors&quot;)){
+    unGraphicalFrame_setCorporateColors();
+  }
+
+  enableUiButtons(false);
+
+  if(isFunctionDefined(&quot;fwAccessControl_setupPanel&quot;)){
+    fwAccessControl_setupPanel(&quot;userCB&quot;, exceptionInfo);
+    if (dynlen(exceptionInfo)) {
+        fwExceptionHandling_display(exceptionInfo);
+        return;
+    }
+  }
+
+  if(isFunctionDefined(&quot;unGenericButtonFunctionsHMI_getPanelFileName&quot;)) unGenericButtonFunctionsHMI_getPanelFileName(g_sPanelFileName);
+  loadData();
+  //check if all systems listed in the config file are listed in the table, otherwise add them.
+  localSystemName.text = substr(systName, 0, strpos(systName, SYSTEM_DP_SEPARATOR));
+  localSystemId.text = getSystemId();
+
+  // fill global table information for check of edited information
+  for(int i = 0; i &lt; confTable.lineCount(); i++)
+  {
+    g_OldTableContent[i+1] = confTable.getLineN(i);
+  }
+  enableUiButtons(true);
+
+}
+
+
+
+
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <shape Name="RECTANGLE1" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">39</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">2 35</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiBorder01</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">37</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Preferred"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[solid]</prop>
+    <prop name="Geometry">0.9209745115276825 0 0 0.1092896174863389 17.80319554009051 96.17486338797811</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">2 35</prop>
+    <prop name="Size">889 733</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+  </shape>
+  <shape Name="localSystemNameLabel" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">43</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">50 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">41</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9610168815941034 0 0 1 -8.933666987116871 0</prop>
+    <prop name="Location">50 110</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">System name:</prop>
+    </prop>
+    <prop name="Distance">0</prop>
+    <prop name="BorderOffset">0</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">True</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="localSystemIdLabel" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">44</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">265.9917936694021 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">42</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9610168815941034 0 0 1 -8.933666987116871 0</prop>
+    <prop name="Location">265.9917936694021 110</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">System ID:</prop>
+    </prop>
+    <prop name="Distance">0</prop>
+    <prop name="BorderOffset">0</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">True</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="localHostNameLabel" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">45</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">362.1676436107854 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">43</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9610168815941034 0 0 1 -8.933666987116871 0</prop>
+    <prop name="Location">362.1676436107854 110</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Local host:</prop>
+    </prop>
+    <prop name="Distance">0</prop>
+    <prop name="BorderOffset">0</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">True</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="localPortNumberLabel" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">46</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">649.9003516998827 110</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">44</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9610168815941034 0 0 1 -8.933666987116871 0</prop>
+    <prop name="Location">649.9003516998827 110</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Port:</prop>
+    </prop>
+    <prop name="Distance">0</prop>
+    <prop name="BorderOffset">0</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">True</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="localSystemName" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">47</prop>
+    <prop name="Type">FW</prop>
+    <prop name="RefPoint">35.07594901019901 103</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">45</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">34.31209268461778 136</prop>
+    <prop name="Size">205 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">False</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="localSystemId" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">48</prop>
+    <prop name="Type">FW</prop>
+    <prop name="RefPoint">173.3339439404044 103</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">46</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="minimumSize">100 -1</prop>
+    <prop name="maximumSize">100 -1</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">242.8448695682977 136</prop>
+    <prop name="Size">88 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">False</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="localHostName" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">49</prop>
+    <prop name="Type">FW</prop>
+    <prop name="RefPoint">234.442449986904 103</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">47</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">335.2714849636283 136</prop>
+    <prop name="Size">273 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">False</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="localPortNumber" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">50</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">417.7679681264027 103</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">48</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="minimumSize">80 -1</prop>
+    <prop name="maximumSize">80 -1</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">611.787474824039 136</prop>
+    <prop name="Size">75 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+   <events>
+    <script name="TextChanged" isEscaped="1"><![CDATA[main(string newText)
+{
+  if(!g_bInitialising)
+  {
+    g_bEdited = TRUE;
+    userCB(&quot;&quot;,&quot;&quot;);
+  }
+}]]></script>
+    <script name="Command" isEscaped="1"><![CDATA[main()
+{
+  setDistPortNumber();
+}
+]]></script>
+    <script name="KeyboardFocusOut" isEscaped="1"><![CDATA[main()
+{
+  setDistPortNumber();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="confTable" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">52</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">42.4386174986968 264</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">50</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">42.4386174986968 264</prop>
+    <prop name="Size">709 364</prop>
+    <prop name="ShowColumnHeader">True</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">24</prop>
+    <prop name="RowHeaderWidth">30</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">remoteSystemName</prop>
+     <prop name="Width">200</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">True</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">System name</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">PVSS remote system name</prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">remoteSystemId</prop>
+     <prop name="Width">100</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">True</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">System ID</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">PVSS remote system id</prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">remoteHostName</prop>
+     <prop name="Width">200</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">True</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Host name</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">host name of the remote PVSS system</prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">remotePortNumber</prop>
+     <prop name="Width">80</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">True</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Port</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">port number of the remote distributed manager</prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">configFile</prop>
+     <prop name="Width">110</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">In config file?</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">Y-> the peer is present in the config file/ N-> the peer is not yet in config file / O -> the information of the peer does not match that of the config file</prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">remove</prop>
+     <prop name="Width">24</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8"> </prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8">Remove configuration for this system</prop>
+     </prop>
+    </prop>
+    <prop name="Row">
+     <prop name="Name"></prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">#30</prop>
+     </prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(int row, string column, string value)
+{
+
+    if (column==&quot;remove&quot;) {
+        enableUiButtons(false);
+        confTable.deleteLineN(row);
+        g_bEdited=true;
+        enableUiButtons(true);
+        return;
+    }
+
+  string sHostName, sPortNumber, sId, sSyst;
+  int index;
+
+  if(column == &quot;remoteSystemName&quot;)
+    sSyst = value;
+  else
+    sSyst = this.cellValueRC(row, &quot;remoteSystemName&quot;);
+
+  if(sSyst != &quot;&quot;)
+  {
+    setValue(&quot;confTable&quot;, &quot;cellBackColRC&quot;, row, &quot;remoteSystemName&quot;, &quot;FwBackgroundInputText&quot;);
+    g_bEdited = true;
+  }
+
+
+  trimSpaces(sSyst);
+
+  if(column == &quot;remoteHostName&quot;)
+    sHostName = value;
+  else
+    sHostName = this.cellValueRC(row, &quot;remoteHostName&quot;);
+
+  trimSpaces(sHostName);
+
+  if(column == &quot;remotePortNumber&quot;)
+    sPortNumber = value;
+  else
+    sPortNumber = this.cellValueRC(row, &quot;remotePortNumber&quot;);
+
+  trimSpaces(sPortNumber);
+
+  if(column == &quot;remoteSystemId&quot;)
+    sId = value;
+  else
+    sId = this.cellValueRC(row, &quot;remoteSystemId&quot;);
+
+  trimSpaces(sId);
+
+  if(sId == &quot;&quot;)
+    sId = this.lineCount();
+
+  unDistributedControl_convertHostPort(sHostName, sPortNumber);
+  this.cellValueRC(row, &quot;remoteSystemName&quot;) = sSyst;
+  this.cellValueRC(row, &quot;remoteHostName&quot;) = sHostName;
+  this.cellValueRC(row, &quot;remotePortNumber&quot;) = sPortNumber;
+  this.cellValueRC(row, &quot;remoteSystemId&quot;) = sId;
+
+
+  dyn_dyn_string tableContent;
+
+  for(index = 0; index &lt; this.lineCount(); index++)
+  {
+    tableContent[index+1] = this.getLineN(index);
+  }
+
+  if(dynlen(g_OldTableContent) != dynlen(tableContent))
+  {
+    g_bEdited = TRUE;
+  }
+  else
+  {
+    for(index = 1; index &lt;= dynlen(g_OldTableContent); index++)
+    {
+      if(g_OldTableContent[index] != tableContent[index])
+      {
+        g_bEdited = TRUE;
+      }
+    }
+  }
+
+  g_OldTableContent = tableContent;
+  userCB(&quot;&quot;,&quot;&quot;);
+}
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="remoteSystemNameField" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">57</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">81.38268255758165 654</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">55</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Name of remote system</prop>
+    </prop>
+    <prop name="minimumSize">-1 24</prop>
+    <prop name="maximumSize">-1 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">83.59541352683647 699.7251036597286</prop>
+    <prop name="Size">178 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="remoteSystemIdField" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">58</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">212.861019119338 654.0141985533937</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">56</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">ID of remote system</prop>
+    </prop>
+    <prop name="minimumSize">100 24</prop>
+    <prop name="maximumSize">100 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">263.0162544224473 699.7393022131223</prop>
+    <prop name="Size">77 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="remoteHostNameField" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">59</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">273.8902768827512 654</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">57</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Name of remote host</prop>
+    </prop>
+    <prop name="minimumSize">-1 24</prop>
+    <prop name="maximumSize">-1 24</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">345.4352448886571 699.7251036597286</prop>
+    <prop name="Size">238 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="remotePortNumberField" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">60</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">450.9087544231369 654</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">58</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Remote port number</prop>
+    </prop>
+    <prop name="minimumSize">80 24</prop>
+    <prop name="maximumSize">80 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">585.885343547681 699.7251036597286</prop>
+    <prop name="Size">106 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="cancelButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">62</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">563.9563907716546 730</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">60</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Close the panel. Any unsaved modifications will be lost</prop>
+    </prop>
+    <prop name="minimumSize">80 24</prop>
+    <prop name="maximumSize">80 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">705.1186008114453 821</prop>
+    <prop name="Size">75 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Cancel</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	eventClose();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="buttonApply" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">63</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">484.494219557203 730</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">61</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Saves distributed systems configuration. Note that dist section of project config file will be overwritten by the applied configuration</prop>
+    </prop>
+    <prop name="minimumSize">80 24</prop>
+    <prop name="maximumSize">80 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">625.6564295969937 821</prop>
+    <prop name="Size">75 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Apply</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{  
+  dyn_string exception;
+  
+  if(!askUserBeforeSave()) return;
+  
+	enableUiButtons(false);
+	
+// 1. Save data
+	saveData(exception);
+  if(dynlen(exception))
+  {
+    fwExceptionHandling_display(exception);
+  }
+
+	enableUiButtons(true);
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="reloadButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">64</prop>
+    <prop name="Type">FW_ICON</prop>
+    <prop name="RefPoint">18.85664552365626 695.8625792050691</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">62</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Reload distributed systems configuration. Note: Unsaved modifications will be lost</prop>
+    </prop>
+    <prop name="minimumSize">28 28</prop>
+    <prop name="maximumSize">28 28</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">25.40058903543464 789.3625792050691</prop>
+    <prop name="Size">27 28</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/refresh.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+	enableUiButtons(false);
+
+	loadData();
+  g_bEdited = FALSE;
+
+	enableUiButtons(true);
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="okButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">65</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">403.1623501965289 730</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">63</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Saves distributed systems configuration and close the panel. Note that dist section of project config file will be overwritten by the applied configuration.</prop>
+    </prop>
+    <prop name="minimumSize">80 24</prop>
+    <prop name="maximumSize">80 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">544.3245602363196 821</prop>
+    <prop name="Size">75 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OK</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+  dyn_string exception;
+
+  if(!askUserBeforeSave()) return;
+
+  enableUiButtons(false);
+
+	saveData(exception, &quot;okButtonPressed&quot;);
+  if(dynlen(exception))
+  {
+    dyn_string ds;
+    dyn_float df;
+    DebugTN(__FILE__ + &quot;, Error: &quot;, exception);
+    FwStdUi::dialogInfo(&quot;The table contains errors.\nInfo cannot be saved to config file.\nCheck log-viewer for more details.&quot;,&quot;Error saving data&quot;);
+  }
+
+  PanelOff();
+}
+
+
+
+
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="loadFromConfigButton" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">66</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">58.12030659432651 790.8625792050691</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">64</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Loads remote systems configuration table based on the config file dist section entries. Note: This doesn't change the distributed system configuration. To save displayed configuration please click 'OK' or 'Apply' button. To discard this configuration click reload button or close this panel by clicking 'Cancel' button. This button is disabled when distributed systems configuration match the dist section of config file.</prop>
+    </prop>
+    <prop name="minimumSize">150 24</prop>
+    <prop name="maximumSize">150 24</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">58.12030659432651 791.3625792050691</prop>
+    <prop name="Size">140 24</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Load from config file</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+  enableUiButtons(false);
+  loadDataFromConfig();
+  g_bEdited = true;
+  enableUiButtons(true);
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="DistRestartWarning" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">68</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">25.91149841557251 826.1125792050691</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUi11</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">66</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9348490731111965 0 0 1 1.17724875871444 0</prop>
+    <prop name="Location">25.91149841557251 826.1125792050691</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,1,0,0,0,0,Italic</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">After reconfiguration you may need to restart the DIST manager</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">0</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER3" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">72</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">203.021912926562 794.3625792050691</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">WF_Text</prop>
+    <prop name="TabOrder">69</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">203.021912926562 794.3625792050691</prop>
+    <prop name="Size">528 18</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER4" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">73</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">421.8593316587529 830</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">WF_Text</prop>
+    <prop name="TabOrder">70</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">421.8593316587529 830</prop>
+    <prop name="Size">98 20</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <reference parentSerial="54" Name="PanelHeader" referenceId="36">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">168.947712418299 301.999999999999</prop>
+    <prop name="Geometry">3.742948570675709 0 0 1 -288.939549339647 -170.999999999999</prop>
+    <prop name="TabOrder">71</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header">Distributed System Configuration</prop>
+     <prop type="BOOL" name="helpButtonVisible">False</prop>
+     <prop type="BOOL" name="shadowEnabled">False</prop>
+     <prop type="ENUM" name="headerType">1</prop>
+    </extended>
+   </properties>
+  </reference>
+  <reference parentSerial="43" Name="LocalSystemHeader" referenceId="37">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">95 157</prop>
+    <prop name="Geometry">3.587150387189503 0 0 1 0.1543945159430441 23</prop>
+    <prop name="TabOrder">73</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header">Local System</prop>
+     <prop type="ENUM" name="headerType">2</prop>
+     <prop type="BOOL" name="helpButtonVisible">False</prop>
+     <prop type="BOOL" name="shadowEnabled">False</prop>
+     <prop type="COLOR" name="bgColor">FwStdUiSectionHead</prop>
+     <prop type="INT" name="textSize">2</prop>
+     <prop type="COLOR" name="fgColor">FwStdUiPanelHeadTxt</prop>
+    </extended>
+   </properties>
+  </reference>
+  <reference parentSerial="52" Name="systemsTableLabel" referenceId="38">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">95 157</prop>
+    <prop name="Geometry">3.548833865361344 0 0 1 5.222415642447639 167</prop>
+    <prop name="TabOrder">74</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header">Remote WinCC OA Systems</prop>
+     <prop type="ENUM" name="headerType">2</prop>
+     <prop type="BOOL" name="helpButtonVisible">False</prop>
+     <prop type="BOOL" name="shadowEnabled">False</prop>
+     <prop type="COLOR" name="bgColor">FwStdUiSectionHead</prop>
+     <prop type="INT" name="textSize">2</prop>
+     <prop type="COLOR" name="fgColor">FwStdUiPanelHeadTxt</prop>
+    </extended>
+   </properties>
+  </reference>
+  <reference parentSerial="47" Name="PANEL_REF1" referenceId="40">
+   <properties>
+    <prop name="FileName">objects/fwStdUi/fwPanelHeader.pnl</prop>
+    <prop name="Location">95 157</prop>
+    <prop name="Geometry">2.817230238302308 0 0 1 57.56051510134893 617</prop>
+    <prop name="TabOrder">76</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="header">Add</prop>
+     <prop type="ENUM" name="headerType">3</prop>
+     <prop type="BOOL" name="helpButtonVisible">False</prop>
+     <prop type="BOOL" name="shadowEnabled">False</prop>
+     <prop type="COLOR" name="bgColor">FwStdUiSectionHead</prop>
+     <prop type="INT" name="textSize">0</prop>
+     <prop type="COLOR" name="fgColor">FwStdUiPanelHeadTxt</prop>
+    </extended>
+   </properties>
+  </reference>
+  <shape Name="addRemoteSystem" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">61</prop>
+    <prop name="Type">FW_ICON</prop>
+    <prop name="RefPoint">574.8216887014069 651.4279629191402</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">59</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Add the new remote system</prop>
+    </prop>
+    <prop name="minimumSize">28 28</prop>
+    <prop name="maximumSize">28 28</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">696.521892010422 698.5819760682353</prop>
+    <prop name="Size">21 16</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/ListsAndArrows/itemInsertAfter.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+  string sSystem, sHostName, sPortNumber, sId, sInFile;
+
+  sSystem = remoteSystemNameField.text();
+  trimSpaces(sSystem);
+  sSystem = strrtrim(sSystem, SYSTEM_DP_SEPARATOR);
+
+  if(sSystem != &quot;&quot;)
+  {
+    sId = remoteSystemIdField.text();
+    trimSpaces(sId);
+    sHostName = remoteHostNameField.text();
+    trimSpaces(sHostName);
+    sPortNumber = remotePortNumberField.text();
+    trimSpaces(sPortNumber);
+
+    if(sId == &quot;&quot;)
+    {
+      sId = confTable.lineCount() + 1;
+    }
+
+    unDistributedControl_convertHostPort(sHostName, sPortNumber);
+
+
+    dyn_string exception;
+    bool match = false;
+    bool present = unDistributedControl_isSystemInFile((int)sId, sHostName, (int)sPortNumber, &quot;&quot;, match, exception);
+    sInFile = (present &amp;&amp; match)?SYS_IN_CFG_YES:SYS_IN_CFG_NO;
+
+    confTable.appendLine(&quot;remoteSystemName&quot;, sSystem, &quot;remoteSystemId&quot;, sId, &quot;remoteHostName&quot;, sHostName,
+                         &quot;remotePortNumber&quot;, sPortNumber, &quot;configFile&quot;, sInFile);
+    int count=confTable.lineCount;
+    confTable.cellFillRC(count-1,&quot;remove&quot;,&quot;[pattern,[fit,any,fwStdUi/actions/cancel.svg]]&quot;);
+
+    g_bEdited = TRUE;
+
+    dyn_dyn_string tableContent;
+
+    for(int index = 0; index &lt; confTable.lineCount(); index++)
+    {
+      tableContent[index+1] = confTable.getLineN(index);
+    }
+
+    g_bEdited = TRUE;
+    g_OldTableContent = tableContent;
+    userCB(&quot;&quot;,&quot;&quot;);
+
+    remoteSystemNameField.text = &quot;&quot;;
+    remoteSystemIdField.text = &quot;&quot;;
+  }
+  setInputFocus(myModuleName(), myPanelName(), &quot;remoteSystemNameField&quot;);
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="RECTANGLE7" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">97</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">2 35</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiBorder01</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">78</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[solid]</prop>
+    <prop name="Geometry">0.7455507950462191 0 0 0.05464480874316944 70.155564702768 692.0874316939891</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">2 35</prop>
+    <prop name="Size">889 733</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+  </shape>
+  <shape Name="RECTANGLE10" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">105</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">2 35</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">FwStdUiBorder01</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">86</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Expanding" horizontal="Preferred"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[solid]</prop>
+    <prop name="Geometry">0.9538664583679568 0 0 0.6775956284153015 21.05885205251844 230.2841530054638</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">2 35</prop>
+    <prop name="Size">889 733</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+  </shape>
+  <shape Name="DistManConfigurePlaceholder" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">149</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">727.1703956724142 120.3333333333332</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">False</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">88</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="minimumSize">145 -1</prop>
+    <prop name="maximumSize">145 -1</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Preferred" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9736016264721215 0 0 1 0.1731120337034409 0</prop>
+    <prop name="Location">727.1703956724142 120.3333333333332</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">WCCILdist:
+Placeholder</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <reference parentSerial="54" Name="PANEL_REF3" referenceId="53">
+   <properties>
+    <prop name="FileName">objects/fwGeneral/fwResizableIcon.pnl</prop>
+    <prop name="Location">849.4001936522308 822.3549007136456</prop>
+    <prop name="Geometry">0.5048304729855444 0 0 0.5185185185185185 403.9726744256204 413.7634707139776</prop>
+    <prop name="TabOrder">89</prop>
+    <prop name="maximumSize">15 15</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignTrailing|AlignBottom</prop>
+   </properties>
+  </reference>
+ </shapes>
+ <groups>
+  <layout parentSerial="39" Name="LAYOUT_GROUP3" serial="4">
+   <properties>
+    <prop idx="0" name="shapeSerial">43</prop>
+    <prop idx="1" name="shapeSerial">47</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="39" Name="LAYOUT_GROUP4" serial="5">
+   <properties>
+    <prop idx="0" name="shapeSerial">44</prop>
+    <prop idx="1" name="shapeSerial">48</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="39" Name="LAYOUT_GROUP5" serial="6">
+   <properties>
+    <prop idx="0" name="shapeSerial">45</prop>
+    <prop idx="1" name="shapeSerial">49</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="39" Name="LAYOUT_GROUP6" serial="7">
+   <properties>
+    <prop idx="0" name="shapeSerial">46</prop>
+    <prop idx="1" name="shapeSerial">50</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="50" Name="LAYOUT_GROUP12" serial="13">
+   <properties>
+    <prop idx="0" name="shapeSerial">52</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">6</prop>
+    <prop name="layoutRightMargin">6</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="25" Name="LAYOUT_GROUP21" serial="22">
+   <properties>
+    <prop idx="0" name="shapeSerial">72</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="25" Name="LAYOUT_GROUP22" serial="23">
+   <properties>
+    <prop idx="0" name="shapeSerial">66</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="25" Name="LAYOUT_GROUP23" serial="24">
+   <properties>
+    <prop idx="0" name="shapeSerial">64</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="51" Name="LAYOUT_GROUP24" serial="25">
+   <properties>
+    <prop idx="1" name="groupSerial">23</prop>
+    <prop idx="0" name="groupSerial">24</prop>
+    <prop idx="2" name="groupSerial">22</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">9</prop>
+    <prop name="layoutBottomMargin">9</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="31" Name="LAYOUT_GROUP25" serial="26">
+   <properties>
+    <prop idx="0" name="shapeSerial">62</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="31" Name="LAYOUT_GROUP26" serial="27">
+   <properties>
+    <prop idx="0" name="shapeSerial">63</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="31" Name="LAYOUT_GROUP27" serial="28">
+   <properties>
+    <prop idx="0" name="shapeSerial">65</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="31" Name="LAYOUT_GROUP29" serial="30">
+   <properties>
+    <prop idx="0" name="shapeSerial">68</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="51" Name="LAYOUT_GROUP30" serial="31">
+   <properties>
+    <prop idx="1" name="shapeSerial">73</prop>
+    <prop idx="0" name="groupSerial">30</prop>
+    <prop idx="2" name="groupSerial">28</prop>
+    <prop idx="3" name="groupSerial">27</prop>
+    <prop idx="4" name="groupSerial">26</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="42" Name="LayoutLocalSys" serial="39">
+   <properties>
+    <prop idx="4" name="shapeSerial">149</prop>
+    <prop idx="0" name="groupSerial">4</prop>
+    <prop idx="1" name="groupSerial">5</prop>
+    <prop idx="2" name="groupSerial">6</prop>
+    <prop idx="3" name="groupSerial">7</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">4</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">4</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="45" Name="LAYOUT_GROUP37" serial="41">
+   <properties>
+    <prop idx="0" name="shapeSerial">57</prop>
+    <prop idx="1" name="shapeSerial">58</prop>
+    <prop idx="2" name="shapeSerial">59</prop>
+    <prop idx="3" name="shapeSerial">60</prop>
+    <prop idx="4" name="shapeSerial">61</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="43" Name="LayoutGroupLocal" serial="42">
+   <properties>
+    <prop name="shapeSerial">39</prop>
+    <prop idx="0" name="groupSerial">39</prop>
+    <prop name="isContainerShape">True</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">8</prop>
+    <prop name="layoutRightMargin">4</prop>
+    <prop name="layoutTopMargin">5</prop>
+    <prop name="layoutBottomMargin">9</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="54" Name="LocalSystemLayout" serial="43">
+   <properties>
+    <prop idx="0" name="groupSerial">37</prop>
+    <prop idx="1" name="groupSerial">42</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">9</prop>
+    <prop name="layoutBottomMargin">4</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="47" Name="LAYOUT_GROUP41" serial="45">
+   <properties>
+    <prop name="shapeSerial">97</prop>
+    <prop idx="0" name="groupSerial">41</prop>
+    <prop name="isContainerShape">True</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">4</prop>
+    <prop name="layoutRightMargin">110</prop>
+    <prop name="layoutTopMargin">4</prop>
+    <prop name="layoutBottomMargin">4</prop>
+    <prop name="layoutSpacing">6</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="49" Name="LAYOUT_GROUP45" serial="47">
+   <properties>
+    <prop idx="0" name="groupSerial">40</prop>
+    <prop idx="1" name="groupSerial">45</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="50" Name="LAYOUT_GROUP50" serial="49">
+   <properties>
+    <prop idx="0" name="groupSerial">47</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">2</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="52" Name="LAYOUT_GROUP51" serial="50">
+   <properties>
+    <prop name="shapeSerial">105</prop>
+    <prop idx="0" name="groupSerial">13</prop>
+    <prop idx="1" name="groupSerial">49</prop>
+    <prop name="isContainerShape">True</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">9</prop>
+    <prop name="layoutBottomMargin">9</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="54" Name="ButtonsLayout" serial="51">
+   <properties>
+    <prop idx="1" name="groupSerial">31</prop>
+    <prop idx="0" name="groupSerial">25</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">5</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="54" Name="RemoteSystemsLayout" serial="52">
+   <properties>
+    <prop idx="0" name="groupSerial">38</prop>
+    <prop idx="1" name="groupSerial">50</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutLeftMargin">9</prop>
+    <prop name="layoutRightMargin">9</prop>
+    <prop name="layoutTopMargin">9</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP52" serial="54">
+   <properties>
+    <prop idx="0" name="groupSerial">36</prop>
+    <prop idx="1" name="groupSerial">43</prop>
+    <prop idx="3" name="groupSerial">51</prop>
+    <prop idx="2" name="groupSerial">52</prop>
+    <prop idx="4" name="groupSerial">53</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">VBox</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

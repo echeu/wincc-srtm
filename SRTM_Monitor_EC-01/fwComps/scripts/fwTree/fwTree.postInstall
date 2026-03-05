@@ -1,0 +1,50 @@
+/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+ **/
+
+#uses "fwInstallation/fwInstallation.ctl"
+
+
+main(mapping event)
+{
+	// pictures already distributed by fwInstallation
+	// and then again by fwFSM - clean them up...
+    fwInstallation_cleanupObsoleteFiles("fwTree", 
+       makeDynString(
+        "pictures/5.bmp"             ,
+        "pictures/71.xpm"            ,
+        "pictures/fwInstallation_question.bmp",
+        "pictures/open_22.png"
+        ));
+    
+    // we DO NOT uninstall the old icons 
+    // we might want to do it e.g. only if the fwCompatArtwork is NOT installed
+    //string version;
+    //bool hasCompatArtwork = fwInstallation_isComponentInstalled("fwComparArtwork", version);
+    
+    //if (!hasCompatArtwork) {
+    //    fwInstallation_cleanupObsoleteFiles("fwTree", 
+    //        makeDynString(
+    //            "pictures/arrow_down.bmp",
+    //            "pictures/arrow_down_bottom.bmp",
+    //            "pictures/arrow_up.bmp",
+    //            "pictures/arrow_up_top.bmp",
+    //            "pictures/clipboard_empty.gif",
+    //            "pictures/clipboard.gif",
+    //            "pictures/cmdRem.bmp",
+    //            "pictures/cmdRemAll.bmp",
+    //            "pictures/cmdSel.bmp",
+    //            "pictures/cmdSelAll.bmp",
+    //            "pictures/msg_info.bmp",
+    //            "pictures/msg_question.bmp",
+    //            "pictures/msg_warning.bmp"
+    //        )
+    //    );
+    //}
+        
+    fwInstallation_cleanupObsoleteFiles("fwTree", makeDynString("help/en_US.utf8/fwTree/scripts"),true);
+    fwInstallation_cleanupObsoleteFiles("fwTree", makeDynString("help/en_US.utf8/fwTree"),true);
+}

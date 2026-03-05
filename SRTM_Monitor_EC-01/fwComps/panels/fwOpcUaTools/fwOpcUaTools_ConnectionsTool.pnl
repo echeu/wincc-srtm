@@ -1,0 +1,2699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">574 723</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">860 750</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="KeepInMemory">False</prop>
+  <prop name="DPI">95.91608391608392</prop>
+  <prop name="PDPI">95.91608391608392</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+int g_iPosX, g_iPosY;
+dyn_int g_diPanelSize;
+dyn_string      g_dsDeviceDpes;
+dyn_dyn_anytype g_ddaSettings;
+
+
+
+
+bool GetOpcUaDriverNumber_FromOpcUaServerConnection(string sOpcUaServerConnection, int &amp;iDriverNumber, dyn_string exceptionInfo)
+{
+  int iLen, iLoop;
+  string sServerConnection, sDriver;
+  dyn_string dsOpcUaDrivers;
+  dyn_errClass deError;
+  dyn_dyn_string ddsServerConnections;
+
+
+  if( sOpcUaServerConnection == &quot;&quot; )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, new OPC UA Connection server name, can not be empty&quot;, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    dsOpcUaDrivers = dpNames(&quot;*.Config.Servers&quot;, &quot;_OPCUA&quot;);
+    deError        = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting the list of OPC UA driver connections, due to: &quot; + getErrorText(), &quot;&quot;);
+      return FALSE;
+    }
+
+    if( dynlen(dsOpcUaDrivers) &gt; 0 )
+    {
+      if( dpGet(dsOpcUaDrivers, ddsServerConnections) != 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting OPC UA server connections&quot;, &quot;&quot;);
+        return FALSE;
+      }
+
+      deError = getLastError();
+      if( dynlen(deError) &gt; 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting OPC UA server connections, due to: &quot; + getErrorText(deError), &quot;&quot;);
+        return FALSE;
+      }
+
+
+      // Removing internal DP character: &quot;_&quot;
+      sServerConnection = sOpcUaServerConnection;
+      if( strpos(sServerConnection, &quot;_&quot;) == 0 )
+      {
+        sServerConnection = substr(sOpcUaServerConnection, 1);
+      }
+
+      iLen = dynlen(dsOpcUaDrivers);
+      for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+      {
+        if( dynContains(ddsServerConnections[iLoop], sServerConnection) &gt; 0 )
+        {
+          sDriver = dpSubStr(dsOpcUaDrivers[iLoop], DPSUB_DP);
+          strreplace(sDriver, &quot;_OPCUA&quot;, &quot;&quot;);
+          iDriverNumber = sDriver;
+          return TRUE;
+        }
+      }
+    }
+  }
+
+  return TRUE;
+}
+
+
+
+
+void Refresh_OpcUaConnections()
+{
+  bool bConnectionEnabled, bSubscriptionEnabled, bDriverEnabled, bMoveEnabled;
+  int iLen, iDriverNumber;
+  dyn_string dsConnections, dsSubscriptions, exceptionInfo;
+
+
+  bConnectionEnabled   = FALSE;
+  bSubscriptionEnabled = FALSE;
+  bDriverEnabled       = FALSE;
+  bMoveEnabled         = FALSE;
+  setMultiValue(&quot;COMBO_BOX_CONNECTION&quot;,   &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;deleteAllItems&quot;,
+                &quot;SPIN_BUTTON_DRIVER&quot;,     &quot;value&quot;,          0,
+                &quot;SPIN_BUTTON_DRIVER&quot;,     &quot;enabled&quot;,        FALSE);
+
+
+  if( FindOpcUaConnections(dsConnections, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  iLen = dynlen(dsConnections);
+  if( iLen &gt; 0 )
+  {
+    bConnectionEnabled = TRUE;
+    if( FindOpcUaDriver(dsConnections[1], iDriverNumber, exceptionInfo) == FALSE )
+    {
+      disableAllShapes();
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+
+
+    if( FindOpcUaSubscriptions(dsConnections[1], dsSubscriptions, exceptionInfo) == FALSE )
+    {
+      disableAllShapes();
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+
+    setMultiValue(&quot;PUSH_BUTTON_COPY&quot;,     &quot;enabled&quot;,     TRUE,
+                  &quot;COMBO_BOX_CONNECTION&quot;, &quot;items&quot;,       dsConnections,
+                  &quot;COMBO_BOX_CONNECTION&quot;, &quot;selectedPos&quot;, 1,
+                  &quot;SPIN_BUTTON_DRIVER&quot;,   &quot;value&quot;,       iDriverNumber);
+    bConnectionEnabled = TRUE;
+    bDriverEnabled     = TRUE;
+
+    if( dynlen(dsSubscriptions) &gt; 0 )
+    {
+      dynAppend(dsSubscriptions, &quot;&quot;);
+      setMultiValue(&quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;items&quot;,       dsSubscriptions,
+                    &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;selectedPos&quot;, 1);
+      bSubscriptionEnabled = TRUE;
+    }
+  }
+  else
+  {
+    PUSH_BUTTON_COPY.enabled(FALSE);
+  }
+
+
+  if( (bConnectionEnabled   == TRUE) &amp;&amp;
+      (bSubscriptionEnabled == TRUE) &amp;&amp;
+      (bDriverEnabled       == TRUE)   )
+  {
+    bMoveEnabled = TRUE;
+  }
+
+  setMultiValue(&quot;COMBO_BOX_CONNECTION&quot;,   &quot;enabled&quot;, bConnectionEnabled,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;enabled&quot;, bSubscriptionEnabled,
+                &quot;PUSH_BUTTON_SEARCH&quot;,     &quot;enabled&quot;, bMoveEnabled);
+
+}
+
+
+
+
+
+void disableAllShapes()
+{
+  setMultiValue(//&quot;PUSH_BUTTON_JCOP&quot;,       &quot;enabled&quot;, FALSE,
+                &quot;PUSH_BUTTON_NON_JCOP&quot;,       &quot;enabled&quot;, FALSE,
+                &quot;PUSH_BUTTON_SEARCH&quot;,         &quot;enabled&quot;, FALSE,
+                &quot;TEXT_FIELD_DP&quot;,              &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_CONNECTION&quot;,       &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;,     &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_OLD_CONNECTION&quot;,   &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_OLD_SUBSCRIPTION&quot;, &quot;enabled&quot;, FALSE,
+                &quot;PRIMITIVE_TEXT_SEARCHING&quot;,   &quot;visible&quot;, FALSE);
+
+}
+
+
+
+
+
+bool FindOpcUaConnections(dyn_string &amp;dsConnections, dyn_string &amp;exceptionInfo)
+{
+  int iLen, iLoop;
+  dyn_errClass deError;
+
+  dsConnections = dpNames(&quot;*&quot;, &quot;_OPCUAServer&quot;);
+  deError       = getLastError();
+  if( dynlen(deError) &gt; 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaConnections() -&gt; Error getting OPC UA server connections due to: &quot; + getErrorText(deError), &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    iLen = dynlen(dsConnections);
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      dsConnections[iLoop] = dpSubStr(dsConnections[iLoop], DPSUB_DP);
+    }
+    return TRUE;
+  }
+
+}
+
+
+
+
+bool FindOpcUaSubscriptions(string sConnection, dyn_string &amp;dsSubscriptions, dyn_string &amp;exceptionInfo)
+{
+  int iRes, iLen, iLoop;
+  dyn_errClass deError;
+
+
+  // Check OPC UA connection exists
+  if( dpExists(sConnection) == FALSE )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaSubscriptions() -&gt; Error OPC UA server connection does not exist: &quot; + sConnection, &quot;&quot;);
+    return FALSE;
+  }
+
+
+  iRes = dpGet( sConnection + &quot;.Config.Subscriptions&quot;, dsSubscriptions);
+  if( iRes != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaSubscriptions() -&gt; Error getting subscriptions for connection: &quot; + sConnection, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaSubscriptions() -&gt; Error getting subscriptions for connection: &quot; + sConnection + &quot; due to: &quot; + getErrorText(deError), &quot;&quot;);
+      return FALSE;
+    }
+  }
+
+  iLen = dynlen(dsSubscriptions);
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    dsSubscriptions[iLoop] = dpSubStr(dsSubscriptions[iLoop], DPSUB_DP);
+  }
+
+
+  return TRUE;
+}
+
+
+
+
+
+bool FindOpcUaDriver(string sConnection, int &amp;iDriverNumber, dyn_string &amp;exceptionInfo)
+{
+  int iLoop, iLen, iRes, iPos;
+  string sConnectionCut;
+  dyn_int diDriverNumbers;
+  dyn_string dsDrivers, dsDriversServers;
+  dyn_errClass deError;
+
+
+  // Check OPC UA connection exists
+  if( dpExists(sConnection) == FALSE )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaDriver() -&gt; Error OPC UA server connection does not exist: &quot; + sConnection, &quot;&quot;);
+    return FALSE;
+  }
+
+  sConnectionCut = substr(dpSubStr(sConnection, DPSUB_DP), 1);
+  dsDrivers      = dpNames(&quot;*.Config.Servers&quot;, &quot;_OPCUA&quot;);
+  deError        = getLastError();
+  if( dynlen(deError) &gt; 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaDriver() -&gt; Error getting OPC UA driver DPs, due to: &quot; + getErrorText(deError), &quot;&quot;);
+    return FALSE;
+  }
+
+  iLen = dynlen(dsDrivers);
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    iRes = dpGet(dsDrivers[iLoop], dsDriversServers);
+    if( iRes != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaDriver() -&gt; Error getting connections from driver: &quot; + dsDrivers[iLoop], &quot;&quot;);
+      return FALSE;
+    }
+    else
+    {
+      deError = getLastError();
+      if( dynlen(deError) &gt; 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaDriver() -&gt; Error getting connections from driver: &quot; + dsDrivers[iLoop] + &quot; due to: &quot; + getErrorText(), &quot;&quot;);
+        return FALSE;
+      }
+    }
+
+    iPos = dynContains( dsDriversServers, sConnectionCut );
+    if( iPos &gt; 0 )
+    {
+      dsDrivers[iLoop] = dpSubStr(dsDrivers[iLoop], DPSUB_DP);
+      sscanf(dsDrivers[iLoop], &quot;_OPCUA%d&quot;, iDriverNumber);
+      dynAppend(diDriverNumbers, iDriverNumber);
+    }
+  }
+
+  if( dynlen(diDriverNumbers) &gt; 1 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;FindOpcUaDriver() -&gt; Error, OPC UA connection: &quot; + sConnection + &quot; is registered in more than one driver: &quot; + diDriverNumbers, &quot;&quot;);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+
+
+
+
+void initialize_OpcUaConnections()
+{
+  int iLen, iLoop;
+  dyn_string dsAllServers, dsServers;
+
+  dsAllServers = dpNames(getSystemName() + &quot;*&quot;, &quot;_OPCUAServer&quot;);
+  iLen         = dynlen(dsAllServers);
+  dynAppend(dsServers, &quot;Any&quot;);
+
+  if( iLen &gt; 0 )
+  {
+    // Remove redundant connections
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      // Redundant connection = CONNECTION + _2
+      if( strpos(dsAllServers[iLoop], &quot;_2&quot;) != (strlen(dsAllServers[iLoop])-2) )
+      {
+        dynAppend(dsServers, dpSubStr(dsAllServers[iLoop], DPSUB_DP));
+      }
+    }
+  }
+
+  COMBO_BOX_OLD_CONNECTION.deleteAllItems();
+  COMBO_BOX_OLD_CONNECTION.items(dsServers);
+  COMBO_BOX_OLD_CONNECTION.selectedPos(1);
+}
+
+
+
+
+void initialize_OpcUaSubscriptions()
+{
+  int iLen, iLoop;
+  dyn_string dsAllSubscriptions, dsSubscriptions;
+
+
+  dsAllSubscriptions = dpNames(getSystemName() + &quot;*&quot;, &quot;_OPCUASubscription&quot;);
+  iLen               = dynlen(dsAllSubscriptions);
+  dynAppend(dsSubscriptions, &quot;Any&quot;);
+
+
+  if( iLen &gt; 0 )
+  {
+    // Remove redundant subscriptions
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      // Redundant subscription = SUBSCRIPTION + _2
+      if( strpos(dsAllSubscriptions[iLoop], &quot;_2&quot;) != (strlen(dsAllSubscriptions[iLoop])-2) )
+      {
+        dynAppend(dsSubscriptions, dpSubStr(dsAllSubscriptions[iLoop], DPSUB_DP));
+      }
+    }
+  }
+
+  COMBO_BOX_OLD_SUBSCRIPTION.deleteAllItems();
+  COMBO_BOX_OLD_SUBSCRIPTION.items(dsSubscriptions);
+  COMBO_BOX_OLD_SUBSCRIPTION.selectedPos(1);
+
+}
+
+
+
+
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+  g_diPanelSize = getPanelSize(myPanelName());
+  getValue(&quot;PUSH_BUTTON_CLOSE&quot;, &quot;position&quot;, g_iPosX, g_iPosY);
+
+  initialize_OpcUaConnections();
+
+  initialize_OpcUaSubscriptions();
+
+}
+
+
+
+
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="CHECK_BOX_COMMANDS" shapeType="CHECK_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">54</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">199 230</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">50</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">199 230</prop>
+    <prop name="Size">352 31</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Include: output addresses without subscription(commands)</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="TABLE_SETTINGS" shapeType="TABLE" layerId="0">
+   <properties>
+    <prop name="serialId">32</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">596 35</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">30</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,10,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">596 35</prop>
+    <prop name="Size">521 496</prop>
+    <prop name="ShowColumnHeader">True</prop>
+    <prop name="ShowRowHeader">False</prop>
+    <prop name="SortOnClick">True</prop>
+    <prop name="RowHeight">13</prop>
+    <prop name="RowHeaderWidth">0</prop>
+    <prop name="GridType">Cross</prop>
+    <prop name="VScrollBarMode">Auto</prop>
+    <prop name="HScrollBarMode">Auto</prop>
+    <prop name="Column">
+     <prop name="Name">DPE</prop>
+     <prop name="Width">250</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">DPE</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">OPCUA_CONNECTION</prop>
+     <prop name="Width">90</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Opcua Conn.</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">OPCUA_SUBSCRIPTION</prop>
+     <prop name="Width">120</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Opcua Subs.</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+    </prop>
+    <prop name="Column">
+     <prop name="Name">DRIVER</prop>
+     <prop name="Width">40</prop>
+     <prop name="Visible">True</prop>
+     <prop name="Editable">False</prop>
+     <prop name="Label">
+      <prop name="en_US.utf8">Driver</prop>
+     </prop>
+     <prop name="ToolTipText">
+      <prop name="en_US.utf8"></prop>
+     </prop>
+     <prop name="ColumnFormat">[0s,,,AlignHCenter]</prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_CLOSE" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">434 695</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">434 690</prop>
+    <prop name="Size">121 23</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Close</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  PanelOff();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="FRAME_OPCUA_SETTINGS" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.292682926829269 0 0 0.4268774703557313 17.07317073170719 378.0237154150197</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">3 - New OPC UA settings</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">10 14</prop>
+    <prop name="Size">411 507</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_TITLE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">3</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 20</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">3</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">20 20</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,19,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA connection tool</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_DESCRIPTION" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 60</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">20 60</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">This tool allows you to modify the OPC UA addressing of a JCOP device, or all its leaves devices.
+
+You can move your devices to a different:
+   - OPC UA server connection. This setting is linked with the driver number.
+   - Subscription linked with the previous OPC UA server connection.</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="SPIN_BUTTON_DRIVER" shapeType="SPIN_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">8</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">454 470</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">8</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">454 466</prop>
+    <prop name="Size">76 20</prop>
+    <prop name="MinimumID">0</prop>
+    <prop name="MaximumID">100</prop>
+    <prop name="IncrAccelerator">1</prop>
+    <prop name="Position">0</prop>
+   </properties>
+  </shape>
+  <shape Name="COMBO_BOX_CONNECTION" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">9</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">-363.8461538461538 299.75</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">9</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">110 431.75</prop>
+    <prop name="Size">421 20</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+   <events>
+    <script name="Changed" isEscaped="1"><![CDATA[main()
+{
+  int iLen, iLoop, iPos;
+  string sConnection, sConnectionCut, sDriver;
+  dyn_string dsSubscriptions, dsDrivers, dsDriversServers, exceptionInfo;
+  dyn_errClass deError;
+
+
+  getValue(&quot;COMBO_BOX_CONNECTION&quot;, &quot;selectedText&quot;, sConnection);
+  setValue(&quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;deleteAllItems&quot;);
+  sConnectionCut = substr(dpSubStr(sConnection, DPSUB_DP), 1);
+
+  if( dpGet(sConnection + &quot;.Config.Subscriptions&quot;, dsSubscriptions) != 0 )
+  {
+    disableAllShapes();
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting subscriptions from OPC UA connection: &quot; + sConnectionCut, &quot;&quot;);
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+  else
+  {
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      disableAllShapes();
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting subscriptions from OPC UA connection: &quot; + sConnectionCut + &quot;, due to: &quot; + getErrorText(deError), &quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+  }
+
+  iLen = dynlen(dsSubscriptions);
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    dsSubscriptions[iLoop] = dpSubStr(dsSubscriptions[iLoop], DPSUB_DP);
+  }
+
+
+
+  if( dynlen(dsSubscriptions) &gt; 0 )
+  {
+    dynAppend(dsSubscriptions, &quot;&quot;);
+    setMultiValue(&quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;items&quot;,       dsSubscriptions,
+                  &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;enabled&quot;,     TRUE,
+                  &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;selectedPos&quot;, 1);
+  }
+
+
+  dsDrivers = dpNames(&quot;*.Config.Servers&quot;, &quot;_OPCUA&quot;);
+  iLen = dynlen(dsDrivers);
+  if( iLen &gt; 0 )
+  {
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      if( dpGet(dsDrivers[iLoop], dsDriversServers) != 0 )
+      {
+        disableAllShapes();
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting OPC UA servers from the driver: &quot; + dsDrivers[iLoop], &quot;&quot;);
+        fwExceptionHandling_display(exceptionInfo);
+        return;
+      }
+      else
+      {
+        deError = getLastError();
+        if( dynlen(deError) &gt; 0 )
+        {
+          disableAllShapes();
+          fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting OPC UA servers from the driver: &quot; + dsDrivers[iLoop] + &quot;, due to: &quot; + getErrorText(deError), &quot;&quot;);
+          fwExceptionHandling_display(exceptionInfo);
+          return;
+        }
+      }
+
+      iPos = dynContains( dsDriversServers, sConnectionCut );
+      if( iPos &gt; 0 )
+      {
+        sDriver = dpSubStr(dsDrivers[iLoop], DPSUB_DP);
+        strreplace(sDriver, &quot;_OPCUA&quot;, &quot;&quot;);
+        setValue(&quot;SPIN_BUTTON_DRIVER&quot;, &quot;value&quot;, sDriver);
+      }
+    }
+  }
+}
+
+
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="COMBO_BOX_SUBSCRIPTION" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">10</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">-379.6712689020381 430</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">10</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">102.5641025641025 562</prop>
+    <prop name="Size">428 20</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_NEW_CONNECTION" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">11</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">45 409.75</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">11</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">45 409.75</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA server connection:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_NEW_DRIVER" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">13</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">115 469.25</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">13</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">115 469.25</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Driver number linked with the OPC UA server connection: </prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_NEW_SUBSCRIPTION" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">14</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">45 539.75</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">14</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">45 539.75</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA subscription:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="TEXT_FIELD_DP" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">17</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">50 270</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">17</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">50.00000000000001 266</prop>
+    <prop name="Size">401 20</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">False</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_NON_JCOP" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">18</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">180 10</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">18</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">200 196</prop>
+    <prop name="Size">26 26</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/selectDp.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  string sNonJcopDevice;
+
+
+  setValue(&quot;CHECK_BOX_JCOP_DEVICE&quot;, &quot;state&quot;, 0, FALSE);
+
+  if( dpSelector(sNonJcopDevice, FALSE, &quot;OWN_SYSTEM_NAME_SYS&quot;, FALSE ) != 0 )
+  {
+    setValue(&quot;TEXT_FIELD_DP&quot;, &quot;text&quot;, &quot;&quot;);
+    return;
+  }
+
+  if( sNonJcopDevice != &quot;&quot; )
+  {
+    setValue(&quot;TEXT_FIELD_DP&quot;, &quot;text&quot;, sNonJcopDevice);
+    Refresh_OpcUaConnections();
+  }
+  else
+  {
+    setValue(&quot;TEXT_FIELD_DP&quot;, &quot;text&quot;, &quot;&quot;);
+    return;
+  }
+
+}
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_DEVICE_PATTERN" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">19</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">45.00000000000003 172.75</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">19</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">45.00000000000003 172.75</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Select the device to add:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="CHECK_BOX_DEVICE_OPTIONS" shapeType="CHECK_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">20</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">47 230</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">20</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">47 230</prop>
+    <prop name="Size">151 31</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">Add children devices</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_DP_SELECTOR" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">21</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">228.8125 202.5</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">21</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.116628701594533 0 0 1 -26.45284738041004 0</prop>
+    <prop name="Location">228.8125 202.5</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Select NON JCOP device</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_SEARCH" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">22</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">439.9999999999999 714</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">22</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">57.62499999999978 628.1818181818182</prop>
+    <prop name="Size">283 31</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Search DPEs to move</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  bool bAddChildren, bJcopDevice, bDriversEnabled, bIncludeCommands;
+  int iNumberTries, iNewOpcUaConnectionDriverNumber;
+  string sDeviceDp, sDriverNumbers, sOpcUaConnectionFilter, sOpcUaSubscriptionFilter, sNewOpcUaServerConnection;
+  dyn_int diDriverNumbers;
+  dyn_float dfResult;
+  dyn_string dsResult, dsDeviceDpes, exceptionInfo;
+  dyn_dyn_anytype ddaSettings;
+
+
+  bDriversEnabled = FALSE;
+  iNumberTries    = 3;
+
+  getMultiValue(&quot;CHECK_BOX_DEVICE_OPTIONS&quot;,   &quot;state&quot;,   0, bAddChildren,
+                &quot;CHECK_BOX_JCOP_DEVICE&quot;,      &quot;state&quot;,   0, bJcopDevice,
+                &quot;CHECK_BOX_COMMANDS&quot;,         &quot;state&quot;,   0, bIncludeCommands,
+                &quot;TEXT_FIELD_DP&quot;,              &quot;text&quot;,    sDeviceDp);
+  setMultiValue(//&quot;PUSH_BUTTON_JCOP&quot;,         &quot;enabled&quot;, FALSE,
+                &quot;PUSH_BUTTON_NON_JCOP&quot;,       &quot;enabled&quot;, FALSE,
+                &quot;CHECK_BOX_JCOP_DEVICE&quot;,      &quot;enabled&quot;, FALSE,
+                &quot;CHECK_BOX_DEVICE_OPTIONS&quot;,   &quot;enabled&quot;, FALSE,
+                &quot;CHECK_BOX_COMMANDS&quot;,         &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_CONNECTION&quot;,       &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;,     &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_OLD_CONNECTION&quot;,   &quot;enabled&quot;, FALSE,
+                &quot;COMBO_BOX_OLD_SUBSCRIPTION&quot;, &quot;enabled&quot;, FALSE,
+                &quot;SPIN_BUTTON_DRIVER&quot;,         &quot;enabled&quot;, FALSE,
+                &quot;PRIMITIVE_TEXT_SEARCHING&quot;,   &quot;visible&quot;, TRUE);
+
+
+
+  // Detect all WCCOA opcua and sim
+  if( DetectOpcUaDriverNumberManagers(diDriverNumbers, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error getting all manager driver numbers from the project, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Get driver number used for the new OPC UA connection
+  sNewOpcUaServerConnection = COMBO_BOX_CONNECTION.text();
+  if( GetOpcUaDriverNumber_FromOpcUaServerConnection(sNewOpcUaServerConnection, iNewOpcUaConnectionDriverNumber, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error getting the OPC UA driver number for OPC UA server connection: &quot; + sNewOpcUaServerConnection + &quot;, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+  else
+  {
+    dynAppend(diDriverNumbers, iNewOpcUaConnectionDriverNumber);
+    dynUnique(diDriverNumbers);
+  }
+
+
+  // Propose user to start all the simulators
+  if( dynlen(diDriverNumbers) &gt; 0 )
+  {
+    fwGeneral_dynStringToString(diDriverNumbers, sDriverNumbers, &quot;,&quot;);
+    ChildPanelOnCentralModalReturn(&quot;fwGeneral/fwMessageInfo1.pnl&quot;,
+                                   &quot;DRIVER_NUMBER_INFO&quot;,
+                                   makeDynString(&quot;$1:Please connect the following simulator managers: &quot; + sDriverNumbers + &quot; before pressing OK button&quot;),
+                                   dfResult,
+                                   dsResult);
+  }
+
+
+  while ( bDriversEnabled == FALSE )
+  {
+    // Check simulators are connected
+    if( CheckSimulatorsStarted(diDriverNumbers, exceptionInfo) == FALSE )
+    {
+      exceptionInfo[2] = &quot;Error in required manager: &quot; + exceptionInfo[2];
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Please reconnected the required simulator or OPC UA client.  Remaining tries: &quot; + iNumberTries, &quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+
+    }
+    else
+    {
+      bDriversEnabled = TRUE;
+    }
+    iNumberTries --;
+
+    if( (iNumberTries &lt;= 0) &amp;&amp; (bDriversEnabled == FALSE) )
+    {
+      disableAllShapes();
+      exceptionInfo[2] = &quot;Too many tries to reconnect required OPC UA clients or simulators, operation aborted&quot;;
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+  }
+
+  // Get the list of DPEs with their config: OPCUA server, OPCUA subscription, driver number
+  sOpcUaConnectionFilter   = COMBO_BOX_OLD_CONNECTION.selectedText();
+  sOpcUaSubscriptionFilter = COMBO_BOX_OLD_SUBSCRIPTION.selectedText();
+  if( GetListOfDpesWithAddressing(sDeviceDp, bAddChildren, bIncludeCommands, sOpcUaConnectionFilter, sOpcUaSubscriptionFilter, dsDeviceDpes, ddaSettings, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error getting DPE address settings for all the devices to move, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Update global variables
+  g_dsDeviceDpes = dsDeviceDpes;
+  g_ddaSettings  = ddaSettings;
+
+  if( dynlen(g_dsDeviceDpes) &gt; 0 )
+  {
+    // Display current settings and new ones
+    if( PopulateDevicesInTable(g_dsDeviceDpes, g_ddaSettings, exceptionInfo) == FALSE )
+    {
+      disableAllShapes();
+      exceptionInfo[2] = &quot;Error populating table to display DPEs changes, due to: &quot; + exceptionInfo[2];
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+
+    setMultiValue(&quot;PUSH_BUTTON_SEARCH&quot;,       &quot;enabled&quot;, FALSE,
+                  &quot;PUSH_BUTTON_PROCESS&quot;,      &quot;enabled&quot;, TRUE,
+                  &quot;PRIMITIVE_TEXT_SEARCHING&quot;, &quot;visible&quot;, FALSE);
+  }
+  else
+  {
+    disableAllShapes();
+    fwException_raise(exceptionInfo, &quot;INFO&quot;, &quot;There is no DPE matching your criteria: OPC UA address, OPC UA connections and OPC UA subscription.&quot;, &quot;&quot;);
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+}
+
+
+
+
+bool CheckSimulatorsStarted(dyn_int diDrivers, dyn_string &amp;exceptionInfo)
+{
+  int iLoop, iLen;
+  dyn_int diDriverConnections;
+  dyn_string dsDpes;
+  dyn_dyn_anytype ddaValues;
+  dyn_errClass deError;
+
+
+  iLen = dynlen(diDrivers);
+
+
+  // Get all driver connections
+  dynAppend(dsDpes, &quot;_Connections.Driver.ManNums&quot;);
+
+  // Get all internal DPs exists for the drivers
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    if( dpExists(&quot;_Driver&quot; + diDrivers[iLoop] + &quot;.DT&quot;) )
+    {
+      dynAppend(dsDpes, &quot;_Driver&quot; + diDrivers[iLoop] + &quot;.DT&quot;);
+    }
+    else
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, internal DP doesn't exist: _Driver&quot;  + diDrivers[iLoop], &quot;&quot;);
+      return FALSE;
+    }
+  }
+
+  // Get all values in one touch
+  if( dpGet(dsDpes, ddaValues) != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting the driver managers connected&quot;, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting the driver managers connected, due to: &quot; + getErrorText(deError), &quot;&quot;);
+      return FALSE;
+    }
+  }
+
+  // Extract the managers started
+  diDriverConnections = ddaValues[1];
+  dynRemove(ddaValues, 1);
+
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    // Check manager is started
+    if( dynContains(diDriverConnections, diDrivers[iLoop]) &lt; 1 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;OPCUA client or Simulator manager &quot; + diDrivers[iLoop] + &quot;, is not running&quot;, &quot;&quot;);
+      return FALSE;
+    }
+
+
+    // Check manager is a simulator or OPCUA driver
+    if( (ddaValues[iLoop][1] != &quot;SIM&quot;)  &amp;&amp;
+        (ddaValues[iLoop][1] != &quot;OPCUAC&quot;)  )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Manager &quot; + diDrivers[iLoop] + &quot;, is not a Simulator or OPC UA client&quot;, &quot;&quot;);
+      return FALSE;
+    }
+
+  }
+
+  return TRUE;
+}
+
+
+
+
+bool PopulateDevicesInTable(dyn_string dsDeviceDpes, dyn_dyn_anytype ddaSettings, dyn_string &amp;exceptionInfo)
+{
+  int iLenDpes, iLenSettings, iLoop, iPosX;
+  dyn_int diDrivers;
+  dyn_string dsConnections, dsSubscriptions;
+
+
+  // Expand the panel
+  setPanelSize(myModuleName(), myPanelName(), FALSE, (g_diPanelSize[1] * 2), g_diPanelSize[2]);
+
+  // Move close button
+  iPosX = g_iPosX *2 + 100;
+  setValue(&quot;PUSH_BUTTON_CLOSE&quot;, &quot;position&quot;, iPosX, g_iPosY);
+
+
+  // Check lenght dpes and properties are the same
+  iLenDpes     = dynlen(dsDeviceDpes);
+  iLenSettings = dynlen(ddaSettings);
+
+  if( iLenDpes != iLenSettings )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error number of DPEs (&quot; + iLenDpes + &quot;) is different of number of settings (&quot; + iLenSettings + &quot;)&quot;, &quot;&quot;);
+    return FALSE;
+  }
+
+
+  // Create arrays to populate faster the table
+  for( iLoop = 1 ; iLoop &lt;= iLenSettings ; iLoop++ )
+  {
+    dynAppend(dsConnections,   ddaSettings[iLoop][12]);
+    dynAppend(dsSubscriptions, ddaSettings[iLoop][13]);
+    dynAppend(diDrivers,       ddaSettings[iLoop][2]);
+  }
+
+
+  TABLE_SETTINGS.appendLines(iLenDpes, &quot;DPE&quot;,                dsDeviceDpes,
+                                       &quot;OPCUA_CONNECTION&quot;,   dsConnections,
+                                       &quot;OPCUA_SUBSCRIPTION&quot;, dsSubscriptions,
+                                       &quot;DRIVER&quot;,             diDrivers);
+
+
+  return TRUE;
+}
+
+
+
+
+bool GetListOfDpesWithAddressing(string sDeviceDp, bool bIncludeChildren, bool bIncludeCommands, string sFilterServer, string sFilterSubscription, dyn_string &amp;dsDeviceDpes, dyn_dyn_anytype &amp;ddaSettings, dyn_string &amp;exceptionInfo)
+{
+  int iRes, iLen, iLoop;
+  dyn_bool dbConfigExists, dbIsActive;
+  dyn_string dsDpes, dsTempDpes, dsAddressExists;
+  dyn_errClass deError;
+
+
+  // Get all DPEs of the device/s
+  dsDpes = dpNames(sDeviceDp + &quot;.**:_distrib.._type&quot;);
+
+  if( bIncludeChildren )
+  {
+    dsTempDpes = dpNames(sDeviceDp + &quot;/**.**:_distrib.._type&quot;);
+    dynAppend(dsDpes, dsTempDpes);
+  }
+
+
+  // Filter
+  iLen = dynlen(dsDpes);
+  if( iLen &gt; 0 )
+  {
+    iRes = dpGet(dsDpes, dsAddressExists);
+    if( iRes != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error filtering &quot; + dsDpes + &quot; DPEs without OPC DA addressing, due to non-existant DPEs: &quot; + dsDpes, &quot;&quot;);
+      return FALSE;
+    }
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting dpes with configured addresses, due to: &quot; + getErrorText(deError), &quot;&quot;);
+      return FALSE;
+    }
+
+
+    for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+    {
+      if( dsAddressExists[iLoop] != DPCONFIG_NONE )
+      {
+        dynAppend(dsDeviceDpes, dpSubStr(dsDpes[iLoop], DPSUB_DP_EL));
+      }
+    }
+  }
+  else
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, none address detected in your device, please start the properly simulator, and restart the panel, please&quot;, &quot;&quot;);
+    return FALSE;
+  }
+
+
+  fwPeriphAddress_getMany(dsDeviceDpes, dbConfigExists, ddaSettings, dbIsActive, exceptionInfo);
+  if( dynlen(exceptionInfo) &gt; 0 )
+  {
+    exceptionInfo[2] = &quot;Error getting address details, due to: &quot; + exceptionInfo[2];
+    return FALSE;
+  }
+
+
+  // Remove entries where the config doesn't exist or the address type != OPCUA
+  iLen = dynlen(dsDeviceDpes);
+  for( iLoop = iLen ; iLoop &gt; 0 ; iLoop-- )
+  {
+    if( (dbConfigExists[iLoop] == FALSE) || (ddaSettings[iLoop][1] != &quot;OPCUA&quot;) )
+    {
+      dynRemove(dsDeviceDpes,   iLoop);
+      dynRemove(dbConfigExists, iLoop);
+      dynRemove(ddaSettings,    iLoop);
+    }
+  }
+
+  // Remove entries that doesn't fit the OPC UA connection and subscription filters
+  if( sFilterServer != &quot;Any&quot; )
+  {
+    iLen = dynlen(dsDeviceDpes);
+    for( iLoop = iLen ; iLoop &gt; 0 ; iLoop-- )
+    {
+      if( (&quot;_&quot; + ddaSettings[iLoop][fwPeriphAddress_OPCUA_SERVER_NAME]) != sFilterServer )
+      {
+        dynRemove(dsDeviceDpes,   iLoop);
+        dynRemove(dbConfigExists, iLoop);
+        dynRemove(ddaSettings,    iLoop);
+      }
+    }
+  }
+
+
+  if( sFilterSubscription != &quot;Any&quot; )
+  {
+    // Check if include commands without subscriptions
+    iLen = dynlen(dsDeviceDpes);
+    for( iLoop = iLen ; iLoop &gt; 0 ; iLoop-- )
+    {
+      if( bIncludeCommands )
+      {
+        if( ((ddaSettings[iLoop][fwPeriphAddress_DIRECTION] == DPATTR_ADDR_MODE_OUTPUT)   ||
+             (ddaSettings[iLoop][fwPeriphAddress_DIRECTION] == DPATTR_ADDR_MODE_IO_POLL)  ||
+             (ddaSettings[iLoop][fwPeriphAddress_DIRECTION] == DPATTR_ADDR_MODE_IO_SQUERY)  ) &amp;&amp;
+            (ddaSettings[iLoop][fwPeriphAddress_OPCUA_SUBSCRIPTION] == &quot;&quot; )                     )
+        {
+          continue;
+        }
+
+      }
+      else
+      {
+        if( (&quot;_&quot; + ddaSettings[iLoop][fwPeriphAddress_OPCUA_SUBSCRIPTION]) != sFilterSubscription )
+        {
+          dynRemove(dsDeviceDpes,   iLoop);
+          dynRemove(dbConfigExists, iLoop);
+          dynRemove(ddaSettings,    iLoop);
+        }
+      }
+    }
+  }
+
+  return TRUE;
+}
+
+
+
+
+bool DetectOpcUaDriverNumberManagers(dyn_int &amp;diDriverNumbers, dyn_string &amp;exceptionInfo)
+{
+  int iLoop, iLen, iPos, iDriverNumber;
+  string sOption;
+  dyn_string dsOptions;
+  dyn_dyn_mixed ddmManagers;
+
+
+  dynClear(diDriverNumbers);
+
+
+  if( fwInstallationManager_getAllInfoFromPvss(ddmManagers) != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error getting all managers settings from the project&quot;, &quot;&quot;);
+    return FALSE;
+  }
+
+
+  iLen = dynlen(ddmManagers);
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    // Check simulators and OPC UA client
+    if( (ddmManagers[iLoop][1] == &quot;WCCILsim&quot;) || (ddmManagers[iLoop][1] == &quot;WCCOAopcua&quot;) )
+    {
+      // Get driver number
+      dsOptions = strsplit(ddmManagers[iLoop][6], &quot;-&quot;);
+      sOption   = dynPatternMatch(&quot;num *&quot;, dsOptions);
+      if( sOption != &quot;&quot; )
+      {
+        strreplace(sOption, &quot;num &quot;, &quot;&quot;);
+        iDriverNumber = (int)sOption;
+        dynAppend(diDriverNumbers, iDriverNumber);
+      }
+    }
+  }
+
+  dynUnique(diDriverNumbers);
+
+  return TRUE;
+}
+
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PUSH_BUTTON_JCOP" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">27</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">40 10</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">26</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">WiP, this feature will be available in the future</prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">60 196</prop>
+    <prop name="Size">26 26</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/selectDp.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  dyn_float dfResult;
+  dyn_string dsResult;
+
+
+  dynClear(g_ddaSettings);
+  dynClear(g_dsDeviceDpes);
+  setMultiValue(&quot;TEXT_FIELD_DP&quot;,          &quot;text&quot;,           &quot;&quot;,
+                &quot;CHECK_BOX_JCOP_DEVICE&quot;,  &quot;state&quot;, 0,       FALSE,
+                &quot;COMBO_BOX_CONNECTION&quot;,   &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_CONNECTION&quot;,   &quot;enabled&quot;,        FALSE,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;, &quot;enabled&quot;,        FALSE,
+                &quot;SPIN_BUTTON_DRIVER&quot;,     &quot;enabled&quot;,        FALSE);
+
+
+  ChildPanelOnCentralReturn(&quot;fwConfigs/fwJcopDeviceSelector&quot;, &quot;SELECT_JCOP_DEVICE&quot;, makeDynString(), dfResult, dsResult);
+  if( (dynlen(dfResult) &lt;  1 ) ||
+      (dfResult[1]      != 1 )   )
+  {
+    return;
+  }
+  else
+  {
+    if( (dynlen(dsResult) &gt;  0) &amp;&amp;
+        (dsResult[1]      != &quot;&quot;)  )
+    {
+      setMultiValue(&quot;TEXT_FIELD_DP&quot;, &quot;text&quot;, dsResult[1],
+                    &quot;CHECK_BOX_JCOP_DEVICE&quot;, &quot;state&quot;, 0, TRUE);
+      Refresh_OpcUaConnections();
+    }
+    else
+    {
+      return;
+    }
+  }
+
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_JCOP_DEVICE" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">28</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">90 202.5</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">27</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">WiP, this feature will be available in the future</prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">90 202.5</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Select JCOP device</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="CHECK_BOX_JCOP_DEVICE" shapeType="CHECK_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">29</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">460.0000000000001 263</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">28</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,10,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">460.0000000000001 263</prop>
+    <prop name="Size">81 26</prop>
+    <prop name="Listitems">
+     <prop name="Item">
+      <prop name="Text">
+       <prop name="en_US.utf8">JCOP device</prop>
+      </prop>
+      <prop name="Select">False</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="FRAME_SEARCH" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">30</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">29</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.292682926829268 0 0 0.1600790513833992 17.07317073170721 600.7588932806324</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">4 - Search device DPE</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">10 14</prop>
+    <prop name="Size">411 507</prop>
+   </properties>
+  </shape>
+  <shape Name="FRAME_RESUME" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">33</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">580 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">31</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">0.9649122807017544 0 0 1.018315018315018 20.35087719298246 -0.2564102564102555</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">4 - Dpes address to modify</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,10,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">580 14</prop>
+    <prop name="Size">571 547</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_PROCESS" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">34</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">1000 545</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">32</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,10,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">1000 539</prop>
+    <prop name="Size">121 23</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Process changes</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  int iLenDpes, iLenSettings, iLoop, iNewDriver;
+  string sNewConnection, sNewSubscription;
+  dyn_string exceptionInfo;
+  dyn_dyn_anytype ddaNewSettings;
+
+
+  setMultiValue(&quot;PUSH_BUTTON_PROCESS&quot;,    &quot;enabled&quot;, FALSE,
+                &quot;PRIMITIVE_TEXT_PROCESS&quot;, &quot;visible&quot;, TRUE);
+
+  // Check Device DPEs and SETTINGS lenght
+  iLenDpes     = dynlen(g_dsDeviceDpes);
+  iLenSettings = dynlen(g_ddaSettings);
+
+  if( iLenDpes != iLenSettings )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error the number of DPEs is different from the number of settings&quot;, &quot;&quot;);
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+  // Change the OPC UA driver, OPC UA server connection and OPC UA subscription
+  ddaNewSettings   = g_ddaSettings;
+  iNewDriver       = SPIN_BUTTON_DRIVER.value();
+  sNewConnection   = RemoveOpcUaInternalCharacter(COMBO_BOX_CONNECTION.selectedText());
+  sNewSubscription = RemoveOpcUaInternalCharacter(COMBO_BOX_SUBSCRIPTION.selectedText());
+
+
+  for( iLoop = 1 ; iLoop &lt;= iLenSettings ; iLoop++ )
+  {
+    ddaNewSettings[iLoop][2]  = iNewDriver;
+    ddaNewSettings[iLoop][12] = sNewConnection;
+    if( sNewSubscription != &quot;&quot; )
+    {
+      ddaNewSettings[iLoop][13] = sNewSubscription;
+    }
+  }
+
+  // Apply changes to DPEs
+  fwPeriphAddress_setMany(g_dsDeviceDpes, ddaNewSettings, exceptionInfo);
+  setValue(&quot;PRIMITIVE_TEXT_PROCESS&quot;, &quot;visible&quot;, FALSE);
+  if( dynlen(exceptionInfo) &gt; 0 )
+  {
+    exceptionInfo[2] = &quot;Error, updating the Device DPEs with new addressing, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  ChildPanelOnCentralModal(&quot;fwGeneral/fwMessageInfo1.pnl&quot;,
+                           &quot;PROCESS_DONE&quot;,
+                           makeDynString(&quot;$1:Process done. All the DPEs has been updated without errors. You can start now the properly OPC UA clients&quot;));
+
+}
+
+
+
+
+
+string RemoveOpcUaInternalCharacter(string sInternalOpcDp)
+{
+  sInternalOpcDp = dpSubStr(sInternalOpcDp, DPSUB_DP);
+
+  if( strpos(sInternalOpcDp, &quot;_&quot;) == 0 )
+  {
+    return (substr(sInternalOpcDp, 1));
+  }
+  else
+    return sInternalOpcDp;
+}
+
+
+]]></script>
+   </events>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_SEARCHING" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">35</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">373 635.6818181818182</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">False</prop>
+    <prop name="ForeColor">red</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">33</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">373 635.6818181818182</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Searching... please wait</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT_PROCESS" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">36</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">833 542.3409090909091</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">False</prop>
+    <prop name="ForeColor">red</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">34</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">833 542.3409090909091</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Processing... please wait</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_REFRESH" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">37</prop>
+    <prop name="Type">FW_ICON</prop>
+    <prop name="RefPoint">520 128.1818181818182</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">35</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,10,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">520 120</prop>
+    <prop name="Size">31 31</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/refresh_1.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  dynClear(g_dsDeviceDpes);
+  dynClear(g_ddaSettings);
+
+  setMultiValue(//&quot;PUSH_BUTTON_JCOP&quot;,         &quot;enabled&quot;,        TRUE,
+                &quot;PUSH_BUTTON_NON_JCOP&quot;,       &quot;enabled&quot;,        TRUE,
+                &quot;TEXT_FIELD_DP&quot;,              &quot;text&quot;,           &quot;&quot;,
+                &quot;CHECK_BOX_DEVICE_OPTIONS&quot;,   &quot;enabled&quot;,        TRUE,
+                &quot;CHECK_BOX_DEVICE_OPTIONS&quot;,   &quot;state&quot;,          0,    FALSE,
+                &quot;CHECK_BOX_JCOP_DEVICE&quot;,      &quot;state&quot;,          0,    FALSE,
+                &quot;CHECK_BOX_COMMANDS&quot;,         &quot;enabled&quot;,        TRUE,
+                &quot;CHECK_BOX_COMMANDS&quot;,         &quot;state&quot;,          0,    FALSE,
+                &quot;COMBO_BOX_CONNECTION&quot;,       &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_CONNECTION&quot;,       &quot;enabled&quot;,        FALSE,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;,     &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_SUBSCRIPTION&quot;,     &quot;enabled&quot;,        FALSE,
+                &quot;COMBO_BOX_OLD_CONNECTION&quot;,   &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_OLD_CONNECTION&quot;,   &quot;enabled&quot;,        TRUE,
+                &quot;COMBO_BOX_OLD_SUBSCRIPTION&quot;, &quot;deleteAllItems&quot;,
+                &quot;COMBO_BOX_OLD_SUBSCRIPTION&quot;, &quot;enabled&quot;,        TRUE,
+                &quot;SPIN_BUTTON_DRIVER&quot;,         &quot;value&quot;,          0,
+                &quot;PUSH_BUTTON_SEARCH&quot;,         &quot;enabled&quot;,        FALSE,
+                &quot;PRIMITIVE_TEXT_SEARCHING&quot;,   &quot;visible&quot;,        FALSE,
+                &quot;TABLE_SETTINGS&quot;,             &quot;deleteAllLines&quot;,
+                &quot;PUSH_BUTTON_PROCESS&quot;,        &quot;enabled&quot;,        FALSE,
+                &quot;PUSH_BUTTON_CLOSE&quot;,          &quot;position&quot;,       g_iPosX, g_iPosY);
+
+  initialize_OpcUaConnections();
+  initialize_OpcUaSubscriptions();
+
+  setPanelSize(myModuleName(), myPanelName(), FALSE, g_diPanelSize[1], g_diPanelSize[2]);
+}
+]]></script>
+   </events>
+  </shape>
+  <shape Name="FRAME_OLD_OPCUA_SETTINGS" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">39</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">36</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.292682926829269 0 0 0.1541501976284585 17.07317073170718 299.8418972332016</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">2 - Old OPC UA settings</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">10 14</prop>
+    <prop name="Size">411 507</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT1" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">42</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">44.99999999999984 325.875</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">39</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">44.99999999999984 325.875</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA server connection:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="PRIMITIVE_TEXT4" shapeType="PRIMITIVE_TEXT" layerId="0">
+   <properties>
+    <prop name="serialId">48</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">44.99999999999984 351.875</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">45</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Location">44.99999999999984 351.875</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">OPC UA server subscription:</prop>
+    </prop>
+    <prop name="Distance">2</prop>
+    <prop name="BorderOffset">2</prop>
+    <prop name="Bordered">False</prop>
+    <prop name="Fit">True</prop>
+    <prop name="Transformable">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+   </properties>
+  </shape>
+  <shape Name="COMBO_BOX_OLD_CONNECTION" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">49</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">212 326</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">46</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">212 322</prop>
+    <prop name="Size">277 21</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+  </shape>
+  <shape Name="COMBO_BOX_OLD_SUBSCRIPTION" shapeType="COMBO_BOX" layerId="0">
+   <properties>
+    <prop name="serialId">50</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">212 352</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">47</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">212 348</prop>
+    <prop name="Size">277 21</prop>
+    <prop name="Listitems"/>
+    <prop name="Editable">False</prop>
+   </properties>
+  </shape>
+  <shape Name="PUSH_BUTTON_COPY" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">53</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">110 500</prop>
+    <prop name="Enable">False</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">49</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">110 495</prop>
+    <prop name="Size">251 23</prop>
+    <prop name="BorderStyle">Styled</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">Create new connection based on existant</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+  int iDriverNumber;
+  string sNewOpcUaServer, sCopyFromServer, sNewOpcUaSubscription, sCopyFromSubscription;
+  dyn_float dfResult;
+  dyn_string dsResult, exceptionInfo;
+
+
+  ChildPanelOnCentralModalReturn(&quot;fwOpcUaTools/fwOpcUaTools_ConnectionsTool_createConnection.pnl&quot;,
+                                 &quot;Copy OPC UA connection settings&quot;,
+                                 makeDynString(),
+                                 dfResult,
+                                 dsResult);
+
+  if( ( dynlen(dfResult) &lt; 1 ) ||
+      ( dfResult[1] == 0     )  )
+  {
+    return;
+  }
+  else
+  {
+    iDriverNumber         = dsResult[1];
+    sNewOpcUaServer       = dsResult[2];
+    sCopyFromServer       = dsResult[3];
+    sNewOpcUaSubscription = dsResult[4];
+    sCopyFromSubscription = dsResult[5];
+  }
+
+
+  // Create new OPC UA driver
+  if( createDp(&quot;_OPCUA&quot; + iDriverNumber, &quot;_OPCUA&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating OPC UA driver connection DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Create internal DPs
+  if( createDp(&quot;_Stat_Configs_driver_&quot; + iDriverNumber, &quot;_Statistics_DriverConfigs&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating internal Driver DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+  if( createDp(&quot;_Stat_2_Configs_driver_&quot; + iDriverNumber, &quot;_Statistics_DriverConfigs&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating internal Driver DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  if( createDp(&quot;_Driver&quot; + iDriverNumber, &quot;_DriverCommon&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating internal Driver DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+  if( createDp(&quot;_Driver&quot; + iDriverNumber + &quot;_2&quot;, &quot;_DriverCommon&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating internal Driver DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+
+  // Create new OPC UA server connection
+  if( createDp(sNewOpcUaServer, &quot;_OPCUAServer&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating OPC UA server connection DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+  if( createDp(sNewOpcUaServer + &quot;_2&quot;, &quot;_OPCUAServer&quot;, exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error creating OPC UA server connection DP, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Create new OPC UA server subscription
+  if( sNewOpcUaSubscription != &quot;&quot; )
+  {
+    if( createDp(sNewOpcUaSubscription, &quot;_OPCUASubscription&quot;, exceptionInfo) == FALSE )
+    {
+      disableAllShapes();
+      exceptionInfo[2] = &quot;Error creating OPC UA subscription DP, due to: &quot; + exceptionInfo[2];
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+
+    if( createDp(sNewOpcUaSubscription + &quot;_2&quot;, &quot;_OPCUASubscription&quot;, exceptionInfo) == FALSE )
+    {
+      disableAllShapes();
+      exceptionInfo[2] = &quot;Error creating OPC UA subscription DP, due to: &quot; + exceptionInfo[2];
+      fwExceptionHandling_display(exceptionInfo);
+      return;
+    }
+  }
+
+
+  // Configure OPC UA driver, server and connection
+  if( configureOpcUaDps(iDriverNumber,         &quot;_OPCUA&quot; + iDriverNumber,
+                        sNewOpcUaServer,       sNewOpcUaServer + &quot;_2&quot;,       sCopyFromServer,
+                        sNewOpcUaSubscription, sNewOpcUaSubscription + &quot;_2&quot;, sCopyFromSubscription,
+                        exceptionInfo) == FALSE )
+  {
+    disableAllShapes();
+    exceptionInfo[2] = &quot;Error configuring new OPC UA driver, server and subscriptions, due to: &quot; + exceptionInfo[2];
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Create simulator and OPC UA client managers
+  if( CreateManagers(iDriverNumber, exceptionInfo) == FALSE )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error creating simulator and OPC UA client managers&quot;, &quot;&quot;);
+    fwExceptionHandling_display(exceptionInfo);
+    return;
+  }
+
+
+  // Update main panel
+  Refresh_OpcUaConnections();
+
+}
+
+
+
+
+
+bool configureOpcUaDps(int iDriverNumber,         string sOpcUaDriver,
+                       string sOpcUaServer,       string sOpcUaServerRedundant,       string sOpcUaServerSettings,
+                       string sOpcUaSubscription, string sOpcUaSubscriptionRedundant, string sOpcUaSubscriptionSettings,
+                       dyn_string &amp;exceptionInfo)
+{
+  string sOpcUaServerCut, sOpcUaSubscriptionCut, sDescription;
+  dyn_string exceptionInfo;
+  dyn_errClass deError;
+  mapping mServer, mSubscription;
+
+
+  // Remove &quot;_&quot; character from OPC UA server connection
+  if( strpos(sOpcUaServer, &quot;_&quot;) == 0 )
+  {
+    sOpcUaServerCut = substr(sOpcUaServer, 1);
+  }
+
+  // Get source properties from OPC UA server connection and OPC UA subscription
+  if( dpGet(sOpcUaServerSettings + &quot;.Config.ConnInfo&quot;,             mServer[&quot;ConnInfo&quot;],
+            sOpcUaServerSettings + &quot;.Config.AccessInfo&quot;,           mServer[&quot;AccessInfo&quot;],
+            sOpcUaServerSettings + &quot;.Config.Password&quot;,             mServer[&quot;Password&quot;],
+            sOpcUaServerSettings + &quot;.Config.Security.Policy&quot;,      mServer[&quot;Policy&quot;],
+            sOpcUaServerSettings + &quot;.Config.Security.MessageMode&quot;, mServer[&quot;MessageMode&quot;],
+            sOpcUaServerSettings + &quot;.Config.Security.Certificate&quot;, mServer[&quot;Certificate&quot;],
+            sOpcUaServerSettings + &quot;.Config.Active&quot;,               mServer[&quot;Active&quot;],
+            sOpcUaServerSettings + &quot;.Config.ReconnectTimer&quot;,       mServer[&quot;ReconnectTimer&quot;],
+            sOpcUaServerSettings + &quot;.Config.StatusMapping&quot;,        mServer[&quot;StatusMapping&quot;],
+            sOpcUaServerSettings + &quot;.Config.Separator&quot;,            mServer[&quot;Separator&quot;],
+            sOpcUaServerSettings + &quot;.Redu.Config.ConnInfo&quot;,        mServer[&quot;ReduConnInfo&quot;],
+            sOpcUaServerSettings + &quot;.Redu.Config.Active&quot;,          mServer[&quot;ReduActive&quot;]) != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error reading config settings from: &quot; + sOpcUaServerSettings, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error reading config settings from: &quot; + sOpcUaServerSettings + &quot;, due to: &quot; + getErrorText(), &quot;&quot;);
+      return FALSE;
+    }
+
+    dpGetDescription(sOpcUaServerSettings + &quot;.&quot;, sDescription);
+  }
+
+
+  // Configure OPC UA server connections
+  if( dpSet(sOpcUaServer          + &quot;.Config.ConnInfo&quot;,             mServer[&quot;ConnInfo&quot;],
+            sOpcUaServerRedundant + &quot;.Config.ConnInfo&quot;,             mServer[&quot;ConnInfo&quot;],
+            sOpcUaServer          + &quot;.Config.AccessInfo&quot;,           mServer[&quot;AccessInfo&quot;],
+            sOpcUaServerRedundant + &quot;.Config.AccessInfo&quot;,           mServer[&quot;AccessInfo&quot;],
+            sOpcUaServer          + &quot;.Config.Password&quot;,             mServer[&quot;Password&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Password&quot;,             mServer[&quot;Password&quot;],
+            sOpcUaServer          + &quot;.Config.Security.Policy&quot;,      mServer[&quot;Policy&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Security.Policy&quot;,      mServer[&quot;Policy&quot;],
+            sOpcUaServer          + &quot;.Config.Security.MessageMode&quot;, mServer[&quot;MessageMode&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Security.MessageMode&quot;, mServer[&quot;MessageMode&quot;],
+            sOpcUaServer          + &quot;.Config.Security.Certificate&quot;, mServer[&quot;Certificate&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Security.Certificate&quot;, mServer[&quot;Certificate&quot;],
+            sOpcUaServer          + &quot;.Config.Active&quot;,               mServer[&quot;Active&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Active&quot;,               mServer[&quot;Active&quot;],
+            sOpcUaServer          + &quot;.Config.ReconnectTimer&quot;,       mServer[&quot;ReconnectTimer&quot;],
+            sOpcUaServerRedundant + &quot;.Config.ReconnectTimer&quot;,       mServer[&quot;ReconnectTimer&quot;],
+            sOpcUaServer          + &quot;.Config.StatusMapping&quot;,        mServer[&quot;StatusMapping&quot;],
+            sOpcUaServerRedundant + &quot;.Config.StatusMapping&quot;,        mServer[&quot;StatusMapping&quot;],
+            sOpcUaServer          + &quot;.Config.Separator&quot;,            mServer[&quot;Separator&quot;],
+            sOpcUaServerRedundant + &quot;.Config.Separator&quot;,            mServer[&quot;Separator&quot;],
+            sOpcUaServer          + &quot;.Redu.Config.ConnInfo&quot;,        mServer[&quot;ReduConnInfo&quot;],
+            sOpcUaServerRedundant + &quot;.Redu.Config.ConnInfo&quot;,        mServer[&quot;ReduConnInfo&quot;],
+            sOpcUaServer          + &quot;.Redu.Config.Active&quot;,          mServer[&quot;ReduActive&quot;],
+            sOpcUaServerRedundant + &quot;.Redu.Config.Active&quot;,          mServer[&quot;ReduActive&quot;],
+            sOpcUaDriver          + &quot;.Config.Servers&quot;,              makeDynString(sOpcUaServerCut)) != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error configuring OPC UA server config: &quot; + sOpcUaServer, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    deError = getLastError();
+    if( dynlen(deError) &gt; 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error configuring OPC UA server config: &quot; + sOpcUaServer + &quot;, due to: &quot; + getErrorText(), &quot;&quot;);
+      return FALSE;
+    }
+
+    // Copy OPC UA server connection description
+    dpSetDescription(sOpcUaServer          + &quot;.&quot;, sDescription);
+    dpSetDescription(sOpcUaServerRedundant + &quot;.&quot;, sDescription);
+  }
+
+
+
+  // If subscription name is empty, nothing needs to be configured
+  if( (sOpcUaSubscription != &quot;&quot;) &amp;&amp; (sOpcUaSubscriptionRedundant != &quot;&quot;) )
+  {
+    if( dpGet(sOpcUaSubscriptionSettings + &quot;.Config.RequestedLifetimeCount&quot;,                        mSubscription[&quot;RequestedLifeTimeCount&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.RequestedMaxKeepAliveCount&quot;,                    mSubscription[&quot;RequestedMaxKeepAliveCount&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MaxNotificationsPerPublish&quot;,                    mSubscription[&quot;MaxNotificationsPerPublish&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.PublishingEnabled&quot;,                             mSubscription[&quot;PublishingEnabled&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.Priority&quot;,                                      mSubscription[&quot;Priority&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.SubscriptionType&quot;,                              mSubscription[&quot;SubscriptionType&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.TimestampsToReturn&quot;,             mSubscription[&quot;TimeStampsToReturn&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.QueueSize&quot;,                      mSubscription[&quot;QueueSize&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.DiscardOldest&quot;,                  mSubscription[&quot;DiscardOldest&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.DataChangeFilter.Trigger&quot;,       mSubscription[&quot;Trigger&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandType&quot;,  mSubscription[&quot;DeadbandType&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandValue&quot;, mSubscription[&quot;DeadbandValue&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.MonitoredItems.SamplingInterval&quot;,               mSubscription[&quot;SamplingInterval&quot;],
+              sOpcUaSubscriptionSettings + &quot;.Config.RequestedPublishingInterval&quot;,                   mSubscription[&quot;RequestedPublishingInterval&quot;]) != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error reading subscription settings from: &quot; + sOpcUaSubscriptionSettings, &quot;&quot;);
+      return FALSE;
+    }
+    else
+    {
+      deError = getLastError();
+      if( dynlen(deError) &gt; 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error reading subscription settings from: &quot; + sOpcUaSubscriptionSettings + &quot;, due to: &quot; + getErrorText(), &quot;&quot;);
+        return FALSE;
+      }
+
+      dpGetDescription(sOpcUaSubscriptionSettings + &quot;.&quot;, sDescription);
+    }
+
+
+    // Apply subscription settings and register subscriptions
+    if( dpSet(sOpcUaSubscription          + &quot;.Config.RequestedLifetimeCount&quot;,                        mSubscription[&quot;RequestedLifeTimeCount&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.RequestedLifetimeCount&quot;,                        mSubscription[&quot;RequestedLifeTimeCount&quot;],
+              sOpcUaSubscription          + &quot;.Config.RequestedMaxKeepAliveCount&quot;,                    mSubscription[&quot;RequestedMaxKeepAliveCount&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.RequestedMaxKeepAliveCount&quot;,                    mSubscription[&quot;RequestedMaxKeepAliveCount&quot;],
+              sOpcUaSubscription          + &quot;.Config.MaxNotificationsPerPublish&quot;,                    mSubscription[&quot;MaxNotificationsPerPublish&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MaxNotificationsPerPublish&quot;,                    mSubscription[&quot;MaxNotificationsPerPublish&quot;],
+              sOpcUaSubscription          + &quot;.Config.PublishingEnabled&quot;,                             mSubscription[&quot;PublishingEnabled&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.PublishingEnabled&quot;,                             mSubscription[&quot;PublishingEnabled&quot;],
+              sOpcUaSubscription          + &quot;.Config.Priority&quot;,                                      mSubscription[&quot;Priority&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.Priority&quot;,                                      mSubscription[&quot;Priority&quot;],
+              sOpcUaSubscription          + &quot;.Config.SubscriptionType&quot;,                              mSubscription[&quot;SubscriptionType&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.SubscriptionType&quot;,                              mSubscription[&quot;SubscriptionType&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.TimestampsToReturn&quot;,             mSubscription[&quot;TimeStampsToReturn&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.TimestampsToReturn&quot;,             mSubscription[&quot;TimeStampsToReturn&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.QueueSize&quot;,                      mSubscription[&quot;QueueSize&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.QueueSize&quot;,                      mSubscription[&quot;QueueSize&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.DiscardOldest&quot;,                  mSubscription[&quot;DiscardOldest&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.DiscardOldest&quot;,                  mSubscription[&quot;DiscardOldest&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.DataChangeFilter.Trigger&quot;,       mSubscription[&quot;Trigger&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.DataChangeFilter.Trigger&quot;,       mSubscription[&quot;Trigger&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandType&quot;,  mSubscription[&quot;DeadbandType&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandType&quot;,  mSubscription[&quot;DeadbandType&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandValue&quot;, mSubscription[&quot;DeadbandValue&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.DataChangeFilter.DeadbandValue&quot;, mSubscription[&quot;DeadbandValue&quot;],
+              sOpcUaSubscription          + &quot;.Config.MonitoredItems.SamplingInterval&quot;,               mSubscription[&quot;SamplingInterval&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.MonitoredItems.SamplingInterval&quot;,               mSubscription[&quot;SamplingInterval&quot;],
+              sOpcUaSubscription          + &quot;.Config.RequestedPublishingInterval&quot;,                   mSubscription[&quot;RequestedPublishingInterval&quot;],
+              sOpcUaSubscriptionRedundant + &quot;.Config.RequestedPublishingInterval&quot;,                   mSubscription[&quot;RequestedPublishingInterval&quot;],
+              sOpcUaServer                + &quot;.Config.Subscriptions&quot;,                                 makeDynString(sOpcUaSubscription),
+              sOpcUaServerRedundant       + &quot;.Config.Subscriptions&quot;,                                 makeDynString(sOpcUaSubscriptionRedundant)) != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error configuring subscription settings from: &quot; + sOpcUaSubscriptionSettings, &quot;&quot;);
+      return FALSE;
+    }
+    else
+    {
+      deError = getLastError();
+      if( dynlen(deError) &gt; 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error configuring subscription settings from: &quot; + sOpcUaSubscriptionSettings + &quot;, due to: &quot; + getErrorText(), &quot;&quot;);
+        return FALSE;
+      }
+
+      dpSetDescription(sOpcUaSubscription          + &quot;.&quot;, sDescription);
+      dpSetDescription(sOpcUaSubscriptionRedundant + &quot;.&quot;, sDescription);
+    }
+  }
+
+
+  return TRUE;
+}
+
+
+
+
+
+bool createDp(string sDp, string sDpt, dyn_string &amp;exceptionInfo)
+{
+  int iRes;
+  dyn_errClass deError;
+
+
+  if( dpExists(sDp) == FALSE )
+  {
+    iRes = dpCreate(sDp, sDpt);
+    if( iRes != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, creating DP: &quot; + sDp + &quot; of type: &quot; + sDpt, &quot;&quot;);
+      fwExceptionHandling_display(exceptionInfo);
+      return FALSE;
+    }
+    else
+    {
+      deError = getLastError();
+      if( dynlen(deError) &gt; 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, creating DP: &quot; + sDp + &quot; of type: &quot; + sDpt + &quot;, due to: &quot; + getErrorText(deError) , &quot;&quot;);
+        fwExceptionHandling_display(exceptionInfo);
+        return FALSE;
+      }
+    }
+  }
+
+  return TRUE;
+}
+
+
+
+
+
+
+bool CreateManagers(int iDriverNumber, dyn_string &amp;exceptionInfo)
+{
+  bool bOpcUaExists, bSimulatorExists, bIsRunning;
+  int iLoop, iLen, iRes;
+  dyn_dyn_mixed ddmAllManagers;
+
+
+  iRes = fwInstallationManager_getAllInfoFromPvss(ddmAllManagers);
+  if( iRes != 0 )
+  {
+    fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating OPCUA and simulator manager for driver &quot; + iDriverNumber + &quot; -&gt; Error getting all project managers&quot;, &quot;&quot;);
+    return FALSE;
+  }
+  else
+  {
+    iLen = dynlen(ddmAllManagers);
+  }
+
+
+  // Check if OPCUA -num iDriverNumber and simulator exists
+  for( iLoop = 1 ; iLoop &lt;= iLen ; iLoop++ )
+  {
+    // Check if simulator is already defined
+    if( (ddmAllManagers[iLoop][1] == &quot;WCCILsim&quot;)              &amp;&amp;
+        (ddmAllManagers[iLoop][6] == &quot;-num &quot; + iDriverNumber) )
+    {
+      bSimulatorExists = TRUE;
+    }
+
+    // Check if OPC UA client is already defined
+    if( (ddmAllManagers[iLoop][1] == &quot;WCCOAopcua&quot;)              &amp;&amp;
+        (ddmAllManagers[iLoop][6] == &quot;-num &quot; + iDriverNumber) )
+    {
+      bOpcUaExists = TRUE;
+    }
+  }
+
+
+  // Create OPC UA manager if doesn't exist
+  if( !bOpcUaExists )
+  {
+    iRes = fwInstallationManager_add(&quot;WCCOAopcua&quot;, &quot;manual&quot;, 30, 5, 3, &quot;-num &quot; + iDriverNumber, &quot;&quot;);
+    if( iRes == 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating OPCUA manager for driver &quot; + iDriverNumber + &quot; -&gt; failed in calling fwInstallationManager_add&quot;, &quot;&quot;);
+      return FALSE;
+    }
+  }
+  else
+  {
+    // Change OPC UA manager to manual
+    if( fwInstallationManager_setMode(&quot;WCCOAopcua&quot;, &quot;-num &quot; + iDriverNumber, &quot;manual&quot;, &quot;&quot;) != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating OPCUA manager for driver &quot; + iDriverNumber + &quot; -&gt; failed to change to manual WCCOAopcua -num &quot; + iDriverNumber + &quot; manager to manual&quot;, &quot;&quot;);
+      return FALSE;
+    }
+    else
+    {
+      // Stop the OPC UA manager
+      if( fwInstallationManager_command(&quot;STOP&quot;, &quot;WCCOAopcua&quot;, &quot;-num &quot; + iDriverNumber, &quot;&quot;) != 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating OPCUA manager for driver &quot; + iDriverNumber + &quot; -&gt; failed to stop the WCCOAopcua -num &quot; + iDriverNumber + &quot; manager&quot;, &quot;&quot;);
+        return FALSE;
+      }
+    }
+  }
+
+
+  // Create simulator manager if doesn't exist
+  if( !bSimulatorExists )
+  {
+    iRes = fwInstallationManager_add(&quot;WCCILsim&quot;, &quot;always&quot;, 30, 5, 3, &quot;-num &quot; + iDriverNumber, &quot;&quot;);
+    if( iRes == 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating Simulation manager for driver &quot; + iDriverNumber + &quot; -&gt; failed in calling fwInstallationManager_add&quot;, &quot;&quot;);
+      return FALSE;
+    }
+  }
+  else
+  {
+    // Check if manager is running
+    if( fwInstallationManager_isRunning(&quot;WCCILsim&quot;, &quot;-num &quot; + iDriverNumber, bIsRunning, &quot;&quot;) != 0 )
+    {
+      fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating Simulation manager for driver &quot; + iDriverNumber + &quot; -&gt; Error getting current status of the manager&quot;, &quot;&quot;);
+      return FALSE;
+    }
+
+    if( !bIsRunning )
+    {
+      if( fwInstallationManager_restart(&quot;WCCILsim&quot;, &quot;-num &quot; + iDriverNumber, &quot;&quot;) != 0 )
+      {
+        fwException_raise(exceptionInfo, &quot;ERROR&quot;, &quot;Error, Creating Simulation manager for driver &quot; + iDriverNumber + &quot; -&gt; Error restarting manager WCCILsim -num &quot; + iDriverNumber, &quot;&quot;);
+        return FALSE;
+      }
+    }
+  }
+
+  return TRUE;
+
+}// CreateManagers()
+]]></script>
+   </events>
+  </shape>
+  <shape Name="FRAME_JCOP_DEVICES" shapeType="FRAME" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">10 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">{0,0,0}</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[solid,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType">[outline]</prop>
+    <prop name="Geometry">1.292682926829268 0 0 0.2964426877470355 17.07317073170731 145.8498023715415</prop>
+    <prop name="BorderStyle">3D</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">1 - JCOP devices</prop>
+    </prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">10 14</prop>
+    <prop name="Size">411 507</prop>
+   </properties>
+  </shape>
+ </shapes>
+</panel>

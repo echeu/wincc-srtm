@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">84 32</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">60 70</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96.05337872048406</prop>
+  <prop name="PDPI">96.05337872048405</prop>
+  <prop name="layoutType">HBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+  <prop name="sizePolicy">
+   <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+  </prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;classes/fwStdUi/FwStdUiTheme.ctl&quot;
+
+mapping themeMap; // keys:names, values: FwStdUi_ThemePtr;
+
+void initialize()
+{
+    FwStdUi_ThemePVec themes=FwStdUi_Theme::getList();
+    for (int i=0;i&lt;themes.count();i++) {
+        FwStdUi_ThemePtr t=themes.at(i);
+        themeMap.insert(t.getName(),t);
+    };
+
+    string curThemeName=FwStdUi_Theme::getCurrentThemeName();
+
+    switch(curThemeName) {
+        case &quot;default&quot;:
+            break;
+        case &quot;fwStdUi-Dark&quot;:
+            Toggle.checked=true;
+            break;
+        case &quot;fwStdUi-Light&quot;:
+            Toggle.checked=false;
+            break;
+    }
+    DebugTN(mappingKeys(themeMap));
+}
+
+void ThemeChanged(bool dark)
+{
+
+    FwStdUi_ThemePtr newTheme;
+    if (dark) {
+        newTheme = themeMap.value(&quot;fwStdUi-Dark&quot;);
+    } else {
+        newTheme = themeMap.value(&quot;fwStdUi-Light&quot;);
+    }
+    newTheme.apply();
+}
+
+void SelectTheme()
+{
+    string curThemeName=FwStdUi_Theme::getCurrentThemeName();
+
+    dyn_string menu=makeDynString(&quot;CHECK_BUTTON,Light,10,1,&quot;+(int)(curThemeName==&quot;fwStdUi-Light&quot;) ,
+                                  &quot;CHECK_BUTTON,Dark,20,1,&quot;+(int)(curThemeName==&quot;fwStdUi-Dark&quot;),
+                                  &quot;CHECK_BUTTON,Default,30,1,&quot;+(int)(curThemeName==&quot;default&quot;)
+                                    );
+    int answer;
+
+    popupMenu(menu,answer);
+    switch(answer) {
+        case 10: Toggle.checked(false); break;
+        case 20: Toggle.checked(true); break;
+        case 30:
+            themeMap.value(&quot;default&quot;).apply();
+            break;
+        default:
+            break;
+    }
+    DebugTN(__FUNCTION__);
+}
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    initialize();
+}]]></script>
+ </events>
+ <shapes>
+  <shape Name="Toggle" shapeType="GENERIC" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">67 60</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="maximumSize">40 26</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Minimum" horizontal="Minimum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignHCenter|AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Sans Serif,-1,13,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">40 13</prop>
+    <prop name="Size">28 18</prop>
+    <prop name="ObjectType">ToggleSwitch.ewo</prop>
+    <extended>
+     <prop type="ENUM" name="skin">3</prop>
+     <prop type="CHAR_STRING" name="textOff"></prop>
+     <prop type="CHAR_STRING" name="textOn"></prop>
+     <prop type="FILL" name="backgroundBrushOff">[gradient,[linear,pad,1.04,0.0241,0.012,1.01,0.00671,{35,38,41},0.987,{255,255,255}]]</prop>
+     <prop type="FILL" name="backgroundBrushOn">[gradient,[linear,pad,1.02,0.0482,0.0241,0.976,0,{0,0,0},1,{255,255,255}]]</prop>
+     <prop type="ENUM" name="inputMethodHints">0</prop>
+     <prop type="ENUM" name="contextMenuPolicy">1</prop>
+     <script name="toggled" isEscaped="1"><![CDATA[toggled(bool on)
+{
+    ThemeChanged(on);
+}]]></script>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="Dark" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">60 40</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="ShadowOffset">8 8</prop>
+    <prop name="ShadowColor">{63,63,63,131}</prop>
+    <prop name="ShadowRadius">18</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignLeading|AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[none,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType" SharedPixmap="1">[pattern,[fit,any,pictures/fwStdUi/actions/darkMode.svg]]</prop>
+    <prop name="Geometry">0.3 0 0 0.3 50.00000000000001 -0.9260869565217433</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">60 40</prop>
+    <prop name="Size">51 51</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+    Toggle.checked(true);
+}]]></script>
+    <script name="RightMousePressed" isEscaped="1"><![CDATA[main(mapping event)
+{
+    SelectTheme();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="Light" shapeType="RECTANGLE" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">60 40</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="ShadowOffset">8 8</prop>
+    <prop name="ShadowColor">{63,63,63,131}</prop>
+    <prop name="ShadowRadius">18</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+    </prop>
+    <prop name="layoutAlignment">AlignTrailing|AlignTop</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="DashBackColor">_Transparent</prop>
+    <prop name="AntiAliased">False</prop>
+    <prop name="LineType">[none,oneColor,JoinBevel,CapProjecting,1]</prop>
+    <prop name="BorderZoomable">False</prop>
+    <prop name="BorderScalable">False</prop>
+    <prop name="FillType" SharedPixmap="1">[pattern,[fit,any,pictures/fwStdUi/actions/lightMode.svg]]</prop>
+    <prop name="Geometry">0.34 0 0 0.34 2.600000000000009 -2.563043478260873</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Location">60 40</prop>
+    <prop name="Size">51 51</prop>
+    <prop name="CornerRadius">0</prop>
+    <prop name="Transformable">True</prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main(mapping event)
+{
+    Toggle.checked(false);
+}]]></script>
+    <script name="RightMousePressed" isEscaped="1"><![CDATA[main(mapping event)
+{
+    SelectTheme();
+}]]></script>
+   </events>
+  </shape>
+  <shape Name="SPACER1" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">10</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">88 14</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">10</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">88 14</prop>
+    <prop name="Size">21 11</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+  <shape Name="SPACER2" shapeType="SPACER" layerId="0">
+   <properties>
+    <prop name="serialId">11</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">-0.5 13.03695652173912</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">{0,0,0}</prop>
+    <prop name="BackColor">{255,255,255}</prop>
+    <prop name="TabOrder">11</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="TransparentForMouse">True</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Ignored" horizontal="Expanding"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Location">-0.5 13.03695652173912</prop>
+    <prop name="Size">22 11</prop>
+    <prop name="Orientation">horizontal</prop>
+   </properties>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP4" serial="0">
+   <properties>
+    <prop idx="2" name="shapeSerial">0</prop>
+    <prop idx="3" name="shapeSerial">1</prop>
+    <prop idx="1" name="shapeSerial">4</prop>
+    <prop idx="4" name="shapeSerial">10</prop>
+    <prop idx="0" name="shapeSerial">11</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+    <prop name="layoutLeftMargin">0</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">6</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">2</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

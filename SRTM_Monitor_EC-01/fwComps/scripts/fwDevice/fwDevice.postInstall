@@ -1,0 +1,23 @@
+/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+ **/
+
+main()
+{
+
+  // cleanup obsolete library location
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("config/fwDevice.config"));
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("help/en_US.iso88591/fwDevice"),true);
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("help/en_US.iso88591/fwDevice/scripts"),true);
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("help/en_US.iso88591/fwDevice/panels"),true);
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("help/en_US.iso88591/fwDevice/fwDevice.htm"));
+
+  fwInstallation_cleanupObsoleteFiles("fwDevice",makeDynString("help/en_US.utf8/fwDevice"),true);
+
+  string version;
+  if (fwInstallation_isComponentInstalled("fwDeviceUnitTests",version)) fwInstallation_cleanupObsoleteFiles("fwDevice", makeDynString("/panels/fwDevice/tests/fwDeviceTest.pnl"));
+  
+}

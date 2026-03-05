@@ -1,0 +1,17 @@
+# (c) Copyright CERN 2005. All rights not expressly granted are reserved.
+# icecontrols.support@cern.ch
+#
+# SPDX-License-Identifier: LGPL-3.0-only
+
+# ascii dump of database
+
+# DpType
+TypeName
+FwNode.FwNode	1#1
+	type	25#49
+	dpTypes	9#50
+	navigatorPanels	9#51
+	editorPanels	9#52
+	model	25#53
+	fsmState	21#54
+	fsmCommand	21#55

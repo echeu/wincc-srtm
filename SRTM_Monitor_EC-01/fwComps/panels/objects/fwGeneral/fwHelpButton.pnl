@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">25 25</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="KeepInMemory">False</prop>
+  <prop name="StartZoomPoint">0 0</prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">VBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+  <prop name="sizePolicy">
+   <sizePolicy vertical="Fixed" horizontal="Fixed"/>
+  </prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;fwGeneral/fwGeneral.ctl&quot;
+
+
+#property string helpPath
+string helpPath;
+
+public string getHelpPath()                 { return helpPath;    }
+public void   setHelpPath(string sHelpPath) { helpPath=sHelpPath; }
+
+/* Unused normally, should prevent exception on some panels that have the old code
+ which opens help browser duplicated inside them and executed instead of the
+ 'Clicked' script of this panel (they require this global variable to be defined in 'ScopeLib').
+ See FWCORE-3350 for reference. */
+bool goodPanelName = true;
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    // by default this is set by the &quot;helpPath&quot; property already,
+    // but we may override it wih a dollar parameter (if not empty)
+    if (isDollarDefined(&quot;$sPanelRelativePath&quot;)) {
+        string s=$sPanelRelativePath; // FWCORE-3636: do not use getDollarValue() - we need it in the list of parameterizable dollar-params
+        if (s!=&quot;&quot; &amp;&amp; s!=&quot;$sPanelRelativePath&quot;) {
+            helpPath = s;
+        }
+    }
+
+}
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <shape Name="Button1" shapeType="PUSH_BUTTON" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type">FW_ICON</prop>
+    <prop name="RefPoint">0 0</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8">Open help file for this panel</prop>
+    </prop>
+    <prop name="maximumSize">23 23</prop>
+    <prop name="sizePolicy">
+     <sizePolicy vertical="Maximum" horizontal="Maximum"/>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,11,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">30 30</prop>
+    <prop name="Size">25 25</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Image" SharedPixmap="1">
+     <prop name="BackgroundPixmap">fwStdUi/actions/help.svg</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[main()
+{
+    dyn_string exceptionInfo;
+    fwGeneral_openHelpForPanel(helpPath, exceptionInfo);
+    if (dynlen(exceptionInfo)) fwExceptionHandling_display(exceptionInfo);
+}
+
+]]></script>
+   </events>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP3" serial="0">
+   <properties>
+    <prop name="shapeSerial" rowSpan="1" column="1" row="1" colSpan="1">0</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">Grid</prop>
+    <prop name="layoutLeftMargin">0</prop>
+    <prop name="layoutRightMargin">0</prop>
+    <prop name="layoutTopMargin">0</prop>
+    <prop name="layoutBottomMargin">0</prop>
+    <prop name="layoutSpacing">0</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

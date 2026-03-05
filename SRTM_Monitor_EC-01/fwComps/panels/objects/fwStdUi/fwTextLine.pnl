@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">166 26</prop>
+  <prop name="BackColor">_Transparent</prop>
+  <prop name="RefPoint">10 12</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96.05337872048406</prop>
+  <prop name="PDPI">96.05337872048405</prop>
+  <prop name="layoutType">HBox</prop>
+  <prop name="layoutLeftMargin">0</prop>
+  <prop name="layoutRightMargin">0</prop>
+  <prop name="layoutTopMargin">0</prop>
+  <prop name="layoutBottomMargin">0</prop>
+  <prop name="layoutSpacing">0</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+  (c) Copyright CERN 2005. All rights not expressly granted are reserved.
+  icecontrols.support@cern.ch
+
+  SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#property bool active // alike the &quot;enabled&quot;, but does not blank the color palette when false and may keep user events
+#property bool invalid
+#property bool editable
+#property string text
+#property color backCol // custom bg
+#property color foreCol
+
+
+bool isActive=true;
+bool isInvalid=false;
+bool isEditable=true;
+string customBackCol=&quot;FwStdUiInputBg&quot;;
+string customForeCol=&quot;FwStdUiText&quot;;
+
+public void setActive(bool b)
+{
+    isActive=b;
+    repaint();
+}
+
+public void setText(string txt) { TheTextField.text=txt;}
+public void setEditable(bool b)
+{
+    isEditable=b;
+    repaint();
+}
+
+public void setInvalid(bool b)
+{
+    isInvalid=b;
+    repaint();
+}
+public void setBackCol(string newBackCol)
+{
+    customBackCol=newBackCol;
+    repaint();
+}
+public void setForeCol(string newForeCol)
+{
+    customForeCol=newForeCol;
+    repaint();
+}
+
+public bool getActive()   { return isActive;}
+public bool getEditable() { return isEditable;}
+public bool getInvalid()  { return isInvalid;}
+public string getText()   { return TheTextField.text;}
+public string getForeCol(){ return customForeCol;}
+public string getBackCol(){ return customBackCol;}
+
+void repaint()
+{
+
+    // in case someone used the .enabled property, convert it to isActive...
+    // note: we may not test the .enabled of a panel, but it is anyway present on all the shapes of disabled refpanel
+    if (TheTextField.enabled==false) {
+        //DebugTN(&quot;SELF IS NOT ENABLED&quot;, TheTextField.refName);
+        isActive=false;
+        TheTextField.enabled=true;
+        TheTextField.editable=false;
+    }
+
+    string bgCol=&quot;FwStdUiInputBg&quot;;
+    string fgCol=&quot;FwStdUiText&quot;;
+
+    if (customBackCol!=&quot;&quot; &amp;&amp; customBackCol!=&quot;FwStdUiInputBg&quot;) {
+        bgCol=customBackCol;
+    } else if (!isActive) {
+        bgCol=&quot;FwStdUiInputDisabled&quot; ;
+     } else if (TheTextField.editable==false) {
+         bgCol=&quot;FwStdUiInputNoEdit&quot;;
+     } else if (isInvalid) {
+         bgCol=&quot;FwStdUiInvalid&quot;; //? Fw&quot;FwBackgroundUserAttention&quot; ??
+     }
+
+    if (customForeCol!=&quot;&quot; &amp;&amp; customForeCol!=&quot;FwStdUiText&quot;) {
+        fgCol=customForeCol;
+    } else if (!isActive) {
+        fgCol=&quot;FwStdUiInputDisabledText&quot; ;
+    } else {
+
+    }
+
+    TheTextField.editable=(isActive &amp;&amp; isEditable);
+    TheTextField.clearButtonEnabled=isEditable;
+
+    TheTextField.backCol=bgCol;
+    TheTextField.foreCol=fgCol;
+}
+
+void focusIn()
+{
+    if (isEditable &amp;&amp; isActive &amp;&amp; (customBackCol==&quot;&quot; || customBackCol==&quot;FwStdUiInputBg&quot;)) {
+        TheTextField.backCol=&quot;FwStdUiInputBgFocused&quot;;
+        TheTextField.foreCol=&quot;FwStdUiInputFgFocused&quot;;
+    }
+}
+
+void focusOut()
+{
+    repaint();
+}
+
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+    delay(0,5); // allow to re-enable the widget if .enabled was set to false
+    repaint();
+}
+]]></script>
+ </events>
+ <shapes>
+  <shape Name="TheTextField" shapeType="TEXT_FIELD" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">20 10</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,12,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">20 6.000000000000001</prop>
+    <prop name="Size">121 26</prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="Editable">True</prop>
+    <prop name="ClearButtonEnabled">False</prop>
+    <prop name="TextFormat">[0s,,,AlignLeft]</prop>
+    <prop name="ulcClientSideWidget">False</prop>
+   </properties>
+   <events>
+    <script name="MouseOver" isEscaped="1"><![CDATA[main(bool enter)
+{
+    // we need to re-apply all the properties of shadow
+    this.shadowColor=&quot;FwStdUiShadow&quot;;
+    this.shadowRadius=10;
+    this.shadowOffset(0,0);
+    this.shadowEnabled = enter;
+}
+]]></script>
+    <script name="KeyboardFocusOut" isEscaped="1"><![CDATA[main()
+{
+    focusOut();
+}]]></script>
+    <script name="KeyboardFocusIn" isEscaped="1"><![CDATA[main()
+{
+    focusIn();
+}]]></script>
+   </events>
+  </shape>
+ </shapes>
+ <groups>
+  <layout parentSerial="-1" Name="LAYOUT_GROUP1" serial="0">
+   <properties>
+    <prop idx="0" name="shapeSerial">1</prop>
+    <prop name="isContainerShape">False</prop>
+    <prop name="layoutType">HBox</prop>
+   </properties>
+  </layout>
+ </groups>
+</panel>

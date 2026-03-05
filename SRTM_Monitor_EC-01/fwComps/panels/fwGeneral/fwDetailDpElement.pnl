@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">622 489</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">0 0</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="KeepInMemory">False</prop>
+  <prop name="DPI">96</prop>
+  <prop name="PDPI">96</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <events>
+  <script name="ScopeLib" isEscaped="1"><![CDATA[/**
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+**/
+
+#uses &quot;classes/fwStdLib/FwException.ctl&quot;
+#uses &quot;classes/fwStdUi/FwPanel.ctl&quot;
+
+// we need to use an embedded module to open the para/originalHelp.pnl
+// - due to the way it is animated it would not work through a refpanel
+
+
+]]></script>
+  <script name="Initialize" isEscaped="1"><![CDATA[main()
+{
+
+    try {
+	    bit64  status=$2;
+    	string dpe=dpSubStr($1,DPSUB_SYS_DP_EL);
+
+        string embModuleName=&quot;FwDetailDpElement_embed_&quot;+createUuid();
+        setWindowTitle(myModuleName(),myPanelName(),&quot;DP Element details for &quot;+dpe);
+        embModule1.ModuleName=embModuleName;
+        shared_ptr&lt;FwPanel&gt; pnl = FwPanel::openRootPanel(&quot;DPElementDetailsPanel&quot;,&quot;para/originalHelp.pnl&quot;,embModuleName,
+                                                           makeDynString(&quot;$1:&quot;+dpe,&quot;$2:&quot;+status)
+                                                         );
+        ZoomModule(embModuleName,1.0);
+
+        // show/hide items in the original panel
+        // - we keep the original OK/Cancel so that one could modify
+        //   the status bits -&gt; logic is implemented in the Clicked even
+        //   of the button (if we hide it, we cannot click it even with FwPanel::invokeMouseClick())
+        // - the OK/Cancel invoke PanelOff() on their own - we need to catch the fact that
+        //   the embedded module is closing and then close our own panel - see comment below
+
+        mapping pnlShapes = pnl.getStdShapes(&quot;*&quot;);
+        //DebugTN(pnlShapes);
+        //pnlShapes[&quot;ok&quot;].visible=false;      // OK button
+        //pnlShapes[&quot;Button1&quot;].visible=false; // Cancel button
+        pnlShapes[&quot;Button2&quot;].visible=false; // Help button
+        pnlShapes[&quot;PANEL_REF1.RECTANGLE1&quot;].visible=false; // Buttons background
+        pnlShapes[&quot;PANEL_REF1.LINE1&quot;].visible=false; // Buttons background separator line...
+
+        // reformat the ComboBox with indication of DPE name (resize, hide &quot;DPE&quot; text)
+        // tricky because the names of the shapes are empty strings, still we got them right!
+        pnlShapes[&quot;.&quot;].visible=false; // &quot;DPE&quot; text in front of the DPE combo box
+        dyn_int dpeSelPos=pnlShapes[&quot;.dpe_name&quot;].positionAsDyn;
+        dyn_int dpeSelSize=pnlShapes[&quot;.dpe_name&quot;].sizeAsDyn;
+        pnlShapes[&quot;.dpe_name&quot;].position(150,dpeSelPos.last());
+        pnlShapes[&quot;.dpe_name&quot;].size(450,dpeSelSize.last());
+
+        // The original OK/Cancel button invoke a PanelOff() in their code,
+        // and this causes the panel INSIDE THE EMBEDDED MODULE to be closed.
+        // We therefore need to catch this event and close our panel as needed.
+        // Tracking it with pnl.waitModuleClosed is not effective because of the above
+        // and hence we fall back to catching the fact that this closes our embedded module
+        pnl.waitModuleClosed(embModuleName);
+        PanelOff();
+
+    } catch {
+        FwException::handleLast();
+    }
+}
+]]></script>
+ </events>
+ <layers>
+  <layer layerId="0">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer1</prop>
+  </layer>
+  <layer layerId="1">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer2</prop>
+  </layer>
+  <layer layerId="2">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer3</prop>
+  </layer>
+  <layer layerId="3">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer4</prop>
+  </layer>
+  <layer layerId="4">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer5</prop>
+  </layer>
+  <layer layerId="5">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer6</prop>
+  </layer>
+  <layer layerId="6">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer7</prop>
+  </layer>
+  <layer layerId="7">
+   <prop name="Visible">True</prop>
+   <prop name="Name">Layer8</prop>
+  </layer>
+ </layers>
+ <shapes>
+  <shape Name="embModule1" shapeType="EMBEDDED_MODULE" layerId="0">
+   <properties>
+    <prop name="serialId">123</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">0 -1.77635683940025e-15</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_3DFace</prop>
+    <prop name="TabOrder">184</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">0 -1.77635683940025e-15</prop>
+    <prop name="Size">611 481</prop>
+    <extended>
+     <prop type="INT" name="newPanelAnimDuration">0</prop>
+     <prop type="INT" name="oldPanelAnimDuration">0</prop>
+     <prop type="BOOL" name="newPanelAnimateOpacity">False</prop>
+     <prop type="BOOL" name="oldPanelAnimateOpacity">False</prop>
+     <prop type="BOOL" name="newPanelAnimateSize">False</prop>
+     <prop type="BOOL" name="oldPanelAnimateSize">False</prop>
+     <prop type="CHAR_STRING" name="newPanelAnimType">None</prop>
+     <prop type="CHAR_STRING" name="oldPanelAnimType">None</prop>
+     <prop type="CHAR_STRING" name="ModuleName">FwDetailDpElement_embed</prop>
+     <prop type="ENUM" name="verticalScrollBarPolicy">1</prop>
+     <prop type="ENUM" name="horizontalScrollBarPolicy">1</prop>
+    </extended>
+   </properties>
+  </shape>
+  <shape Name="TheLabel" shapeType="Label" layerId="0">
+   <properties>
+    <prop name="serialId">126</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">13 10</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_3DText</prop>
+    <prop name="BackColor">_Transparent</prop>
+    <prop name="TabOrder">187</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,13,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">13 10</prop>
+    <prop name="Size">148 21</prop>
+    <extended>
+     <prop type="CHAR_STRING" name="text">DPElement details for</prop>
+     <prop type="ENUM" name="frameShape">0</prop>
+    </extended>
+   </properties>
+  </shape>
+ </shapes>
+</panel>

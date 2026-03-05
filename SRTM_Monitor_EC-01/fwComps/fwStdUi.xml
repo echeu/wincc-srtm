@@ -1,0 +1,64 @@
+<!--
+(c) Copyright CERN 2005. All rights not expressly granted are reserved.
+icecontrols.support@cern.ch
+
+SPDX-License-Identifier: LGPL-3.0-only
+-->
+<component>
+  <name>fwStdUi</name>
+  <version>9.3.0</version>
+  <date>22/11/2024</date>
+  <subComponent>yes</subComponent>
+  <required_pvss_version>3.19</required_pvss_version>
+  <required_installer_version>9.1.0</required_installer_version>
+  <config>./config/fwStdUi.config</config>
+  <file>./fwStdUi.xml</file>
+  <file>./data/LICENSES/fwStdUi/LICENSE-LGPL3</file>
+  <init>./scripts/fwStdUi/fwStdUi.init</init>
+  <bin>./bin/fwStdUi/3.19/CtrlGuiUtils.so</bin>
+  <bin>./bin/fwStdUi/3.19/CtrlGuiUtils.dll</bin>
+  <file>./colorDB/fwStdUi</file>
+  <file>./colorDB/fwStdUi-Light/fwStdUi</file>
+  <file>./colorDB/fwStdUi-Dark/fwStdUi</file>
+  <file>./colorDB/fwStdUi-Light/colorDB_fw</file>
+  <file>./colorDB/fwStdUi-Dark/colorDB_fw</file>
+  <file>./colorDB/ScriptEditor</file>
+  <file>./colorDB/fwStdUi-Light/ScriptEditor</file>
+  <file>./colorDB/fwStdUi-Dark/ScriptEditor</file>
+  <file>./scripts/libs/classes/fwStdUi/FwStdUi.ctl</file>
+  <file>./scripts/libs/classes/fwStdUi/FwPanel.ctl</file>
+  <file>./scripts/libs/classes/fwStdUi/FwStdUiTheme.ctl</file>
+  <file>./scripts/gedi/fwStdUIGedi_ext.ctl</file>
+  <file>./scripts/scriptEditor/fwStdUIGedi_ext.ctl</file>
+  <file>./panels/fwStdUi/dlgConfirm.pnl</file>
+  <file>./panels/fwStdUi/dlgStringInput.pnl</file>
+  <file>./panels/fwStdUi/dlgSelectionList.pnl</file>
+  <file>./panels/fwStdUi/dlgReorderList.pnl</file>
+  <file>./panels/fwStdUi/dlgInfo.pnl</file>
+  <file>./panels/objects/fwStdUi/fwListOrderEditor.pnl</file>
+  <file>./panels/objects/fwStdUi/fwTable.pnl</file>
+  <file>./panels/objects/fwStdUi/fwTable_HeaderPopup.pnl</file>
+  <file>./panels/objects/fwStdUi/fwSelectionList.pnl</file>
+  <file>./panels/objects/fwStdUi/fwUiDensitySelector.pnl</file>
+  <file>./panels/objects/fwStdUi/fwThemeSelector.pnl</file>
+  <file>./panels/objects/fwStdUi/fwComboBox.pnl</file>
+  <file>./panels/objects/fwStdUi/fwTextLine.pnl</file>
+  <file>./panels/objects/fwStdUi/fwPanelHeader.pnl</file>
+  <file>./pictures/fwStdUi/*</file>
+  <file>./pictures/fwStdUi/CSS/*</file>
+  <file>./pictures/fwStdUi/ListsAndArrows/*</file>
+  <file>./pictures/fwStdUi/UI/*</file>
+  <file>./pictures/fwStdUi/actions/*</file>
+  <file>./pictures/themes/fwStdUi-Dark/fwStdUi/*</file>
+  <file>./pictures/themes/fwStdUi-Dark/fwStdUi/CSS/*</file>
+  <file>./pictures/themes/fwStdUi-Dark/fwStdUi/ListsAndArrows/*</file>
+  <file>./pictures/themes/fwStdUi-Dark/fwStdUi/UI/*</file>
+  <file>./pictures/themes/fwStdUi-Dark/fwStdUi/actions/*</file>
+  <file>./pictures/themes/fwStdUi-Light/fwStdUi/*</file>
+  <file>./pictures/themes/fwStdUi-Light/fwStdUi/CSS/*</file>
+  <file>./pictures/themes/fwStdUi-Light/fwStdUi/ListsAndArrows/*</file>
+  <file>./pictures/themes/fwStdUi-Light/fwStdUi/UI/*</file>
+  <file>./pictures/themes/fwStdUi-Light/fwStdUi/actions/*</file>
+  <file>config/fwStdUi/stylesheets/20-jcopfw.css</file>
+  <commit>https://gitlab.cern.ch/jcopfw/core/fwStdUi/commit/a82aca9893763570a67a78f3758c7c1e3af21d14</commit>
+</component>

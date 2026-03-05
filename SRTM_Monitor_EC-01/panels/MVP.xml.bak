@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">623 737</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">30 30</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96.15881809787626</prop>
+  <prop name="PDPI">96.15881809787626</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <shapes>
+  <shape Name="TREND1" shapeType="TREND" layerId="0">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">30 30</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">30 30</prop>
+    <prop name="Size">261 191</prop>
+    <prop name="TimeTrend">True</prop>
+    <prop name="Logarithmic">False</prop>
+    <prop name="ShowToolBox">True</prop>
+    <prop name="ShowLegend">True</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="ShowGrid">False</prop>
+    <prop name="ShowBackgroundGrid">True</prop>
+    <prop name="TimeRange">300</prop>
+    <prop name="curveDownsamplings">0 </prop>
+    <prop name="ScrollPercent">90</prop>
+    <prop name="LegendFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="ScaleFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="DefaultFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="TrendArea">
+     <prop name="PixmapFile"></prop>
+     <prop type="ValueOverTime" name="TrendCurve">
+      <prop name="Name">#1_1</prop>
+      <prop name="DataSource">dist_1:SRTM.FPGA_temp</prop>
+      <prop name="PointType">0</prop>
+      <prop name="Type">2</prop>
+      <prop name="Filled">0</prop>
+      <prop name="RefValue">0</prop>
+      <prop name="LegendFormat"></prop>
+      <prop name="LegendShowDate">False</prop>
+      <prop name="LegendShowMilli">False</prop>
+      <prop name="LegendName">
+       <prop name="en_US.utf8">FPGA Temp</prop>
+      </prop>
+      <prop name="LegendUnit">
+       <prop name="en_US.utf8"></prop>
+      </prop>
+      <prop name="VisibleInLegend">True</prop>
+      <prop name="AutoScale">False</prop>
+      <prop name="ValueShape"></prop>
+      <prop name="TimeShape"></prop>
+      <prop name="Min">0.5089279059533638</prop>
+      <prop name="Max">99.49107209404664</prop>
+      <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,0]</prop>
+      <prop name="Color">Blue</prop>
+      <prop name="GridVisible">False</prop>
+      <prop name="GridAboveCount">0</prop>
+      <prop name="GridBelowCount">0</prop>
+      <prop name="GridAboveDistance">0</prop>
+      <prop name="GridBelowDistance">0</prop>
+      <prop name="GridRefValue">0</prop>
+      <CurveScale>
+       <prop name="Format1">%g</prop>
+       <prop name="Format2">%x</prop>
+       <prop name="AutoFormat">True</prop>
+       <prop name="Visible">True</prop>
+       <prop name="Position">Left</prop>
+      </CurveScale>
+     </prop>
+     <prop name="TimeScaleOneLine">True</prop>
+     <prop name="TimeScale">
+      <prop name="Format1">%H:%M:%S</prop>
+      <prop name="Format2">%x</prop>
+      <prop name="AutoFormat">True</prop>
+      <prop name="Visible">True</prop>
+      <prop name="Position">Bottom</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="TREND2" shapeType="TREND" layerId="0">
+   <properties>
+    <prop name="serialId">1</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">320 30</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">1</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">320 30</prop>
+    <prop name="Size">261 191</prop>
+    <prop name="TimeTrend">True</prop>
+    <prop name="Logarithmic">False</prop>
+    <prop name="ShowToolBox">True</prop>
+    <prop name="ShowLegend">True</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="ShowGrid">False</prop>
+    <prop name="ShowBackgroundGrid">True</prop>
+    <prop name="TimeRange">300</prop>
+    <prop name="curveDownsamplings">0 </prop>
+    <prop name="ScrollPercent">90</prop>
+    <prop name="LegendFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="ScaleFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="DefaultFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="TrendArea">
+     <prop name="PixmapFile"></prop>
+     <prop type="ValueOverTime" name="TrendCurve">
+      <prop name="Name">#1_1</prop>
+      <prop name="DataSource">dist_1:SRTM.FF11_tempC</prop>
+      <prop name="PointType">0</prop>
+      <prop name="Type">2</prop>
+      <prop name="Filled">0</prop>
+      <prop name="RefValue">0</prop>
+      <prop name="LegendFormat"></prop>
+      <prop name="LegendShowDate">False</prop>
+      <prop name="LegendShowMilli">False</prop>
+      <prop name="LegendName">
+       <prop name="en_US.utf8">FF11 TempC</prop>
+      </prop>
+      <prop name="LegendUnit">
+       <prop name="en_US.utf8"></prop>
+      </prop>
+      <prop name="VisibleInLegend">True</prop>
+      <prop name="AutoScale">False</prop>
+      <prop name="ValueShape"></prop>
+      <prop name="TimeShape"></prop>
+      <prop name="Min">2.447174185242318</prop>
+      <prop name="Max">97.55282581475768</prop>
+      <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,0]</prop>
+      <prop name="Color">Blue</prop>
+      <prop name="GridVisible">False</prop>
+      <prop name="GridAboveCount">0</prop>
+      <prop name="GridBelowCount">0</prop>
+      <prop name="GridAboveDistance">0</prop>
+      <prop name="GridBelowDistance">0</prop>
+      <prop name="GridRefValue">0</prop>
+      <CurveScale>
+       <prop name="Format1">%g</prop>
+       <prop name="Format2">%x</prop>
+       <prop name="AutoFormat">True</prop>
+       <prop name="Visible">True</prop>
+       <prop name="Position">Left</prop>
+      </CurveScale>
+     </prop>
+     <prop name="TimeScaleOneLine">True</prop>
+     <prop name="TimeScale">
+      <prop name="Format1">%H:%M:%S</prop>
+      <prop name="Format2">%x</prop>
+      <prop name="AutoFormat">True</prop>
+      <prop name="Visible">True</prop>
+      <prop name="Position">Bottom</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="TREND3" shapeType="TREND" layerId="0">
+   <properties>
+    <prop name="serialId">2</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">30 250</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">2</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">30 250</prop>
+    <prop name="Size">261 192</prop>
+    <prop name="TimeTrend">True</prop>
+    <prop name="Logarithmic">False</prop>
+    <prop name="ShowToolBox">True</prop>
+    <prop name="ShowLegend">True</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="ShowGrid">False</prop>
+    <prop name="ShowBackgroundGrid">True</prop>
+    <prop name="TimeRange">300</prop>
+    <prop name="curveDownsamplings">0 </prop>
+    <prop name="ScrollPercent">90</prop>
+    <prop name="LegendFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="ScaleFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="DefaultFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="TrendArea">
+     <prop name="PixmapFile"></prop>
+     <prop type="ValueOverTime" name="TrendCurve">
+      <prop name="Name">#1_1</prop>
+      <prop name="DataSource">dist_1:SRTM.FF12_tempC</prop>
+      <prop name="PointType">0</prop>
+      <prop name="Type">2</prop>
+      <prop name="Filled">0</prop>
+      <prop name="RefValue">0</prop>
+      <prop name="LegendFormat"></prop>
+      <prop name="LegendShowDate">False</prop>
+      <prop name="LegendShowMilli">False</prop>
+      <prop name="LegendName">
+       <prop name="en_US.utf8">FF12 TempC</prop>
+      </prop>
+      <prop name="LegendUnit">
+       <prop name="en_US.utf8"></prop>
+      </prop>
+      <prop name="VisibleInLegend">True</prop>
+      <prop name="AutoScale">False</prop>
+      <prop name="ValueShape"></prop>
+      <prop name="TimeShape"></prop>
+      <prop name="Min">0.5089279059533638</prop>
+      <prop name="Max">99.49107209404664</prop>
+      <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,0]</prop>
+      <prop name="Color">Blue</prop>
+      <prop name="GridVisible">False</prop>
+      <prop name="GridAboveCount">0</prop>
+      <prop name="GridBelowCount">0</prop>
+      <prop name="GridAboveDistance">0</prop>
+      <prop name="GridBelowDistance">0</prop>
+      <prop name="GridRefValue">0</prop>
+      <CurveScale>
+       <prop name="Format1">%g</prop>
+       <prop name="Format2">%x</prop>
+       <prop name="AutoFormat">True</prop>
+       <prop name="Visible">True</prop>
+       <prop name="Position">Left</prop>
+      </CurveScale>
+     </prop>
+     <prop name="TimeScaleOneLine">True</prop>
+     <prop name="TimeScale">
+      <prop name="Format1">%H:%M:%S</prop>
+      <prop name="Format2">%x</prop>
+      <prop name="AutoFormat">True</prop>
+      <prop name="Visible">True</prop>
+      <prop name="Position">Bottom</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="TREND5" shapeType="TREND" layerId="0">
+   <properties>
+    <prop name="serialId">4</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">320 250</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">4</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">320 250</prop>
+    <prop name="Size">261 191</prop>
+    <prop name="TimeTrend">True</prop>
+    <prop name="Logarithmic">False</prop>
+    <prop name="ShowToolBox">True</prop>
+    <prop name="ShowLegend">True</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="ShowGrid">False</prop>
+    <prop name="ShowBackgroundGrid">True</prop>
+    <prop name="TimeRange">300</prop>
+    <prop name="curveDownsamplings">0 </prop>
+    <prop name="ScrollPercent">90</prop>
+    <prop name="LegendFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="ScaleFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="DefaultFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="TrendArea">
+     <prop name="PixmapFile"></prop>
+     <prop type="ValueOverTime" name="TrendCurve">
+      <prop name="Name">#1_1</prop>
+      <prop name="DataSource">dist_1:SRTM.FF13_tempC</prop>
+      <prop name="PointType">0</prop>
+      <prop name="Type">2</prop>
+      <prop name="Filled">0</prop>
+      <prop name="RefValue">0</prop>
+      <prop name="LegendFormat"></prop>
+      <prop name="LegendShowDate">False</prop>
+      <prop name="LegendShowMilli">False</prop>
+      <prop name="LegendName">
+       <prop name="en_US.utf8">FF13 TempC</prop>
+      </prop>
+      <prop name="LegendUnit">
+       <prop name="en_US.utf8"></prop>
+      </prop>
+      <prop name="VisibleInLegend">True</prop>
+      <prop name="AutoScale">False</prop>
+      <prop name="ValueShape"></prop>
+      <prop name="TimeShape"></prop>
+      <prop name="Min">2.447174185242318</prop>
+      <prop name="Max">97.55282581475768</prop>
+      <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,0]</prop>
+      <prop name="Color">Blue</prop>
+      <prop name="GridVisible">False</prop>
+      <prop name="GridAboveCount">0</prop>
+      <prop name="GridBelowCount">0</prop>
+      <prop name="GridAboveDistance">0</prop>
+      <prop name="GridBelowDistance">0</prop>
+      <prop name="GridRefValue">0</prop>
+      <CurveScale>
+       <prop name="Format1">%g</prop>
+       <prop name="Format2">%x</prop>
+       <prop name="AutoFormat">True</prop>
+       <prop name="Visible">True</prop>
+       <prop name="Position">Left</prop>
+      </CurveScale>
+     </prop>
+     <prop name="TimeScaleOneLine">True</prop>
+     <prop name="TimeScale">
+      <prop name="Format1">%H:%M:%S</prop>
+      <prop name="Format2">%x</prop>
+      <prop name="AutoFormat">True</prop>
+      <prop name="Visible">True</prop>
+      <prop name="Position">Bottom</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+  <shape Name="TREND6" shapeType="TREND" layerId="0">
+   <properties>
+    <prop name="serialId">5</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">180 477</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_WindowText</prop>
+    <prop name="BackColor">_Window</prop>
+    <prop name="TabOrder">5</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="Location">180 477</prop>
+    <prop name="Size">271 171</prop>
+    <prop name="TimeTrend">True</prop>
+    <prop name="Logarithmic">False</prop>
+    <prop name="ShowToolBox">True</prop>
+    <prop name="ShowLegend">True</prop>
+    <prop name="Vertical">False</prop>
+    <prop name="ShowGrid">False</prop>
+    <prop name="ShowBackgroundGrid">True</prop>
+    <prop name="TimeRange">300</prop>
+    <prop name="curveDownsamplings">0 </prop>
+    <prop name="ScrollPercent">90</prop>
+    <prop name="LegendFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="ScaleFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="DefaultFont">
+     <prop name="en_US.utf8">Noto Sans,-1,16,5,50,0,0,0,0,0,Regular</prop>
+    </prop>
+    <prop name="TrendArea">
+     <prop name="PixmapFile"></prop>
+     <prop type="ValueOverTime" name="TrendCurve">
+      <prop name="Name">#1_1</prop>
+      <prop name="DataSource">dist_1:SRTM.Zynq_ps_temp</prop>
+      <prop name="PointType">0</prop>
+      <prop name="Type">2</prop>
+      <prop name="Filled">0</prop>
+      <prop name="RefValue">0</prop>
+      <prop name="LegendFormat"></prop>
+      <prop name="LegendShowDate">False</prop>
+      <prop name="LegendShowMilli">False</prop>
+      <prop name="LegendName">
+       <prop name="en_US.utf8">Zynq PS Temp</prop>
+      </prop>
+      <prop name="LegendUnit">
+       <prop name="en_US.utf8"></prop>
+      </prop>
+      <prop name="VisibleInLegend">True</prop>
+      <prop name="AutoScale">False</prop>
+      <prop name="ValueShape"></prop>
+      <prop name="TimeShape"></prop>
+      <prop name="Min">0.5089279059533638</prop>
+      <prop name="Max">99.49107209404664</prop>
+      <prop name="LineType">[solid,oneColor,JoinMiter,CapButt,0]</prop>
+      <prop name="Color">Blue</prop>
+      <prop name="GridVisible">False</prop>
+      <prop name="GridAboveCount">0</prop>
+      <prop name="GridBelowCount">0</prop>
+      <prop name="GridAboveDistance">0</prop>
+      <prop name="GridBelowDistance">0</prop>
+      <prop name="GridRefValue">0</prop>
+      <CurveScale>
+       <prop name="Format1">%g</prop>
+       <prop name="Format2">%x</prop>
+       <prop name="AutoFormat">True</prop>
+       <prop name="Visible">True</prop>
+       <prop name="Position">Left</prop>
+      </CurveScale>
+     </prop>
+     <prop name="TimeScaleOneLine">True</prop>
+     <prop name="TimeScale">
+      <prop name="Format1">%H:%M:%S</prop>
+      <prop name="Format2">%x</prop>
+      <prop name="AutoFormat">True</prop>
+      <prop name="Visible">True</prop>
+      <prop name="Position">Bottom</prop>
+     </prop>
+    </prop>
+   </properties>
+  </shape>
+ </shapes>
+</panel>

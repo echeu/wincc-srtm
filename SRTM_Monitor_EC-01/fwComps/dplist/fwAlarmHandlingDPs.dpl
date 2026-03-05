@@ -1,0 +1,12 @@
+# (c) Copyright CERN 2005. All rights not expressly granted are reserved.
+# icecontrols.support@cern.ch
+#
+# SPDX-License-Identifier: LGPL-3.0-only
+
+# ascii dump of database
+
+# Datapoint/DpId
+DpName	TypeName	ID
+_AESConfig_fwAes	_AESConfig	24272
+_AESProperties_fwAes	_AESProperties	52797
+_AEScreen_fwAes	_AEScreen	52798
